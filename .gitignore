@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .DS_Store
 Thumbs.db
 db.json
@@ -6,7 +5,6 @@ db.json
 node_modules/
 public/
 .deploy*/
-=======
 # Logs
 logs
 *.log
@@ -87,4 +85,3 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
->>>>>>> 7d409c04b94d57d996312c0489ccad0a27f5514c
