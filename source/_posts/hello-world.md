@@ -1,5 +1,11 @@
 ---
 title: 对于Lamdba的引入
+date: 2019-09-08 04:53:15
+categories:
+- Java8
+tags:
+- Lamdba
+- Java8
 ---
 # 前言
 &emsp;&emsp;文章如有不足之处，敬请指出 。欢迎多多交流。本人看到，会第一时间回复信息的。
