@@ -60,7 +60,7 @@ menu:
       type: 3  # 跳转类型 3：打开新的tab页
 
 # 文末声明
-article_txt: 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 gouqiangshen@126.com
+article_txt: 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 gouqiangshen@126.com
 
 bottom_text: ©2016-2019 BiggerShen
 # 自定义页面最下方的站点版权信息
@@ -184,7 +184,7 @@ friends:
 
 ##########评论设置#############
 comment:
-  on: true
+  on: false
   type: gitment  # 评论系统：gitalk、disqus、gentie、gitment,注意：使用时，在下方对应位置进行配置
   comment_count: false  # 文章标题下方显示评论数
   preload_comment: false  # 预加载评论区
