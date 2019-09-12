@@ -1,5 +1,5 @@
 ---
-title: Spring源码深度解析Day01
+title: Spring源码深度解析Day01--Spring整体架构
 date: 2019-09-12 20:45:51
 categories:
 - Spring
@@ -13,11 +13,13 @@ tags:
 ## Spring的整体架构
 &emsp;&emsp;Spring框架是一个分层结构，它包含一系列的功能要素，并被分为大约20个模块，如下图所示。
 
-![Spring整体架构图](/blog/img/SpringSourceCodeDepthResolve/Day01/img01.png);
+![Spring整体架构图](/blog/img/SpringSourceCodeDepthResolve/Day01/img01.png)
 
 &emsp;&emsp;从整体上来讲，Spring的模块可以分成以下四部分。
 ### 1. Core Container
 
 ### 2. Data Access/Integration
+
 ### 3. Web
+
 ### 4. AOP
