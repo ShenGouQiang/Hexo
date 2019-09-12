@@ -87,3 +87,4 @@ search:
 comment_count: true
 highlight:
   enable: false
+psot_asset_folder: true
