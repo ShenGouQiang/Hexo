@@ -17,7 +17,6 @@ else
 	fi
 	realPath="$mulu"
 fi
-pwd
 #第二个参数是page的名字
 fileName=$2
 hexo new "$fileName"
@@ -43,3 +42,10 @@ do
 	  - $var
 	" "$fileName.md"
 done
+#最后一步，修改permalink的值
+if [ "$mulu" = "" ];then
+	echo "filePath is null,do not change permalink"
+else
+	echo "filePath is $mulu,will change permalink"
+	sed -i '' "s/permalink: $fileName/permalink: $mulu\/$fileName/" "$fileName.md"
+fi
