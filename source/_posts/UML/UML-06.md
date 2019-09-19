@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--时序图
+permalink: UML/UML-06
 categories:
   - UML学习
 tags:

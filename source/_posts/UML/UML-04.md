@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--部署图
+permalink: UML/UML-04
 categories:
   - UML学习
 tags:

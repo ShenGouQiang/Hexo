@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--用例图
+permalink: UML/UML-05
 categories:
   - UML学习
 tags:

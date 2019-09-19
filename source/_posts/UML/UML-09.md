@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--活动图
+permalink: UML/UML-09
 categories:
   - UML学习
 tags:

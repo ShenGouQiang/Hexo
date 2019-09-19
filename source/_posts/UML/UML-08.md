@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--状态图
+permalink: UML/UML-08
 categories:
   - UML学习
 tags:

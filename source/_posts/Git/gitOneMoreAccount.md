@@ -1,5 +1,6 @@
 ---
 title: 同一电脑配置多个Git账号
+permalink: Git/gitOneMoreAccount
 categories:
   - 其他
 tags:

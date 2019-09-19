@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--协作图
+permalink: UML/UML-07
 categories:
   - UML学习
 tags:

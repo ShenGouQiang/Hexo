@@ -1,5 +1,6 @@
 ---
 title: UML类图学习--组件图
+permalink: UML/UML-03
 categories:
   - UML学习
 tags:
