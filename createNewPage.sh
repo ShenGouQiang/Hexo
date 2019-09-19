@@ -1,3 +1,5 @@
+#!/bin/bash
+# 使用举例：./createNewPage.sh aa testOne "其他,学习,lean,other" "test,学习,其他,other"
 readonly path="source/_posts"
 realPath="$path"
 cd $path
