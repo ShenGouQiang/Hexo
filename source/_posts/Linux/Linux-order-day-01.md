@@ -1,5 +1,5 @@
 ---
-title: 每天一个Lin
+title: 每天一个Linux命令--ls
 permalink: Linux/Linux-order-day-01
 date: 2019-09-23 13:31:03
 categories:
