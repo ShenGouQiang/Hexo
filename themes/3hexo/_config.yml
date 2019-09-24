@@ -90,7 +90,7 @@ word_count: true
 # 不蒜子网站计数设置
 # http://ibruce.info/2015/04/04/busuanzi/
 visit_counter:
-  on: true
+  on: false
   site_visit: true
   page_visit: true
 
