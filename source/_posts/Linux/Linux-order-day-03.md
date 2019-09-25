@@ -42,8 +42,9 @@ stat ln.txt
 
 ## inode的大小
 
-&emsp;&emsp;在前面我们已经讲过，
+&emsp;&emsp;在前面我们已经讲过，inode和我们要存储的数据一样，都是要保存在我们的硬盘上面的。每个inode节点的大小，一般是128字节或256字节。inode节点的总数，在格式化时就给定，一般是每1KB或每2KB就设置一个inode。假定在一块1GB的硬盘中，每个inode节点的大小为128字节，每1KB就设置一个inode，那么inode table的大小就会达到128MB，占整块硬盘的12.8%。
 
+&emsp;&emsp;
 ## inode的号码
 
 ## 目录文件
