@@ -45,8 +45,12 @@ public class Thief {
      * 偷东西后被警察发现
      */
     public void nodifyPolice(){
-        police1.arrestThief(this.name);
-        police2.arrestThief(this.name);
+        police1.arrestThief(this);
+        police2.arrestThief(this);
+    }
+
+    public String getName() {
+        return name;
     }
 }
 ```
@@ -60,8 +64,8 @@ public class Police {
      * 逮捕小偷
      * @return
      */
-    public void arrestThief(String thiefName){
-        System.out.println(thiefName + " 双手举起，你被逮捕了");
+    public void arrestThief(Thief thief){
+        System.out.println(thief.getName() + " 双手举起，你被逮捕了");
     }
 
     @Override
@@ -94,7 +98,7 @@ public class Client {
 
 ## 优化一：提炼出警察个数问题
 
-&emsp;&emsp;ok，到此，我们发现我们的代码目前处于仅仅只能跑通的成分。但是对于我们程序员而言，我们追求的是代码的完善和代码的通读性。我们发现，上面的代码中，对于小偷而言，他并不知道当他要被逮捕的时候，到底有多少个警察？难道以后每次增加一个警察就要改动这个类，新增一个对象吗？这么做显然是有问题的：因此，我们需要对我们的代码进行改动。
+&emsp;&emsp;ok，到此，我们发现我们的代码目前处于仅仅只能跑通的成分。但是对于我们程序员而言，我们追求的是代码的完善和代码的通读性。我们发现，上面的代码中，对于小偷而言，他并不知道当他要被逮捕的时候，到底有多少个警察？难道以后每次增加一个警察就要改动这个类，新增一个对象吗？这明显不符合设计模式中的`开放-封闭原则`这么做显然是有问题的：因此，我们需要对我们的代码进行改动。
 
 &emsp;&emsp;小偷的代码：
 
@@ -138,7 +142,11 @@ public class Thief {
      * 偷东西后被警察发现
      */
     public void nodifyPolice(){
-        policeList.forEach(police -> police.arrestThief(name));
+        policeList.forEach(police -> police.arrestThief(this));
+    }
+
+    public String getName() {
+        return name;
     }
 }
 ```
@@ -168,4 +176,6 @@ public class Client {
 
 ## 优化问题二：只有警察追捕小偷吗？还是警察只抓捕小偷
 
-&emsp;&emsp;通过上面的问题，我们知道了，在上面的代码中，我们知道了警察可以追捕小偷，但是如果此时街道命令的是刑警，而不是普通警察呢？如果此时追捕的不是小偷，而是正在进行毒品交易的毒贩呢？我们总不能
+&emsp;&emsp;通过上面的问题，我们知道了，在上面的代码中，我们知道了警察可以追捕小偷，但是如果此时街道命令的是刑警，而不是普通警察呢？如果此时追捕的不是小偷，而是抢劫银行的大盗呢？我们总不能再去写一份十分相似的代码吧？在这里，我们用到了设计模式中的另一个原则`依赖倒转原则`。因此，我们需要做的是将小偷的偷窃和警察的抓捕都封装成对应的接口，如果以后来了刑警或者是大盗，我们只需要实现这个接口就行了。
+
+&emsp;&emsp;在这里，我们把小偷、大盗出现出来一个接口：
