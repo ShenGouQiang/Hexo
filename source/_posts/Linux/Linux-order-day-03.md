@@ -42,7 +42,7 @@ stat ln.txt
 
 ## inode的大小
 
-&emsp;&emsp;在前面我们已经讲过，
+&emsp;&emsp;在前面我们已经讲过，对于每个inode也是存放在硬盘上的。因此，每个inode也是有大小的。一般情况下，一个inode是128字节或者是256字节。
 
 ## inode的号码
 
