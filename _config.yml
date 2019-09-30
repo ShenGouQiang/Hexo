@@ -80,7 +80,7 @@ theme: 3hexo
 deploy:
   type: git
   repo: https://gitee.com/biggershen/blog.git
-  branch: feature
+  branch: master
 search:
   path: search.xml
   field: post
