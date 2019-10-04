@@ -479,7 +479,7 @@
         width: 100%;
         height: 100%;
         opacity: <%= typeof theme.article_bg_img.opacity === 'undefined' ? 0.1 : theme.article_bg_img.opacity %>;
-        background: url("<%=theme.blog_path?theme.blog_path.lastIndexOf("/") === theme.blog_path.length-1?theme.blog_path.slice(0, theme.blog_path.length-1):theme.blog_path:'' %><%=theme.article_bg_img.src %>");
+        background: url("<%=theme.cdn_path?theme.cdn_path.lastIndexOf("/") === theme.cdn_path.length-1?theme.cdn_path.slice(0, theme.cdn_path.length-1):theme.cdn_path:'' %><%=theme.article_bg_img.src %>");
         background-repeat: no-repeat;
         background-position: 50% 0;
         -ms-background-size: cover;
