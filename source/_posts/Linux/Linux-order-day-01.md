@@ -45,7 +45,7 @@ ls -a
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -a 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-a-down.jpg)
+![ls -a 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-a-down.jpg)
 
 &emsp;&emsp;此时，我们可以发现，在当前目录中，我们已经把上面包含的内容全部显示的出来。
 
@@ -61,7 +61,7 @@ ls -A
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -A 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-a-up.jpg)
+![ls -A 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-a-up.jpg)
 
 ### -l 
 
@@ -75,7 +75,7 @@ ls -l
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -l 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-l-down.jpg)
+![ls -l 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-l-down.jpg)
 
 &emsp;&emsp;好，从这里开始，我们介绍下：
 
@@ -169,7 +169,7 @@ ls -i
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -i 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-i-down.jpg)
+![ls -i 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-i-down.jpg)
 
 ### -m
 &emsp;&emsp;用","号区隔每个文件和目录的名称
@@ -182,7 +182,7 @@ ls -m
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -m 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-m-down.jpg)
+![ls -m 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-m-down.jpg)
 
 ### -h
 &emsp;&emsp;显示文件大小(人类可读的显示方法),在这里，我们通常配合`-l`命令一起显示。
@@ -195,7 +195,7 @@ ls -lh
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -lh 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lh-down.jpg)
+![ls -lh 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lh-down.jpg)
 
 ### -r 
 
@@ -213,7 +213,7 @@ ls -lt
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -lt 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lt-down.jpg)
+![ls -lt 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lt-down.jpg)
 
 &emsp;&emsp;此时默认是进行了时间的倒叙排列，如果我们想要按照时间的正序排列，可以使用上面的`-r`命令。
 
@@ -225,7 +225,7 @@ ls -ltr
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -ltr 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-ltr-down.jpg)
+![ls -ltr 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-ltr-down.jpg)
 
 ### -S
 
@@ -239,7 +239,7 @@ ls -lS
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -lS 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lS-up.jpg)
+![ls -lS 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lS-up.jpg)
 
 &emsp;&emsp;此时默认是进行了文件大小的倒叙排列，如果我们想要按照文件大小的正序排列，可以使用上面的`-r`命令。
 
@@ -251,7 +251,7 @@ ls -lSr
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -lSr 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lSr-up.jpg)
+![ls -lSr 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lSr-up.jpg)
 
 ### --color
 
@@ -265,7 +265,7 @@ ls --color="red"
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls --color 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls--color.jpg)
+![ls --color 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls--color.jpg)
 
 &emsp;&emsp;此时常用的参数有：
 
@@ -291,7 +291,7 @@ ls -lu
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -lu 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lu-down.jpg)
+![ls -lu 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lu-down.jpg)
 
 ### -o
 
@@ -305,7 +305,7 @@ ls -o
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -o 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-o-down.jpg)
+![ls -o 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-o-down.jpg)
 
 ### -R 
 
@@ -319,7 +319,7 @@ ls -lR
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -lR 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lR-up.jpg)
+![ls -lR 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-lR-up.jpg)
 
 ### -Q
 
@@ -333,7 +333,7 @@ ls -Q
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -Q 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-Q-up.jpg)
+![ls -Q 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-Q-up.jpg)
 
 ### -pf 
 
@@ -353,5 +353,5 @@ ls -pF
 
 &emsp;&emsp;此时的执行结果如下：
 
-![ls -pF 命令](https://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-pF-up.jpg)
+![ls -pF 命令](http://static.shengouqiang.cn/blog/img/Linux/Command/Day01/ls-pF-up.jpg)
 
