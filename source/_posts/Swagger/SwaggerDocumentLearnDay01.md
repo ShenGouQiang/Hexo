@@ -107,7 +107,7 @@ public @interface Api {
 
 ### API--hidden属性
 
-&emsp;&emsp;配置为true 将在文档中隐藏。隐藏整个`Controller`资源。作用与`@ApiIgnore`类似，但是没有`@ApiIgnore`功能强大。
+&emsp;&emsp;配置为`true`将在文档中隐藏。隐藏整个`Controller`资源。作用与`@ApiIgnore`类似，但是没有`@ApiIgnore`功能强大。
 
 ## 总结
 
