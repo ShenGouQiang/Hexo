@@ -142,15 +142,18 @@ public @interface ApiModelProperty {
 
 ### value属性
 
-&emsp;&emsp;
+&emsp;&emsp;简洁的介绍字段描述。
 
 ### name属性
 
-&emsp;&emsp;
+&emsp;&emsp;如果设置这个字段，会覆盖原本属性的名字。
 
 ### allowableValues属性
 
-&emsp;&emsp;
+&emsp;&emsp;标明字段的取值范围，设置的方式有三种
+&emsp;&emsp;&emsp;&emsp;1.
+&emsp;&emsp;&emsp;&emsp;2.
+&emsp;&emsp;&emsp;&emsp;3.
 
 ### access属性
 
