@@ -151,58 +151,66 @@ public @interface ApiModelProperty {
 ### allowableValues属性
 
 &emsp;&emsp;标明字段的取值范围，设置的方式有三种
-&emsp;&emsp;&emsp;&emsp;1.
-&emsp;&emsp;&emsp;&emsp;2.
-&emsp;&emsp;&emsp;&emsp;3.
+&emsp;&emsp;&emsp;&emsp;1.第一种是采用枚举的形式。
+&emsp;&emsp;&emsp;&emsp;&emsp;例如：`allowableValue="{first, second, third}"`
+&emsp;&emsp;&emsp;&emsp;2.第二种是采用一个有限的范围，例如`"range[1, 5]"`、`"range(1, 5)"`、`"range[1, 5)"`。其中，
+&emsp;&emsp;&emsp;&emsp;&emsp;2.1 `[`表示是大于等于
+&emsp;&emsp;&emsp;&emsp;&emsp;2.2 `(`表示是大于
+&emsp;&emsp;&emsp;&emsp;&emsp;2.3 `]`表示是小于等于
+&emsp;&emsp;&emsp;&emsp;&emsp;2.4 `)`表示是小于
+&emsp;&emsp;&emsp;&emsp;3.标识的是一个无限的范围。其中，我们使用`infinity`表示无限大，使用`-infinity`表示负无限大。
+&emsp;&emsp;&emsp;&emsp;&emsp;例如:`"range[1, infinity]"`。
 
 ### access属性
 
-&emsp;&emsp;
+&emsp;&emsp;这个属性的意思是允许从API文档中过滤属性，详情，我们可以参见`io.swagger.core.filter.SwaggerSpecFilter`。在接下来的代码中我们会讲到。
 
 ### notes属性
 
-&emsp;&emsp;
+&emsp;&emsp;该字段是预留字段，目前并未被使用。
 
 ### dataType属性
 
-&emsp;&emsp;
+&emsp;&emsp;参数的数据类型，如果我们设置了这个属性，将被覆盖掉通过内省获得的参数的数据类型。并且这个数据类型可以是基本数据类型，也可以是类的名字。如果是基本数据类型，为了防止抛出`XXX`的错误
+&emsp;&emsp;&emsp;&emsp;1.我们可以采用配置`example`属性一起使用
+&emsp;&emsp;&emsp;&emsp;2.我们可以通过升级`swagger-annotations`和`swagger-models`的版本来避免，升级到`XXX`版本即可。
 
 ### required属性
 
-&emsp;&emsp;
+&emsp;&emsp;表示的是当前字段是否是必须的，默认是`false`。
 
 ### position属性
 
-&emsp;&emsp;
+&emsp;&emsp;已过时的方法，代表是属性在文档中的位置排序。
 
 ### hidden属性
 
-&emsp;&emsp;
+&emsp;&emsp;表示的是是否隐藏当前字段，默认是`false`。
 
 ### example属性
 
-&emsp;&emsp;
+&emsp;&emsp;举例说明。
 
 ### readOnly属性
 
-&emsp;&emsp;
+&emsp;&emsp;过时方法，在`Swagger1.5.19`版本之后，采用`accessMode`注解代替。
 
 ### accessMode属性
 
-&emsp;&emsp;
+&emsp;&emsp;属性的数据模式。使用的是一个枚举`AccessMode`的值，其中包括`AUTO`、`READ_ONLY`、`READ_WRITE`。
 
 ### reference属性
 
-&emsp;&emsp;
+&emsp;&emsp;指定了属性的类型引用，如果设置了当前属性，会覆盖任何其他的元数据(`不常使用`)。
 
 ### allowEmptyValue属性
 
-&emsp;&emsp;
+&emsp;&emsp;是否允许该字段为空，默认是`false`。
 
 ### extensions属性
 
-&emsp;&emsp;
+&emsp;&emsp;该属性用于进行额外的描述。是一个可选项的数组组成。
 
 ## 总结
 
-&emsp;&emsp;
+&emsp;&emsp;`@ApiModelProperty`注解主要是对于类的内部的一个属性的描述。
