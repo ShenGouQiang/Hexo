@@ -171,9 +171,9 @@ public @interface ApiModelProperty {
 
 ### dataType属性
 
-&emsp;&emsp;参数的数据类型，如果我们设置了这个属性，将被覆盖掉通过内省获得的参数的数据类型。并且这个数据类型可以是基本数据类型，也可以是类的名字。如果是基本数据类型，为了防止抛出`XXX`的错误
+&emsp;&emsp;参数的数据类型，如果我们设置了这个属性，将被覆盖掉通过内省获得的参数的数据类型。并且这个数据类型可以是基本数据类型，也可以是类的名字。如果是基本数据类型，为了防止抛出`java.lang.NumberFormatException: For input string: ""`的错误
 &emsp;&emsp;&emsp;&emsp;1.我们可以采用配置`example`属性一起使用
-&emsp;&emsp;&emsp;&emsp;2.我们可以通过升级`swagger-annotations`和`swagger-models`的版本来避免，升级到`XXX`版本即可。
+&emsp;&emsp;&emsp;&emsp;2.我们可以通过升级`swagger-annotations`和`swagger-models`的版本来避免，升级到`1.5.21`版本即可。
 
 ### required属性
 
