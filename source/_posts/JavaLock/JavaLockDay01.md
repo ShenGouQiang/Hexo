@@ -31,4 +31,5 @@ tags:
 
 ### 公平锁/非公平锁
 
-&emsp;&emsp;
+&emsp;&emsp;对于JDK自身提供的锁内容，`synchronize`关键字只能是非公平锁。而`ReentrantLock`既可以是公平锁、也可以是非公平锁。
+
