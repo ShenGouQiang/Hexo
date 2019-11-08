@@ -1,5 +1,5 @@
 ---
-title: Java常见的锁问题汇总
+title: Java常见的锁问题汇总(持续更新中)
 permalink: JavaLock/JavaLockDay01
 date: 2019-11-05 18:01:36
 categories:
@@ -28,6 +28,10 @@ tags:
 8. 自旋锁
 
 &emsp;&emsp;注意，这里面提到的这么多锁的名字，并不代表在JDK中都是一一对应存在的。这些都是按照锁的特性，来进行划分的。
+
+## 前提
+
+&emsp;&emsp;在讲解这些锁之前，我们先说一下<a href="/JavaLock/JavaLockDay02/">synchronize</a>和<a href="">ReentrantLock</a>。
 
 ### 公平锁/非公平锁
 

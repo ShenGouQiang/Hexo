@@ -1,9 +1,10 @@
 ---
 title: 对于Lamdba的引入
-permalink: hello-word
+permalink: Java8Action/IntroduceLamdba
 date: 2019-09-08 04:53:15
 categories:
-- Java8
+- Java
+- Java8学习
 tags:
 - Lamdba
 - Java8
