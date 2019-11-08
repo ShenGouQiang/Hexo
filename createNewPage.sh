@@ -29,6 +29,15 @@ fi
 #第三个参数是categories，也就是目录,如果有多个，用","进行分割
 categoriesStr=$3
 categoriesArray=(${categoriesStr//,/ })  
+i=0
+leni=${#categoriesArray[*]}
+while [ $i -lt $leni ]
+do
+    tmpi=${categoriesArray[i]}
+    categoriesArray[i]=${categoriesArray[$leni-1]}
+    categoriesArray[$leni-1]=$tmpi
+    let i++ leni--   
+done
 for var in ${categoriesArray[@]}
 do
    sed -i "" "/categories/a\\	
@@ -38,6 +47,15 @@ done
 #第四个参数时tag，也就是标签，如果有多个，用","进行分割
 tagStr=$4
 tagArray=(${tagStr//,/ })  
+j=0
+lenj=${#tagArray[*]}
+while [ $j -lt $lenj ]
+do
+    tmpj=${tagArray[j]}
+    tagArray[j]=${tagArray[$lenj-1]}
+    tagArray[$lenj-1]=$tmpj
+    let j++ lenj--   
+done
 for var in ${tagArray[@]}
 do
     sed -i "" "/tags/a\\	
