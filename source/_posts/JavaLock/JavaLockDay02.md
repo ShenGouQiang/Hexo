@@ -123,7 +123,7 @@ tags:
 
 &emsp;&emsp;下面，我们可以借用网上的一张图片来进行说明
 
-![synchronize锁升级](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/lockUpdate.jpg)
+![synchronize锁升级](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/lockUpdate.png)
 
 ## 总结
 
