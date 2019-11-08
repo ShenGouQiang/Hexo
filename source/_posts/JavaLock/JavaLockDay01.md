@@ -31,7 +31,7 @@ tags:
 
 ## 前提
 
-&emsp;&emsp;在讲解这些锁之前，我们先说一下<a href="/JavaLock/JavaLockDay02/">synchronize</a>和<a href="">ReentrantLock</a>。
+&emsp;&emsp;在讲解这些锁之前，我们先说一下<a href="/JavaLock/JavaLockDay02/">synchronize</a>和<a href="/JavaLock/JavaLockDay03/">ReentrantLock</a>。
 
 ### 公平锁/非公平锁
 
