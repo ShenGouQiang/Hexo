@@ -152,7 +152,7 @@ public @interface ApiModelProperty {
 
 &emsp;&emsp;标明字段的取值范围，设置的方式有三种
 &emsp;&emsp;&emsp;&emsp;1.第一种是采用枚举的形式。
-&emsp;&emsp;&emsp;&emsp;&emsp;例如：`allowableValue="{first, second, third}"`
+&emsp;&emsp;&emsp;&emsp;&emsp;例如：`allowableValues="first, second, third"`
 &emsp;&emsp;&emsp;&emsp;2.第二种是采用一个有限的范围，例如`"range[1, 5]"`、`"range(1, 5)"`、`"range[1, 5)"`。其中，
 &emsp;&emsp;&emsp;&emsp;&emsp;2.1 `[`表示是大于等于
 &emsp;&emsp;&emsp;&emsp;&emsp;2.2 `(`表示是大于
