@@ -156,13 +156,41 @@ public abstract class AbstractQueuedSynchronizer
 
 &emsp;&emsp;在上面，我们已经罗列出了所有的主要的源码的信息。接下来，我们一点一点的进行分析。
 
+### lock方法
+
 &emsp;&emsp;首先，我们查看`NonFairSync`的`lock`方法，我们发现，其实对于`lock`方法而言，很简单。就是如果当前线程需要锁，则首先通过`CAS`自旋的方式，去获取锁，如果锁不存在，那么就去执行`acquire`方法。
+
+### acquire方法
 
 &emsp;&emsp;然而，在`acquire`方法中，我们看到，主要的业务逻辑在`if`的判断中。在这里，我们发现，`JDK`的库工程师们采用了`模板方法`的设计模式，将整个加锁的过程，已经固化了，只是在不同的地方，需要实现者自己去实现而已。因此，`tryAcquire`方法就是由`NonFairSync`自己去实现的。而`NonFairSync`中的`tryAcquire`方法，仅仅只是调用底层的`nonfairTryAcquire`方法而已。而在`nonfairTryAcquire`方法中，我们发现一个神奇的事情，那就是这个方法中对于获取锁，它仍然通过了一次`CAS`自旋的方式去获取锁。如果没有获取到，才会执行下面的步骤。
 
 &emsp;&emsp;那在这里就有一个问题了，因为我们在之前的`lock`方法中，已经通过`CAS`自旋的方式去尝试获取锁而失败了，那么为什么我们还要在`nonfairTryAcquire`中再执行一次呢？其实，这里面有一个效率的问题。在这里，是一个典型的通过增加一些冗余代码的方式，来提高执行效率的问题。
 
-&emsp;&emsp;OK，到这里，我们开始重新的讲解一下`acquire`这个方法。在这个方法中，我们发现：他的主要部分是放在了`if`语句的里面。在`if`语句中，
+&emsp;&emsp;OK，到这里，我们开始重新的讲解一下`acquire`这个方法。在这个方法中，我们发现：他的主要部分是放在了`if`语句的里面。在`if`语句中，采用的是短路的原则，来进行一步一步的设置。接下俩，我们讲解下：
+
+### tryAcquire方法
+
+&emsp;&emsp;我们首先执行的是`tryAcquire`方法。通过名字可以知道，这个代码的含义是"获取锁"。只有我们获取失败的时候，才会执行后续的流程。
+
+1.  `tryAcquire`方法调用的是`nonfairTryAcquire`方法。
+2.  在`nonfairTryAcquire`中，我们首先会拿到当前线程，通过新创建一个`Node`的方式，将当前线程信息存放到`Node`信息中。此时我们会判断当前线程是否已经获取到锁。
+   - 如果没有获取到锁，则通过一次`CAS`自旋来获取锁，如果获取成功，此时我们继续下当前线程的信息，以便后续重入锁的时候使用。
+   - 如果我们获取锁失败，此时我们查看当前线程是否已经获取到锁，如果发现已经获取，则直接通过重入锁来获取当前锁。并且将`state`加`1`。在这里，`state`表示的是锁的重入次数。
+   - 如果上述两种情况，我们都没有获取到锁，则直接返回`false`,表示获取锁失败。
+
+### addWaiter方法
+
+&emsp;&emsp;这个方法的调用前提是在`tryAcquire`获取锁失败的时候进行调用的。这个方法的主要目的是为了将未获取到锁的线程，通过`Node`的方式来添加到`队列`中。到此，我们需要介绍一下`AbstractQueuedSynchronizer`也就是`AQS`和他用户存储阻塞线程的`队列`的数据结构。
+
+#### AbstractQueuedSynchronizer
+
+&emsp;&emsp;`AbstractQueuedSynchronizer`，我们俗称`AQS`。这个类是实现`ReentrantLock`锁的重要类。这个类采用的是设计模式中的`模板方法`。他帮我们默认了提供了一套关于锁的解决方法。但是对于内部的一些实现，是需要子类去自己实现的,例如`tryAcquire`方法。同时，我们的`NonFairSync`也是继承了这个类。在这个类中，存在了两个成员变量`head`和`tail`。这两个变量，一个是指定了`队列`的头节点，一个指定了`队列`的尾节点。注意的是，这个`队列`采用的是`懒加载`模式。默认情况下，`head`和`tail`的值为`null`。如果举例，我们可以这样表示：
+
+![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSStructor.png)
+
+#### `队列`的存储结构
+
+&emsp;&emsp;在`AbstractQueuedSynchronizer`中，我们所有的未获取到
 
 
 
@@ -174,9 +202,7 @@ public abstract class AbstractQueuedSynchronizer
 
 
 
-
-
-
+===============================================================================================================================================================
 
 &emsp;&emsp;通过源码可知，当我们执行`lock`方法的时候，此时我们首先会采用`CAS`自旋的方式，来获取一次锁，如果我们此时锁是获取成功的，那么我们直接将当前的线程记录一下，以便后续重入的时候，可以直接获取到当前锁。如果我们通过第一次`CAS`自旋的方式获取锁失败的话，那么此时我们会执行`acquire`方法。
 
