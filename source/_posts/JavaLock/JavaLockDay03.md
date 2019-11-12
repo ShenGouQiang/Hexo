@@ -36,32 +36,148 @@ tags:
 
 &emsp;&emsp;那么，对于`公平锁`和`非公平锁`，`ReentrantLock`是怎么实现的呢？
 
-## ReentrantLock实现非公平锁
-
 &emsp;&emsp;我们通过上面的代码可以看出，如果我们采用`ReentrantLock()`和`ReentrantLock(false)`的时候，此时获取的是`非公平锁`。此时，我们使用的是`NonfairSync`这个静态内部类产生的对象，那么`ReentrantLock`是怎么实现非公平锁的呢？
+
+&emsp;&emsp;在我们真正的讲解`ReentrantLock`的非公平锁，其实，我们就是在讲`NonFairSync`这个类。既然，我们想要讲解这个类，那么就面临着我们要知道这个类的一个类图：
+
+![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/NonFairSync.jpg)
+
+&emsp;&emsp;接下来，问主要看下这个类。
+
+## NonFairSync实现非公平锁(加锁)
 
 &emsp;&emsp;首先，我们看下`NonfairSync`的源码：
 
 ```java
-    static final class NonfairSync extends Sync {
-        private static final long serialVersionUID = 7316153563782823691L;
+static final class NonfairSync extends Sync {
+    private static final long serialVersionUID = 7316153563782823691L;
 
-        /**
-         * Performs lock.  Try immediate barge, backing up to normal
-         * acquire on failure.
-         */
-        final void lock() {
-            if (compareAndSetState(0, 1))
-                setExclusiveOwnerThread(Thread.currentThread());
-            else
-                acquire(1);
+    /**
+        * Performs lock.  Try immediate barge, backing up to normal
+        * acquire on failure.
+        */
+    final void lock() {
+        if (compareAndSetState(0, 1))
+            setExclusiveOwnerThread(Thread.currentThread());
+        else
+            acquire(1);
+    }
+
+    protected final boolean tryAcquire(int acquires) {
+        return nonfairTryAcquire(acquires);
+    }
+}
+
+public abstract class AbstractQueuedSynchronizer
+    extends AbstractOwnableSynchronizer
+    implements java.io.Serializable {
+
+     public final void acquire(int arg) {
+        if (!tryAcquire(arg) &&
+            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+    }
+
+    private Node addWaiter(Node mode) {
+        Node node = new Node(Thread.currentThread(), mode);
+        // Try the fast path of enq; backup to full enq on failure
+        Node pred = tail;
+        if (pred != null) {
+            node.prev = pred;
+            if (compareAndSetTail(pred, node)) {
+                pred.next = node;
+                return node;
+            }
         }
+        enq(node);
+        return node;
+    }
 
-        protected final boolean tryAcquire(int acquires) {
-            return nonfairTryAcquire(acquires);
+    final boolean acquireQueued(final Node node, int arg) {
+        boolean failed = true;
+        try {
+            boolean interrupted = false;
+            for (;;) {
+                final Node p = node.predecessor();
+                if (p == head && tryAcquire(arg)) {
+                    setHead(node);
+                    p.next = null; // help GC
+                    failed = false;
+                    return interrupted;
+                }
+                if (shouldParkAfterFailedAcquire(p, node) &&
+                    parkAndCheckInterrupt())
+                    interrupted = true;
+            }
+        } finally {
+            if (failed)
+                cancelAcquire(node);
         }
     }
+
+    static void selfInterrupt() {
+        Thread.currentThread().interrupt();
+    }  
+
+    private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+        int ws = pred.waitStatus;
+        if (ws == Node.SIGNAL)
+            /*
+             * This node has already set status asking a release
+             * to signal it, so it can safely park.
+             */
+            return true;
+        if (ws > 0) {
+            /*
+             * Predecessor was cancelled. Skip over predecessors and
+             * indicate retry.
+             */
+            do {
+                node.prev = pred = pred.prev;
+            } while (pred.waitStatus > 0);
+            pred.next = node;
+        } else {
+            /*
+             * waitStatus must be 0 or PROPAGATE.  Indicate that we
+             * need a signal, but don't park yet.  Caller will need to
+             * retry to make sure it cannot acquire before parking.
+             */
+            compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+        }
+        return false;
+    }
+
+    private final boolean parkAndCheckInterrupt() {
+        LockSupport.park(this);
+        return Thread.interrupted();
+    }       
+}
 ```
+
+&emsp;&emsp;在上面，我们已经罗列出了所有的主要的源码的信息。接下来，我们一点一点的进行分析。
+
+&emsp;&emsp;首先，我们查看`NonFairSync`的`lock`方法，我们发现，其实对于`lock`方法而言，很简单。就是如果当前线程需要锁，则首先通过`CAS`自旋的方式，去获取锁，如果锁不存在，那么就去执行`acquire`方法。
+
+&emsp;&emsp;然而，在`acquire`方法中，我们看到，主要的业务逻辑在`if`的判断中。在这里，我们发现，`JDK`的库工程师们采用了`模板方法`的设计模式，将整个加锁的过程，已经固化了，只是在不同的地方，需要实现者自己去实现而已。因此，`tryAcquire`方法就是由`NonFairSync`自己去实现的。而`NonFairSync`中的`tryAcquire`方法，仅仅只是调用底层的`nonfairTryAcquire`方法而已。而在`nonfairTryAcquire`方法中，我们发现一个神奇的事情，那就是这个方法中对于获取锁，它仍然通过了一次`CAS`自旋的方式去获取锁。如果没有获取到，才会执行下面的步骤。
+
+&emsp;&emsp;那在这里就有一个问题了，因为我们在之前的`lock`方法中，已经通过`CAS`自旋的方式去尝试获取锁而失败了，那么为什么我们还要在`nonfairTryAcquire`中再执行一次呢？其实，这里面有一个效率的问题。在这里，是一个典型的通过增加一些冗余代码的方式，来提高执行效率的问题。
+
+&emsp;&emsp;OK，到这里，我们开始重新的讲解一下
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 &emsp;&emsp;通过源码可知，当我们执行`lock`方法的时候，此时我们首先会采用`CAS`自旋的方式，来获取一次锁，如果我们此时锁是获取成功的，那么我们直接将当前的线程记录一下，以便后续重入的时候，可以直接获取到当前锁。如果我们通过第一次`CAS`自旋的方式获取锁失败的话，那么此时我们会执行`acquire`方法。
 
