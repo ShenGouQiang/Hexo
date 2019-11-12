@@ -153,7 +153,7 @@ tags:
     }
 ```
 
-&emsp;&emsp;在我们看`addWaiter(Node mode)`之前，我们首先应该知道，对于`ReentrantLock`方法而言，如果存在多个线程同时访问同一个`同步资源`的时候，其实是在代码的内容，以`队列`的形式组织起来的，而`队列`的内部，采用的是`链表`的形式实现的。因此，这个方法的作用就是：
+&emsp;&emsp;在我们看`addWaiter(Node mode)`之前，我们首先应该知道，对于`ReentrantLock`方法而言，如果存在多个线程同时访问同一个`同步资源`的时候，其实是在代码的内容，以`队列`的形式组织起来的，而`队列`的内部，采用的是`双向链表`的形式实现的。因此，这个方法的作用就是：
 
 1. 根据当前线程，创建一个`Node`节点
 2. 获取链表的尾结点，如果尾结点不为空，代表的是当前`队列`中已经存在节点，则将当前节点通过`compareAndSetTail`插入到尾结点，如果成功，返回当前节点，如果失败，则走`步骤3`
@@ -185,4 +185,84 @@ tags:
     }
 ```
 
-&emsp;&emsp;在这个方法有点饶，我们一点点去进行分析。首先，我们在一个`死循环`中，进行判断，如果当前节点的前置节点是`head`，并且我们获取到锁，则执行下面的方法，在这里，我们要注意下`tryAcquire`方法，因为这个方法在`NonfairSync`中也进行了重写，并且在前面的代码中已经讲过，因此，我们这里不在过多的叙述。当获取到锁后，我们会
+&emsp;&emsp;在这个方法有点饶，我们一点点去进行分析。首先，`tryAcquire`在之前的描述中已经讲过，在这里不再赘述。接下来，我们讲解下这个方法。在这段代码中，一共出现了两个`if`语句，同时整个主代码在一个`死循环`当中。
+
+1. 第一个`if`语句<span style="color:red;"> - </span>这个判断，主要判断的是当前节点的前置节点是否是`head`节点，也就是说当前节点是是否是队列中的第一个节点(不包括`head`节点)。如果是的话，则取获取一次锁，如果锁获取成功，则将当前节点设置成`head`节点。将之前的`head`节点从队列中剔除，以便让`GC`进行回收。那么为什么我们每次都是让头节点获取锁呢？因为头结点是表示当前正占有锁的线程，正常情况下，当我们获取到锁后，会从队列中剔除，并且通知后置节点，让后置节点从阻塞状态激活，去获取锁。
+2. 当前还存在另外一种情况，那就是如果当前节点的`prev`不是`head`节点，或者是获取锁失败：此时会执行第二个`if`语句。在第二个if中，我们主要执行的是`shouldParkAfterFailedAcquire`方法和`parkAndCheckInterrupt`方法。对于`shouldParkAfterFailedAcquire`方法，顾名思义，我们可以很好理解-“在获取锁失败后，是否应该阻塞线程”。
+
+ - 如果前置节点的`waitStatus`为`Node.SIGNAL(-1)`则直接返回true。
+ - 如果前置节点的`waitStatus`大于`0`,也就是(`CANCELLED(1)`)，此时会一致往前查找，直到找到`waitStatus`小于等于`0`的。然后将当前节点插入到这个节点的后面，并且返回`false`。
+ - 如果前置节点的`waitStatus`为初始化状态，则通过`CAS`自旋的方式，将当前节点的的前置节点的`waitStatus`设置为`Node.SIGNAL(-1)`，并且返回false。
+
+3. 对于`parkAndCheckInterrupt`方法，在内部会调用`LockSupport.park(this)`阻塞当前线程，然后返回`Thread.interrupted()`。
+4. 最后，我们发现在`finally`方法中，如果`failed`为`true`的时候，此时才会调用`cancelAcquire`方法。而如果`failed`为`true`的情景，是在`死循环for`的异常终止的时候。因此，如果执行`cancelAcquire`方法，则代表的是程序已经发生异常。
+
+&emsp;&emsp;接下来，我们详细讲解下`cancelAcquire`方法。首先，我们看代码如下：
+
+```java
+    private void cancelAcquire(Node node) {
+        // Ignore if node doesn't exist
+        if (node == null)
+            return;
+
+        node.thread = null;
+
+        // Skip cancelled predecessors
+        Node pred = node.prev;
+        while (pred.waitStatus > 0)
+            node.prev = pred = pred.prev;
+
+        // predNext is the apparent node to unsplice. CASes below will
+        // fail if not, in which case, we lost race vs another cancel
+        // or signal, so no further action is necessary.
+        Node predNext = pred.next;
+
+        // Can use unconditional write instead of CAS here.
+        // After this atomic step, other Nodes can skip past us.
+        // Before, we are free of interference from other threads.
+        node.waitStatus = Node.CANCELLED;
+
+        // If we are the tail, remove ourselves.
+        if (node == tail && compareAndSetTail(node, pred)) {
+            compareAndSetNext(pred, predNext, null);
+        } else {
+            // If successor needs signal, try to set pred's next-link
+            // so it will get one. Otherwise wake it up to propagate.
+            int ws;
+            if (pred != head &&
+                ((ws = pred.waitStatus) == Node.SIGNAL ||
+                 (ws <= 0 && compareAndSetWaitStatus(pred, ws, Node.SIGNAL))) &&
+                pred.thread != null) {
+                Node next = node.next;
+                if (next != null && next.waitStatus <= 0)
+                    compareAndSetNext(pred, predNext, next);
+            } else {
+                unparkSuccessor(node);
+            }
+
+            node.next = node; // help GC
+        }
+    }
+```
+
+&emsp;&emsp;通过上面的代码，我们可以得知：
+
+1. 如果当前节点是一个空的节点，则直接返回，起到了一个兼容的模式
+2. 如果当前节点不为空，则先将`thread`与当前的`node`进行解绑，然后开始往前查找，过滤到所有的`waitStatus`为`CANCELLED(1)`的node，知道找到`waitStatus`为`SIGNAL(-1)`或者是`初始化`的node节点。
+3. 将当前节点设置为`CANCELLED(1)`。
+4. 对于`node`的位置进行判断
+    - 如果`node`正好是`tail`节点，则直接将`node`从队列中`移除`
+    - 如果`node`既不是`tail`节点,也不是`head`的后置节点，则直接将单签节点移除
+    - 如果`node`是`header`的后置节点，则直接唤醒node的后继节点
+
+&emsp;&emsp;至此，`ReentrantLock`的非公平锁已经讲解完毕。下面，我们通过一个流程图的方式，来进行总结：
+
+![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/ReentrantLockNonFairLock.png)
+
+## ReentrantLock实现公平锁
+
+&emsp;&emsp;`ReentrantLock`的公平锁，就比非公平锁简单的多。唯一的区别是，当执行`tryAcquire`的时候，此时从原来的执行一次`CAS`自旋，改成判断在队列中是否存在。
+
+## 总结
+
+&emsp;&emsp;`ReentrantLock`在实际的开发过程中是十分的重要的。对于`ReentrantLock`的源码的研究是十分的有必要的。
