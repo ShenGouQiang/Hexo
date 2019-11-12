@@ -190,7 +190,7 @@ public abstract class AbstractQueuedSynchronizer
 
 #### `队列`的存储结构
 
-&emsp;&emsp;在`AbstractQueuedSynchronizer`中，我们所有的未获取到
+&emsp;&emsp;在`AbstractQueuedSynchronizer`中，我们所有的未获取到锁的线程都会添加到一个`队列`当中。而这个队列，采用的是一个数据结构中典型的`无头的双向链表`的数据模型。对于`列表`中的每一个节点`Node`，主要由
 
 
 
