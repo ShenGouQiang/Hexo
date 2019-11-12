@@ -162,8 +162,7 @@ public abstract class AbstractQueuedSynchronizer
 
 &emsp;&emsp;那在这里就有一个问题了，因为我们在之前的`lock`方法中，已经通过`CAS`自旋的方式去尝试获取锁而失败了，那么为什么我们还要在`nonfairTryAcquire`中再执行一次呢？其实，这里面有一个效率的问题。在这里，是一个典型的通过增加一些冗余代码的方式，来提高执行效率的问题。
 
-&emsp;&emsp;OK，到这里，我们开始重新的讲解一下
-
+&emsp;&emsp;OK，到这里，我们开始重新的讲解一下`acquire`这个方法。在这个方法中，我们发现：他的主要部分是放在了`if`语句的里面。在`if`语句中，
 
 
 
