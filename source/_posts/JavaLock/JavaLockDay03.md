@@ -240,7 +240,7 @@ public abstract class AbstractQueuedSynchronizer
     }       
 ```
 
-&emsp;&emsp;
+&emsp;&emsp;首先，
 
 
 
