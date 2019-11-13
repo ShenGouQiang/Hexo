@@ -40,7 +40,7 @@ tags:
 
 &emsp;&emsp;在我们真正的讲解`ReentrantLock`的非公平锁，其实，我们就是在讲`NonFairSync`这个类。既然，我们想要讲解这个类，那么就面临着我们要知道这个类的一个类图：
 
-![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/NonFairSync.jpg)
+![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/NonFairSync.jpg)
 
 &emsp;&emsp;接下来，问主要看下这个类。
 
@@ -127,7 +127,7 @@ public abstract class AbstractQueuedSynchronizer
 
 &emsp;&emsp;`AbstractQueuedSynchronizer`，我们俗称`AQS`。这个类是实现`ReentrantLock`锁的重要类。这个类采用的是设计模式中的`模板方法`。他帮我们默认了提供了一套关于锁的解决方法。但是对于内部的一些实现，是需要子类去自己实现的,例如`tryAcquire`方法。同时，我们的`NonFairSync`也是继承了这个类。在这个类中，存在了两个成员变量`head`和`tail`。这两个变量，一个是指定了`队列`的头节点，一个指定了`队列`的尾节点。注意的是，这个`队列`采用的是`懒加载`模式。默认情况下，`head`和`tail`的值为`null`。如果举例，我们可以这样表示：
 
-![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSStructor.jpg)
+![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/AQSStructor.jpg)
 
 对于`AbstractQueuedSynchronizer`的介绍，我们会在后续的文章中进行讲解的。
 
@@ -147,7 +147,7 @@ public abstract class AbstractQueuedSynchronizer
 
 &emsp;&emsp;当前，`Node`节点还存在一些其他的变量，在这里，我们主要关注的就是上面的这几个。对于`AQS`而言，我们创建的队列正是通过`Node`节点组成的一个`FIFO`的队列。他的格式如下
 
-![AQS的FIFO队列](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSFIFOQUEUE.jpg)
+![AQS的FIFO队列](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/AQSFIFOQUEUE.jpg)
 
 ***
 
@@ -324,14 +324,14 @@ public abstract class AbstractQueuedSynchronizer
 5. 将当前的节点设置为`CANCELLED`
 6. 在这里，我们要分为`3`中情况进行考虑
     - 如果我们当前节点是`tail`节点，则我们将当前节点的`tail`指针指向当前节点的`prev`节点。然后将当前节点的`prev`节点的`next`指针设置为`null`，在下面我们用图1进行表示。
-        ![图1](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSFIFOQUEUE.jpg)
-    - 对于第二种情况，我们判断两个条件，如果满足以下条件，则获取当前`node`节点的`next`节点。如果`next`节点不为`null`,并且`next`节点的`waitState`为`SIGNAL`，则我们将当前`node`的`prev`指针指向`node`节点的`next`节点，在下面，我们用图2进行表示。
+        ![图1](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/picture1.jpg)
+    - 对于第二种情况，我们判断两个条件，如果满足以下条件，则获取当前`node`节点的`next`节点。如果`next`节点不为`null`,并且`next`节点的`waitState`为`SIGNAL`，则我们将当前`prev`的`next`指针指向`node`的`next`节点，在下面，我们用图2进行表示。
         - 当前`node`的`prev`节点不是`head`节点
         - 当前`node`的`prev`节点的`waitState`为`SIGNAL`，或者我们可以将当前`node`的`prev`节点的`waitState`设置为`SIGNAL`
         - 当前`node`的`prev`节点的`thread`不为`null`
-        ![图2](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSFIFOQUEUE.jpg)
+        ![图2](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/AQSFIFOQUEUE.jpg)
     - 对于第三种情况，我们首先获取`node`的`waitState`，如果`waitState`小于`0`,则更新为`0`。如果当前`node`的`next`节点为`null`或者是`next`节点的`waitState`大于0，则从`tail`节点开始往前，一致找到在`node`节点之后的第一个`waitState`小于0的节点，然后将当前节点执行`LockSupport.unpark`。如果没有找到，则不进行任何操作，在下面，我们用图3进行表示。
-        ![图3](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSFIFOQUEUE.jpg)
+        ![图3](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/AQSFIFOQUEUE.jpg)
 
 
 
