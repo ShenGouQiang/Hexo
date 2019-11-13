@@ -92,65 +92,6 @@ public abstract class AbstractQueuedSynchronizer
         enq(node);
         return node;
     }
-
-    final boolean acquireQueued(final Node node, int arg) {
-        boolean failed = true;
-        try {
-            boolean interrupted = false;
-            for (;;) {
-                final Node p = node.predecessor();
-                if (p == head && tryAcquire(arg)) {
-                    setHead(node);
-                    p.next = null; // help GC
-                    failed = false;
-                    return interrupted;
-                }
-                if (shouldParkAfterFailedAcquire(p, node) &&
-                    parkAndCheckInterrupt())
-                    interrupted = true;
-            }
-        } finally {
-            if (failed)
-                cancelAcquire(node);
-        }
-    }
-
-    static void selfInterrupt() {
-        Thread.currentThread().interrupt();
-    }  
-
-    private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
-        int ws = pred.waitStatus;
-        if (ws == Node.SIGNAL)
-            /*
-             * This node has already set status asking a release
-             * to signal it, so it can safely park.
-             */
-            return true;
-        if (ws > 0) {
-            /*
-             * Predecessor was cancelled. Skip over predecessors and
-             * indicate retry.
-             */
-            do {
-                node.prev = pred = pred.prev;
-            } while (pred.waitStatus > 0);
-            pred.next = node;
-        } else {
-            /*
-             * waitStatus must be 0 or PROPAGATE.  Indicate that we
-             * need a signal, but don't park yet.  Caller will need to
-             * retry to make sure it cannot acquire before parking.
-             */
-            compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
-        }
-        return false;
-    }
-
-    private final boolean parkAndCheckInterrupt() {
-        LockSupport.park(this);
-        return Thread.interrupted();
-    }       
 }
 ```
 
@@ -186,11 +127,170 @@ public abstract class AbstractQueuedSynchronizer
 
 &emsp;&emsp;`AbstractQueuedSynchronizer`，我们俗称`AQS`。这个类是实现`ReentrantLock`锁的重要类。这个类采用的是设计模式中的`模板方法`。他帮我们默认了提供了一套关于锁的解决方法。但是对于内部的一些实现，是需要子类去自己实现的,例如`tryAcquire`方法。同时，我们的`NonFairSync`也是继承了这个类。在这个类中，存在了两个成员变量`head`和`tail`。这两个变量，一个是指定了`队列`的头节点，一个指定了`队列`的尾节点。注意的是，这个`队列`采用的是`懒加载`模式。默认情况下，`head`和`tail`的值为`null`。如果举例，我们可以这样表示：
 
-![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSStructor.png)
+![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSStructor.jpg)
+
+对于`AbstractQueuedSynchronizer`的介绍，我们会在后续的文章中进行讲解的。
 
 #### `队列`的存储结构
 
-&emsp;&emsp;在`AbstractQueuedSynchronizer`中，我们所有的未获取到锁的线程都会添加到一个`队列`当中。而这个队列，采用的是一个数据结构中典型的`无头的双向链表`的数据模型。对于`列表`中的每一个节点`Node`，主要由
+&emsp;&emsp;在`AbstractQueuedSynchronizer`中，我们所有的未获取到锁的线程都会添加到一个`队列`当中。而这个队列，采用的是一个数据结构中典型的`无头的双向链表`的数据模型。对于`列表`中的每一个节点`Node`，主要是由
+
+- `waitStatus`<span style="color:red;"> - </span>当前节点的状态，其中有
+    - `SIGNAL`<span style="color:red;"> - </span>值为`-1`，被标识为该等待唤醒状态的后继结点，当其前继结点的线程释放了同步锁或被取消，将会通知该后继结点的线程执行。说白了，就是处于唤醒状态，只要前继结点释放锁，就会通知标识为SIGNAL状态的后继结点的线程执行
+    - `CANCELLED`<span style="color:red;"> - </span>值为`1`，在同步队列中等待的线程等待超时或被中断，需要从同步队列中取消该Node的结点，其结点的waitStatus为CANCELLED，即结束状态，进入该状态后的结点将不会再变化
+    - `CONDITION`<span style="color:red;"> - </span>值为`-2`，与Condition相关，该标识的结点处于等待队列中，结点的线程等待在Condition上，当其他线程调用了Condition的signal()方法后，CONDITION状态的结点将从等待队列转移到同步队列中，等待获取同步锁
+    - `PROPAGATE`<span style="color:red;"> - </span>值为`-3`，与共享模式相关，在共享模式中，该状态标识结点的线程处于可运行状态
+    - `0`<span style="color:red;"> - </span>值为`0`，代表初始化状态
+- `prev`<span style="color:red;"> - </span>当前节点的前置节点
+- `next`<span style="color:red;"> - </span>当前节点的后置节点
+- `thread`<span style="color:red;"> - </span>当前节点对应的线程
+
+&emsp;&emsp;当前，`Node`节点还存在一些其他的变量，在这里，我们主要关注的就是上面的这几个。对于`AQS`而言，我们创建的队列正是通过`Node`节点组成的一个`FIFO`的队列。他的格式如下
+
+![AQS的FIFO队列](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/AQSFIFOQUEUE.jpg)
+
+***
+
+&emsp;&emsp;OK，有了上面的前提，我们再看看`addWaiter`这段代码。同样的，这段代码中，`JDK`的库工程师们依然采用了通过冗余代码来提高效率的方式来提升性能，因此，我们只需要看`enq`这个方法即可。其中，源码如下：
+
+```java
+    private Node enq(final Node node) {
+        for (;;) {
+            Node t = tail;
+            if (t == null) { // Must initialize
+                if (compareAndSetHead(new Node()))
+                    tail = head;
+            } else {
+                node.prev = t;
+                if (compareAndSetTail(t, node)) {
+                    t.next = node;
+                    return t;
+                }
+            }
+        }
+    }
+```
+
+&emsp;&emsp;在这段代码中，我们依然是通过一个死循环的方式来执行的。首先我们会判断`tail`这个指针。如果我们发现`tail`指针为`null`，那么此时这个队列中根本就不存在。这个也是之前我们讲解的，`AQS`的`队列`采用的`懒加载`的模式进行初始化的(也就是说，并不是事先初始化，而是在我们使用的时候进行初始化)。因此，在`for`循环中的第一个`if`中，就是为了来初始化`队列`的操作。在初始化完成操作之后，会将`head`和`tail`都指向这个新创建的`Node`节点。注意，这个节点不存在任何的`thread`信息。它仅仅指向的是一个`阻塞队列`。
+
+&emsp;&emsp;在这里，我们会想到，会不会存在并发的问题呢？其实，是不存在。因为就算是有多个线程进入了`for`循环内，此时多个线程都获取到了`tail`为`null`的情况，此时都回去执行`compareAndSetHead`方法。但是在`compareAndSetHead`中，采用了`CAS`自旋锁的方式进行设置，因此，只可能有一个线程成功，其他的线程都是不会成功的。这样也就解决了`并发`的问题。
+
+&emsp;&emsp;当执行完第一个`if`语句后，或者是当前的`队列`不为空时，此时会执行`else`里面的语句。此时，我们会当前节点`node`的`prev`指向队列的前一个节点，然后通过`CAS`自旋的方式，将当前节点添加到队列的后面。然后将前面一个节点`next`指向当前节点。最后返回插入节点的`prev`节点。
+
+### acquireQueued方法
+
+&emsp;&emsp;你有可能会问，到目前为止，我们都是将线程添加到了阻塞队列中，但是并没有去获取锁啊。别急，`acquireQueued`方法就是获取锁的一个过程。同时，也是`lock`方法的重点方法，我们会以最简便的方式，来进行讲解。
+
+方法的源码如下：
+
+```java
+   final boolean acquireQueued(final Node node, int arg) {
+        boolean failed = true;
+        try {
+            boolean interrupted = false;
+            for (;;) {
+                final Node p = node.predecessor();
+                if (p == head && tryAcquire(arg)) {
+                    setHead(node);
+                    p.next = null; // help GC
+                    failed = false;
+                    return interrupted;
+                }
+                if (shouldParkAfterFailedAcquire(p, node) &&
+                    parkAndCheckInterrupt())
+                    interrupted = true;
+            }
+        } finally {
+            if (failed)
+                cancelAcquire(node);
+        }
+    } 
+
+    private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+        int ws = pred.waitStatus;
+        if (ws == Node.SIGNAL)
+            /*
+             * This node has already set status asking a release
+             * to signal it, so it can safely park.
+             */
+            return true;
+        if (ws > 0) {
+            /*
+             * Predecessor was cancelled. Skip over predecessors and
+             * indicate retry.
+             */
+            do {
+                node.prev = pred = pred.prev;
+            } while (pred.waitStatus > 0);
+            pred.next = node;
+        } else {
+            /*
+             * waitStatus must be 0 or PROPAGATE.  Indicate that we
+             * need a signal, but don't park yet.  Caller will need to
+             * retry to make sure it cannot acquire before parking.
+             */
+            compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+        }
+        return false;
+    }
+
+    private final boolean parkAndCheckInterrupt() {
+        LockSupport.park(this);
+        return Thread.interrupted();
+    }       
+```
+
+&emsp;&emsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
