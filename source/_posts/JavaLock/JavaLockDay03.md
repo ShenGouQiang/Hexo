@@ -179,7 +179,7 @@ public abstract class AbstractQueuedSynchronizer
 
 ### acquireQueued方法
 
-&emsp;&emsp;你有可能会问，到目前为止，我们都是将线程添加到了阻塞队列中，但是并没有去获取锁啊。别急，`acquireQueued`方法就是获取锁的一个过程。同时，也是`lock`方法的重点方法，我们会以最简便的方式，来进行讲解。
+&emsp;&emsp;你有可能会问，到目前为止，我们都是将线程添加到了阻塞队列中，但是并没有去获取锁啊。别急，`acquireQueued`方法就是对于锁`队列`的操作过程。同时，也是`lock`方法的重点方法，我们会以最简便的方式，来进行讲解。
 
 方法的源码如下：
 
@@ -240,205 +240,34 @@ public abstract class AbstractQueuedSynchronizer
     }       
 ```
 
-&emsp;&emsp;首先，
+&emsp;&emsp;首先，我们发现这里仍然是一个`死循环`的方式。然后再`for`循环中进行了两次判断。
 
+&emsp;&emsp;对于第一个`if`语句，我们首先获取当前节点`prev`节点是不是一个`head`节点，如果不是`head`节点，则跳出当前的`if`判断。那么，这里就有一个问题，我们为什么非要看当前节点是不是在`head`之后的第一个呢？是因为
 
+1. `head`节点是不存在获取权限判断的。`head`节点存在的目的，是为了形成一个队列
+2. 我们始终认为，`head`节点后面的第一个节点是目前正在获取锁的节点，对于之后的节点，都需要前置的节点已经获取锁才可以。
+3. 对于当前获取锁的节点，我们需要保证我们的后续节点的`waitState`一定是`SIGNAL`。
 
+&emsp;&emsp;所以，在这里，我们解释了为什么判断当前的节点的`prev`一定是`head`的原因。接下来，就是如果当前的`node`是`head`的后置节点，我们就要去获取锁，如果获取锁失败，则会执行第二个`if`语句。如果获取成功
 
+1. 将当前的node节点设置为`head`节点。
+2. 将之前的head节点弃用,从`GCRoots`下摘掉，帮助`GC`进行清理
+3. 将`failed`改成false，表示我们已经获取到锁。防止在`finally`中执行`cancelAcquire`操作。
+4. 通过返回一个`false`
 
+&emsp;&emsp;你有可能会问，我们已经拿到锁了，为什么还要返回`false`呢？其实，这个方法的返回值表示的并不是我们有没有拿到锁，而是我们在获取锁的过程中，是否发生了`interrupt`操作。正是因为我们拿到了锁，所以，才是返回`false`。
 
+&emsp;&emsp;接下来，我们看下关于第二个`if`操作。第二个`if`操作，主要对于如果我们获取锁失败，或者当前节点不是`head`的后继节点的情况，这样的情况，笼统的讲，就是将自己变成`waiting`状态。具体如下：
 
+1. 程序首先执行`shouldParkAfterFailedAcquire`方法，通过这个方法，我们可以猜到，这个方法的目的就是当我们获取锁失败的时候，应该去阻塞我们的线程。在这里`Park`和我们的`wait`是很像的。通过方法的源码我们可以知道：
+    - 如果当前节点的`prev`节点是`SIGNAL`状态，则是允许我们将当前节点阻塞的。因为只有是`SIGNAL`状态的节点，才会被`head`进行唤醒，并且获取锁。
+    - 如果我们的`prev`节点是`CANCELLED`状态，那么证明这些节点是在等待的过程中，已经取消的了，是不需要在获取锁的。我们会一直往前找，直到找到第一个节点的状态是`SIGNAL`的节点为止，然后将当前节点挂在这个节点的后面。
+    - 如果我们的节点是一个初始化的节点，那么需要将前置节点的`waitState`设置为`SIGNAL`状态。
+2. 对于上面的第`2`、`3`点，是需要重新执行`for`循环的。因为我们之前的`队列`是存在问题。因此需要重新执行。之后当队列不存在问题，此时，我们会执行`parkAndCheckInterrupt`方法。通过方法的源码可以知道，它其实是调用`LockSupport.park`的方法，将线程进行阻塞。
 
+### cancelAcquire方法
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-===============================================================================================================================================================
-
-&emsp;&emsp;通过源码可知，当我们执行`lock`方法的时候，此时我们首先会采用`CAS`自旋的方式，来获取一次锁，如果我们此时锁是获取成功的，那么我们直接将当前的线程记录一下，以便后续重入的时候，可以直接获取到当前锁。如果我们通过第一次`CAS`自旋的方式获取锁失败的话，那么此时我们会执行`acquire`方法。
-
-&emsp;&emsp;那么我们看下`acqurie(int arg)`方法的源码，需要注意的是，`acqurie(int arg)`方法是`AbstractQueuedSynchronizer`抽象类的方法，因为`NonfairSync`集成了`Sync`，而`Sync`又继承了`AbstractQueuedSynchronizer`：
-
-```java
-    public final void acquire(int arg) {
-        if (!tryAcquire(arg) &&
-            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-            selfInterrupt();
-    }
-```
-
-&emsp;&emsp;通过上述的代码，我们可以知道，在执行`acqurie(int arg)`方法中，主要是一个`if`判断。但是在判断中，处理了好多的事情。我们一点一点的进行分析：
-
-&emsp;&emsp;首先，我们看下`tryAcquire(int acquires)`这个方法的源码，需要注意的的是在`NonfairSync`中对`tryAcquire(int acquires)`进行了重写。因此在这里，我们需要查看的是`NonfairSync`中对于`tryAcquire(int acquires)`的编码：
-
-```java
-    protected final boolean tryAcquire(int acquires) {
-        return nonfairTryAcquire(acquires);
-    }
-```
-
-&emsp;&emsp;而在`tryAcquire(int acquires)`中，调用了当前方法的`nonfairTryAcquire(int acquires)`，因此，我们要查看`nonfairTryAcquire(int acquires)`源码：
-
-```java
-    final boolean nonfairTryAcquire(int acquires) {
-        final Thread current = Thread.currentThread();
-        int c = getState();
-        if (c == 0) {
-            if (compareAndSetState(0, acquires)) {
-                setExclusiveOwnerThread(current);
-                return true;
-            }
-        }
-        else if (current == getExclusiveOwnerThread()) {
-            int nextc = c + acquires;
-            if (nextc < 0) // overflow
-                throw new Error("Maximum lock count exceeded");
-            setState(nextc);
-            return true;
-        }
-        return false;
-    }
-```
-
-&emsp;&emsp;在`nonfairTryAcquire(int acquires)`方法中，我们首先获取到当前线程，然后获取当前的同步状态的值，也就是是否获取到锁，在`ReentrantLock`中，如果`state`的状态为`0`，则代表没有获取到锁，如果`state`为非`0`，则代表获取到锁。接下来的执行流程是：
-
-1. 通过`CAS`自旋一次，看是否能够获取到锁。如果能获取到锁，则将当前线程记录一下，可以在后续的锁重入中方便查看是否是当前线程已经获取到了锁。
-2. 如果我们在`CAS`中没有拿到锁，则直接查看当前线程时候已经获取到了锁，此时就是`锁重入`的情况，如果获取到了。并且如果此时发现state小于`0`，则直接代表程序异常，报出异常。否则的话，则直接将当前锁的`state`加`1`。
-
-&emsp;&emsp;此时，我们看下`addWaiter(Node mode)`方法，源码如下：
-
-```java
-
-    private Node addWaiter(Node mode) {
-        Node node = new Node(Thread.currentThread(), mode);
-        // Try the fast path of enq; backup to full enq on failure
-        Node pred = tail;
-        if (pred != null) {
-            node.prev = pred;
-            if (compareAndSetTail(pred, node)) {
-                pred.next = node;
-                return node;
-            }
-        }
-        enq(node);
-        return node;
-    }
-
-    private final boolean compareAndSetTail(Node expect, Node update) {
-        return unsafe.compareAndSwapObject(this, tailOffset, expect, update);
-    }
-
-    private Node enq(final Node node) {
-        for (;;) {
-            Node t = tail;
-            if (t == null) { // Must initialize
-                if (compareAndSetHead(new Node()))
-                    tail = head;
-            } else {
-                node.prev = t;
-                if (compareAndSetTail(t, node)) {
-                    t.next = node;
-                    return t;
-                }
-            }
-        }
-    }
-```
-
-&emsp;&emsp;在我们看`addWaiter(Node mode)`之前，我们首先应该知道，对于`ReentrantLock`方法而言，如果存在多个线程同时访问同一个`同步资源`的时候，其实是在代码的内容，以`队列`的形式组织起来的，而`队列`的内部，采用的是`双向链表`的形式实现的。因此，这个方法的作用就是：
-
-1. 根据当前线程，创建一个`Node`节点
-2. 获取链表的尾结点，如果尾结点不为空，代表的是当前`队列`中已经存在节点，则将当前节点通过`compareAndSetTail`插入到尾结点，如果成功，返回当前节点，如果失败，则走`步骤3`
-3. 如果通过`compareAndSetTail`插入失败，则调用`enq`方法，则通过一个`死循环`的方式，来进行初始化和赋值操作，我们首先判断当前队列是否存在节点，如果不存在，则一直调用`compareAndSetHead`方法，初始化头结点，在初始化成功后，再次调用`compareAndSetTail`方法，将当前节点插入到队列的尾部。
-
-&emsp;&emsp;最后，我们看下`acquireQueued`这个方法，这个方法的源码如下：
-
-```java
-    final boolean acquireQueued(final Node node, int arg) {
-        boolean failed = true;
-        try {
-            boolean interrupted = false;
-            for (;;) {
-                final Node p = node.predecessor();
-                if (p == head && tryAcquire(arg)) {
-                    setHead(node);
-                    p.next = null; // help GC
-                    failed = false;
-                    return interrupted;
-                }
-                if (shouldParkAfterFailedAcquire(p, node) &&
-                    parkAndCheckInterrupt())
-                    interrupted = true;
-            }
-        } finally {
-            if (failed)
-                cancelAcquire(node);
-        }
-    }
-```
-
-&emsp;&emsp;在这个方法有点饶，我们一点点去进行分析。首先，`tryAcquire`在之前的描述中已经讲过，在这里不再赘述。接下来，我们讲解下这个方法。在这段代码中，一共出现了两个`if`语句，同时整个主代码在一个`死循环`当中。
-
-1. 第一个`if`语句<span style="color:red;"> - </span>这个判断，主要判断的是当前节点的前置节点是否是`head`节点，也就是说当前节点是是否是队列中的第一个节点(不包括`head`节点)。如果是的话，则取获取一次锁，如果锁获取成功，则将当前节点设置成`head`节点。将之前的`head`节点从队列中剔除，以便让`GC`进行回收。那么为什么我们每次都是让头节点获取锁呢？因为头结点是表示当前正占有锁的线程，正常情况下，当我们获取到锁后，会从队列中剔除，并且通知后置节点，让后置节点从阻塞状态激活，去获取锁。
-2. 当前还存在另外一种情况，那就是如果当前节点的`prev`不是`head`节点，或者是获取锁失败：此时会执行第二个`if`语句。在第二个if中，我们主要执行的是`shouldParkAfterFailedAcquire`方法和`parkAndCheckInterrupt`方法。对于`shouldParkAfterFailedAcquire`方法，顾名思义，我们可以很好理解-“在获取锁失败后，是否应该阻塞线程”。
-
- - 如果前置节点的`waitStatus`为`Node.SIGNAL(-1)`则直接返回true。
- - 如果前置节点的`waitStatus`大于`0`,也就是(`CANCELLED(1)`)，此时会一致往前查找，直到找到`waitStatus`小于等于`0`的。然后将当前节点插入到这个节点的后面，并且返回`false`。
- - 如果前置节点的`waitStatus`为初始化状态，则通过`CAS`自旋的方式，将当前节点的的前置节点的`waitStatus`设置为`Node.SIGNAL(-1)`，并且返回false。
-
-3. 对于`parkAndCheckInterrupt`方法，在内部会调用`LockSupport.park(this)`阻塞当前线程，然后返回`Thread.interrupted()`。
-4. 最后，我们发现在`finally`方法中，如果`failed`为`true`的时候，此时才会调用`cancelAcquire`方法。而如果`failed`为`true`的情景，是在`死循环for`的异常终止的时候。因此，如果执行`cancelAcquire`方法，则代表的是程序已经发生异常。
-
-&emsp;&emsp;接下来，我们详细讲解下`cancelAcquire`方法。首先，我们看代码如下：
+&emsp;&emsp;如果程序在执行的过程中，发生了异常，此时会执行`finally`的方法。正常来讲，`finally`方法是方法结束后必须执行的方法，那么在这里，我们为什么要说是在发生异常后执行的呢？因为如果程序正常退出`for`循环，`failed`一定是`false`。只有当程序发生异常，此时`failed`才会为`true`。接下来，我们看下`cancelAcquire`方法的源码：
 
 ```java
     private void cancelAcquire(Node node) {
@@ -486,19 +315,44 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;通过上面的代码，我们可以得知：
+&emsp;&emsp;此时在程序中，我们进行了判断。
 
-1. 如果当前节点是一个空的节点，则直接返回，起到了一个兼容的模式
-2. 如果当前节点不为空，则先将`thread`与当前的`node`进行解绑，然后开始往前查找，过滤到所有的`waitStatus`为`CANCELLED(1)`的node，知道找到`waitStatus`为`SIGNAL(-1)`或者是`初始化`的node节点。
-3. 将当前节点设置为`CANCELLED(1)`。
-4. 对于`node`的位置进行判断
-    - 如果`node`正好是`tail`节点，则直接将`node`从队列中`移除`
-    - 如果`node`既不是`tail`节点,也不是`head`的后置节点，则直接将单签节点移除
-    - 如果`node`是`header`的后置节点，则直接唤醒node的后继节点
+1. 如果当前节点为`null`,则不作任何处理，直接方法结束
+2. 将当前`node`与`thread`进行解绑
+3. 如果我们当前节点的`prev`的`waitState`大于`0`，则一直往前找，直到找到`waitState`为`SIGNAL`或者是初始化的。
+4. 获取这个`waitState`为`SIGNAL`或者是初始化的的节点的后置节点
+5. 将当前的节点设置为`CANCELLED`
+6. 在这里，我们要分为`3`中情况进行考虑
+    - 如果我们当前节点是`tail`节点，则我们将当前节点的`tail`指针指向当前节点的`prev`节点。然后将当前节点的`prev`节点的`next`指针设置为`null`
+    - 如果
 
-&emsp;&emsp;至此，`ReentrantLock`的非公平锁已经讲解完毕。下面，我们通过一个流程图的方式，来进行总结：
 
-![ReentrantLockNonFairLock](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/ReentrantLockNonFairLock.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## ReentrantLock实现公平锁
 
