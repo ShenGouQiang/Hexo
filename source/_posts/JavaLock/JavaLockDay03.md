@@ -333,42 +333,131 @@ public abstract class AbstractQueuedSynchronizer
     - 对于第三种情况，我们首先获取`node`的`waitState`，如果`waitState`小于`0`,则更新为`0`。如果当前`node`的`next`节点为`null`或者是`next`节点的`waitState`大于0，则从`tail`节点开始往前，一致找到在`node`节点之后的第一个`waitState`小于0的节点，然后将当前节点执行`LockSupport.unpark`。如果没有找到，则不进行任何操作，在下面，我们用图3进行表示。
         ![图3](http://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay03/picture03.jpg)
 
+### unlock方法
 
+&emsp;&emsp;首先，废话不多说，我们先上源码：
 
-    
+```java
+ public final boolean release(int arg) {
+        if (tryRelease(arg)) {
+            Node h = head;
+            if (h != null && h.waitStatus != 0)
+                unparkSuccessor(h);
+            return true;
+        }
+        return false;
+    }
+```
 
-    
+&emsp;&emsp;通过当前代码，我们可以发现：首先我们会尝试释放锁，如果释放锁成功，我们会当前`head`指向的`node`进行判断，
 
+1. 如果不为`null`，则代表队列有值
+2. 如果`waitState`不是初始化
 
+&emsp;&emsp;只有满足以上两点，我们才能够将锁给接下来的线程。
 
+&emsp;&emsp;首先，我们看下`tryRelease`方法
 
+```java
+    protected final boolean tryRelease(int releases) {
+        int c = getState() - releases;
+        if (Thread.currentThread() != getExclusiveOwnerThread())
+            throw new IllegalMonitorStateException();
+        boolean free = false;
+        if (c == 0) {
+            free = true;
+            setExclusiveOwnerThread(null);
+        }
+        setState(c);
+        return free;
+    }
+```
 
+&emsp;&emsp;首先我们会对当前的`state`减1操作，代表我们已经出了一次同步方法。如果此时我们的`state`为0，代表此时线程已经不再需要锁，同时我们会把重入锁的对象设置为`null`。
 
+&emsp;&emsp;接下来，我们看下`unparkSuccessor`方法。
 
+```java
+    private void unparkSuccessor(Node node) {
+        /*
+         * If status is negative (i.e., possibly needing signal) try
+         * to clear in anticipation of signalling.  It is OK if this
+         * fails or if status is changed by waiting thread.
+         */
+        int ws = node.waitStatus;
+        if (ws < 0)
+            compareAndSetWaitStatus(node, ws, 0);
 
+        /*
+         * Thread to unpark is held in successor, which is normally
+         * just the next node.  But if cancelled or apparently null,
+         * traverse backwards from tail to find the actual
+         * non-cancelled successor.
+         */
+        Node s = node.next;
+        if (s == null || s.waitStatus > 0) {
+            s = null;
+            for (Node t = tail; t != null && t != node; t = t.prev)
+                if (t.waitStatus <= 0)
+                    s = t;
+        }
+        if (s != null)
+            LockSupport.unpark(s.thread);
+    }
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+&emsp;&emsp;首先我们获取当前节点的`waitState`,如果当前节点为`SIGNAL`，则将节点更新为初始化状态。这是因为我们的入参`node`正好是`head`。而`head`正好是我们之前认为的已经获取到锁的线程，现在这个线程已经释放了锁，因此，我们必须将该线程的`waitState`的状态从小于0改掉，在这里，我们一般是改成0,然后我们会从`tail`开始往回找，直到找到最后一个`waitState`为`SIGNAL`的，如果存在，我们直接将其唤醒即可。
 
 ## ReentrantLock实现公平锁
 
-&emsp;&emsp;`ReentrantLock`的公平锁，就比非公平锁简单的多。唯一的区别是，当执行`tryAcquire`的时候，此时从原来的执行一次`CAS`自旋，改成判断在队列中是否存在。
+&emsp;&emsp;对于`ReentrantLock`而言，它的`公平锁`和`非公平锁`非常的类似，在这里，我们进行不同部分的代码讲解即可：
+
+```java
+    final void lock() {
+    acquire(1);
+    }
+```
+
+&emsp;&emsp;我们发现，在这里，它并没有通过`CAS`在一开始的时候去获取锁，而是走了通用的逻辑`acquire`。而我们的公平锁类`FairSync`通用的也实现了`tryAcquire`方法。
+
+```java
+    protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {
+            if (!hasQueuedPredecessors() &&
+                compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc < 0)
+                throw new Error("Maximum lock count exceeded");
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+```
+
+&emsp;&emsp;在这里，我们发现，唯一的不同在于方法`hasQueuedPredecessors`,而`hasQueuedPredecessors`的源码为：
+
+```java
+    public final boolean hasQueuedPredecessors() {
+        // The correctness of this depends on head being initialized
+        // before tail and on head.next being accurate if the current
+        // thread is first in queue.
+        Node t = tail; // Read fields in reverse initialization order
+        Node h = head;
+        Node s;
+        return h != t &&
+            ((s = h.next) == null || s.thread != Thread.currentThread());
+    }
+```
+
+&emsp;&emsp;在这个方法中，进行了判断，对于`head`的后置节点是否是当前的节点，如果不是当前的节点，则代表在当前的node节点之前，有更加重要的节点要获取锁，如果是当前节点，则代表当前节点就是要获取锁的节点。这样的好处是所有的节点都是按照`FIFO`的方式来获取锁。保证了获取锁的公平性。
 
 ## 总结
 
