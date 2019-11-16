@@ -79,7 +79,7 @@ date: 2019-09-12 23:07:55
 
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之泛化关系描述](http://static.shengouqiang.cn/blog/img/UML/10/generalization.png)
+![UML类图之泛化关系描述](http://static.shengouqiang.cn/blog/img/UML/10/generalization.jpg)
 
 ### 关联关系
 &emsp;&emsp;关联关系是一种相关影响的关系。例如，森林可以影响气候，而气候也可以影响森林。关联关系是用<font color=red>双向箭头+实线</font>来进行表示的。
