@@ -528,3 +528,79 @@ public void remove() {
 &emsp;&emsp;在上面的代码中，我们讲解了`ThreadLocal`。其实在`JDK`中，还有一个类似`ThreadLocal`的存在，那就是`InheritableThreadLocal`。它与`ThreadLocal`不同的是，`ThreadLocal`仅仅只在当前线程有效，在子线程中是无效的。而`InheritableThreadLocal`是可以继承当前父线程中的`InheritableThreadLocal`的值。
 
 &emsp;&emsp;`ThreadLocal`与`InheritableThreadLocal`的使用方式都是相同的。在接下来的讲解中，我们会进行举例说明。
+
+&emsp;&emsp;在讲解`InheritableThreadLocal`的时候，我不会采用全量的方式进行讲解，只有发现与`ThreadLocal`不同的地方，才会进行重点讲解。
+
+### 初始化
+
+&emsp;&emsp;`InheritableThreadLocal`的初始化方法与`ThreadLocal`是有很大的不同的。因为对于`ThreadLocal`而言，它的变量定义是在`Thread`中，而初始化是通过`ThreadLocal`的构造函数，或者是`SuppliedThreadLocal`的构造函数完成的。
+
+&emsp;&emsp;而`InheritableThreadLocal`的定义依然是在`Thread`中的，因此他与`ThreadLocal`是一样的，都是线程私有的。但是他的初始化方法，除了`InheritableThreadLocal`构造方法。更更重要的是在`Thread`的`init`方法进行初始化的。接下来，我们看下代码：
+
+```java
+if (inheritThreadLocals && parent.inheritableThreadLocals != null)
+    this.inheritableThreadLocals =
+        ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);
+```
+
+&emsp;&emsp;这段代码是`init`方法中的部分代码，其中，我们不管`inheritThreadLocals`变量，因为他默认是`true`。我们主要关心的是`&&`之后的判断，在这里，他会判断当前线程的父线程的`inheritableThreadLocals`是否为`null`，如果不为`null`，则会调用`ThreadLocal`的`createInheritedMap`方法。而
+`createInheritedMap`的源码如下：
+
+```java
+/**
+* Factory method to create map of inherited thread locals.
+* Designed to be called only from Thread constructor.
+*
+* @param  parentMap the map associated with parent thread
+* @return a map containing the parent's inheritable bindings
+*/
+static ThreadLocalMap createInheritedMap(ThreadLocalMap parentMap) {
+    return new ThreadLocalMap(parentMap);
+}
+```
+
+&emsp;&emsp;此时我们发现，它调用的是`ThreadLocal`的第二个构造函数，也就是我们在上面没有进行讲解的那个构造函数。为了方便理解，我们再贴一下第二个构造函数的源码：
+
+```java
+/**
+* Construct a new map including all Inheritable ThreadLocals
+* from given parent map. Called only by createInheritedMap.
+*
+* @param parentMap the map associated with parent thread.
+*/
+private ThreadLocalMap(ThreadLocalMap parentMap) {
+    Entry[] parentTable = parentMap.table;
+    int len = parentTable.length;
+    setThreshold(len);
+    table = new Entry[len];
+
+    for (int j = 0; j < len; j++) {
+        Entry e = parentTable[j];
+        if (e != null) {
+            @SuppressWarnings("unchecked")
+            ThreadLocal<Object> key = (ThreadLocal<Object>) e.get();
+            if (key != null) {
+                Object value = key.childValue(e.value);
+                Entry c = new Entry(key, value);
+                int h = key.threadLocalHashCode & (len - 1);
+                while (table[h] != null)
+                    h = nextIndex(h, len);
+                table[h] = c;
+                size++;
+            }
+        }
+    }
+}
+```
+
+&emsp;&emsp;
+
+
+
+## 模拟ThreadLocal内存泄漏的案例
+
+&emsp;&emsp;
+
+## 总结
+
+&emsp;&emsp;花了两天的时间，总结了下`ThreadLocal`的底层源码，对于`Hash`的理解也更加的深刻。同时对于为什么`ThreadLocal`是线程私有化的也有了更加深刻的理解。在以后的开发与使用中，会有更大的收益。
