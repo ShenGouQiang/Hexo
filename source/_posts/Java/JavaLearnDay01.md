@@ -388,5 +388,143 @@ private void rehash() {
 
 &emsp;&emsp;通过源码，我们可以发现，此时回去调用`expungeStaleEntries`方法。在调用后，如果`size`依然大于`threshold - threshold / 4`。此时会执行`resize`方法。因此，在这个方法中，`expungeStaleEntries`是重点。
 
+```java
+    /**
+    * Expunge all stale entries in the table.
+    */
+    private void expungeStaleEntries() {
+        Entry[] tab = table;
+        int len = tab.length;
+        for (int j = 0; j < len; j++) {
+            Entry e = tab[j];
+            if (e != null && e.get() == null)
+                expungeStaleEntry(j);
+        }
+    }
+```
+
+&emsp;&emsp;通过这个代码的注释，我们发现，这个方法的目的是为了实现将`Entry`数组中无效信息清除掉。具体是怎么做的呢？其实很简单，就是遍历数组中的每个元素，如果发现当前`Entry`有值，但是没有任何引用，则直接调用`expungeStaleEntry`方法。
+
+```java
+/**
+* Expunge a stale entry by rehashing any possibly colliding entries
+* lying between staleSlot and the next null slot.  This also expunges
+* any other stale entries encountered before the trailing null.  See
+* Knuth, Section 6.4
+*
+* @param staleSlot index of slot known to have null key
+* @return the index of the next null slot after staleSlot
+* (all between staleSlot and this slot will have been checked
+* for expunging).
+*/
+private int expungeStaleEntry(int staleSlot) {
+    Entry[] tab = table;
+    int len = tab.length;
+
+    // expunge entry at staleSlot
+    tab[staleSlot].value = null;
+    tab[staleSlot] = null;
+    size--;
+
+    // Rehash until we encounter null
+    Entry e;
+    int i;
+    for (i = nextIndex(staleSlot, len);
+            (e = tab[i]) != null;
+            i = nextIndex(i, len)) {
+        ThreadLocal<?> k = e.get();
+        if (k == null) {
+            e.value = null;
+            tab[i] = null;
+            size--;
+        } else {
+            int h = k.threadLocalHashCode & (len - 1);
+            if (h != i) {
+                tab[i] = null;
+
+                // Unlike Knuth 6.4 Algorithm R, we must scan until
+                // null because multiple entries could have been stale.
+                while (tab[h] != null)
+                    h = nextIndex(h, len);
+                tab[h] = e;
+            }
+        }
+    }
+    return i;
+}
+```
+
+&emsp;&emsp;这段代码有点绕，接下来，我们通过一张图的方式来进行讲解，在接下来的解释中，我们会用到`线性嗅探的开放定址法`。
+
+&emsp;&emsp;加入我们下载有9个线程，他们的`threadLocalHashCode`分别问`[47,7,29,11,9,84,54,20,30]`。我们的`Entry数组`的大小为16。
+
+&emsp;&emsp;接下来，我们看下，他们默认的在数组中的位置：
+
+![Entry数组初始位置](http://static.shengouqiang.cn/blog/img/Java/LearnDay01/EntryPicture01.jpg)
+
+&emsp;&emsp;我们假设在`index`为`4`的时候，此时的`ThreadLocal`为`null`,则触发`expungeStaleEntry`操作。此时我们会将`tab[4]`的`value`设置为`null`。同时，`tab[4]=null`。然后我们从`index=5`的时候开始算，此时`i=5`。
+
+1. 判断`tab[5]`为否为`null`。如果为`null`,结束流程，否则执行下一步
+2. 判断`tab[5]`是否存在`ThreadLocal`。如果不存在，则将`tab[5]`的`value`设置为`null`，同时`tab[5]=null`、`size`减一；如果存在这行下一步
+3. 如果存在`ThreadLocal`，则判断当前值应当在数组中的位置是否是当前位置，如果不是，也就是发生过`线性嗅探`，则将当前节点这是为`null`。然后从应该存在的位置从新进行`线性嗅探`。
+
+&emsp;&emsp;因此，对于`i=5`而言，首先会将`tab[5]=null`,然后从`index=4`处开始`线性嗅探`，此时发现`table[5]`为`null`,然后将`20`重新插入到`tab[5]`中。接下来以此类推。最终的结果是：
+
+![Entry数组初始位置](http://static.shengouqiang.cn/blog/img/Java/LearnDay01/EntryPicture02.jpg)
+
+### set方法
+
+&emsp;&emsp;在上面，我们讲解了`ThreadLocal`的`get`方法。接下来，我们讲解下`ThreadLocal`的set方法。
+
+```java
+/**
+* Sets the current thread's copy of this thread-local variable
+* to the specified value.  Most subclasses will have no need to
+* override this method, relying solely on the {@link #initialValue}
+* method to set the values of thread-locals.
+*
+* @param value the value to be stored in the current thread's copy of
+*        this thread-local.
+*/
+public void set(T value) {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+}
+```
+
+&emsp;&emsp;对于`set`方法十分的简单，就是查询一下，当前map是否存在如果如在，直接执行put方法。如果不存在，则执行上面讲解的`createMap`方法。这里有一点要注意一下，如果我们在创建了`ThreadLocal`后先执行了`set`方法，则在`get`的时候，就直接过去，不会在执行`get`里面的`setInitialValue`方法了。
+
+### remove方法
+
+&emsp;&emsp;对于`remove`方法，则十分的简单
+
+```java
+/**
+* Removes the current thread's value for this thread-local
+* variable.  If this thread-local variable is subsequently
+* {@linkplain #get read} by the current thread, its value will be
+* reinitialized by invoking its {@link #initialValue} method,
+* unless its value is {@linkplain #set set} by the current thread
+* in the interim.  This may result in multiple invocations of the
+* {@code initialValue} method in the current thread.
+*
+* @since 1.5
+*/
+public void remove() {
+    ThreadLocalMap m = getMap(Thread.currentThread());
+    if (m != null)
+        m.remove(this);
+}
+```
+
+&emsp;&emsp;对于`remove`方法，则直接调用`map`的`remove`方法。删除当前的`Entry`即可。
+
 ## InheritableThreadLocal类
 
+&emsp;&emsp;在上面的代码中，我们讲解了`ThreadLocal`。其实在`JDK`中，还有一个类似`ThreadLocal`的存在，那就是`InheritableThreadLocal`。它与`ThreadLocal`不同的是，`ThreadLocal`仅仅只在当前线程有效，在子线程中是无效的。而`InheritableThreadLocal`是可以继承当前父线程中的`InheritableThreadLocal`的值。
+
+&emsp;&emsp;`ThreadLocal`与`InheritableThreadLocal`的使用方式都是相同的。在接下来的讲解中，我们会进行举例说明。
