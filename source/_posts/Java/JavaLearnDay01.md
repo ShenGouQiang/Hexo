@@ -593,13 +593,167 @@ private ThreadLocalMap(ThreadLocalMap parentMap) {
 }
 ```
 
-&emsp;&emsp;
+&emsp;&emsp;在这个方法中，就是通过获取父线程的`parentMap.table`的值，然后添加到子线程中去，如果发生了碰撞，则通过`线性嗅探的开放定址法`来确定最终的`index`，然后添加到子线程的`map`中去。在这里，我们要注意一个方法`childValue`。
+
+```java
+/**
+* Computes the child's initial value for this inheritable thread-local
+* variable as a function of the parent's value at the time the child
+* thread is created.  This method is called from within the parent
+* thread before the child is started.
+* <p>
+* This method merely returns its input argument, and should be overridden
+* if a different behavior is desired.
+*
+* @param parentValue the parent thread's value
+* @return the child thread's initial value
+*/
+protected T childValue(T parentValue) {
+    return parentValue;
+}
+```
+
+&emsp;&emsp;我们发现，这个方法仅仅只是保留的方法。如果需要，我们可以通过集成来实现自己的逻辑。同时，需要注意一下，如果往`InheritableThreadLocal`放的是一个引用类型，例如`Map`等。此时会出现父类和子类公用一个`Map`的问题。如果有这方面的需要，我们需要去集成这个类，重写`childValue`方法。
+
+### 使用案例
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ThreadLocalTest {
+
+    private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
+    private static final InheritableThreadLocal<String> inheritableThreadLocal = new InheritableThreadLocal<>();
+
+    static void getThreadLocal(){
+        System.out.println(Thread.currentThread().getName() + "--->threadLocal--->"+threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + "--->inheritableThreadLocal--->"+inheritableThreadLocal.get());
+    }
 
 
+    public static void main(String[] args) throws InterruptedException {
+        threadLocal.set("shen1");
+        inheritableThreadLocal.set("gou1");
+        getThreadLocal();
+        Thread thread = new Thread1();
+        thread.setName("thread1");
+        thread.start();
+
+        Thread.sleep(6000);
+        getThreadLocal();
+    }
+
+    static class Thread1 extends Thread{
+
+        @Override
+        public void run() {
+            super.run();
+            getThreadLocal();
+            threadLocal.set("shen2");
+            inheritableThreadLocal.set("gou2");
+            Thread thread = new Thread2();
+            thread.setName("thread2");
+            thread.start();
+            getThreadLocal();
+        }
+    }
+
+    static class Thread2 extends Thread{
+
+        @Override
+        public void run() {
+            super.run();
+            getThreadLocal();
+            threadLocal.set("shen3");
+            inheritableThreadLocal.set("gou3");
+            getThreadLocal();
+        }
+    }
+}
+```
+
+&emsp;&emsp;程序结果运行如下：
+
+```
+main--->threadLocal--->shen1
+main--->inheritableThreadLocal--->gou1
+thread1--->threadLocal--->null
+thread1--->inheritableThreadLocal--->gou1
+thread1--->threadLocal--->shen2
+thread1--->inheritableThreadLocal--->gou2
+thread2--->threadLocal--->null
+thread2--->inheritableThreadLocal--->gou2
+thread2--->threadLocal--->shen3
+thread2--->inheritableThreadLocal--->gou3
+main--->threadLocal--->shen1
+main--->inheritableThreadLocal--->gou1
+```
 
 ## 模拟ThreadLocal内存泄漏的案例
 
-&emsp;&emsp;
+&emsp;&emsp;在上面的文章中，我们发现，`ThreadLocal`其实是`弱引用`。并且网上总是说，如果使用不当，会造成内存泄露的问题。因此我们现在测试一下：
+
+```java
+package com.gouqiang.shen.threadlocal;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class TestOne {
+
+    /**
+     * 校验内存泄露
+     */
+    public static void testThreadLocalMemoryLeak(){
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        ThreadLocal<String> threadLocal = new ThreadLocal<>();
+        for (int i = 0; i < 10; i++) {
+            if(i == 0){
+                service.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("Thread id is " + Thread.currentThread().getId());
+                        threadLocal.set("variable");
+                    }
+                });
+            } else if(i > 0){
+                service.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if("variable".equals(threadLocal.get())){
+                            System.out.println("Thread id " + Thread.currentThread().getId() + " got it !");
+                        }
+                    }
+                });
+            }
+        }
+        service.shutdown();
+    }
+
+    public static void main(String[] args) {
+        testThreadLocalMemoryLeak();
+    }
+}
+
+```
+
+&emsp;&emsp;运行结果如下
+
+```
+Thread id is 12
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+Thread id 12 got it !
+```
+
+&emsp;&emsp;我们发现，在不使用线程池的前提下，即使不调用remove方法，线程的"变量副本"也会被gc回收，即不会造成内存泄漏的情况。但是如果使用线程池的情况下，因为线程使用完毕，不是被销毁，而是被还给线程池，当我们下次使用的时候，就会获取上次线程池的值。因此，就会发生内存泄露的问题。如果我们放的是一个`Map`，而不是一个`String`的话，随着`put`的次数越来越多，`Map`中的内容越来越大。极有可能会导致内存溢出的。
 
 ## 总结
 
