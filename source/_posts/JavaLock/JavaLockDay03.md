@@ -410,6 +410,8 @@ public abstract class AbstractQueuedSynchronizer
 
 ## ReentrantLock实现公平锁
 
+### lock方法 
+
 &emsp;&emsp;对于`ReentrantLock`而言，它的`公平锁`和`非公平锁`非常的类似，在这里，我们进行不同部分的代码讲解即可：
 
 ```java
@@ -419,6 +421,8 @@ public abstract class AbstractQueuedSynchronizer
 ```
 
 &emsp;&emsp;我们发现，在这里，它并没有通过`CAS`在一开始的时候去获取锁，而是走了通用的逻辑`acquire`。而我们的公平锁类`FairSync`通用的也实现了`tryAcquire`方法。
+
+### tryAcquire方法
 
 ```java
     protected final boolean tryAcquire(int acquires) {
@@ -441,6 +445,8 @@ public abstract class AbstractQueuedSynchronizer
         return false;
     }
 ```
+
+### hasQueuedPredecessors
 
 &emsp;&emsp;在这里，我们发现，唯一的不同在于方法`hasQueuedPredecessors`,而`hasQueuedPredecessors`的源码为：
 
