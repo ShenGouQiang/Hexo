@@ -3,7 +3,7 @@ title: MySql学习--基本命令学习
 permalink: mysql/MYSQL-LEARN-DAY-01
 date: 2019-09-21 14:24:12
 categories:
-- Mysql
+- MySql
 - 命令语句
 tags:
 - mysql学习
