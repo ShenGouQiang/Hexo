@@ -1,14 +1,15 @@
 ---
-title: MySql学习--Day01
+title: MySql学习--基本命令学习
 permalink: mysql/MYSQL-LEARN-DAY-01
 date: 2019-09-21 14:24:12
 categories:
-- mysql
+- Mysql
+- 命令语句
 tags:
 - mysql学习
 - mysql
 ---
-#MySql学习--Day01
+#MySql学习--基本命令学习
 
 ```sql
 -- 查看自动提交设置
