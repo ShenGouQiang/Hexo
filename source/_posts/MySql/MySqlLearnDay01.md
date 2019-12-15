@@ -1,6 +1,6 @@
 ---
 title: MySql--隔离级别
-permalink: MySql/MySqlLearnDay01
+permalink: mysql/MySqlLearnDay01
 date: 2019-12-12 20:32:31
 categories:
 - MySql
