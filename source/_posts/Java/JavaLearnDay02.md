@@ -58,7 +58,7 @@ String S8 = S5 + "C";
 
 &emsp;&emsp;同样的，我们还是用一张图进行讲解：
 
-![String-字面量创建过程](http://static.shengouqiang.cn/blog/img/Java/LearnDay02/StringLearn02.jpg)
+![String-String对象创建过程](http://static.shengouqiang.cn/blog/img/Java/LearnDay02/StringLearn02.jpg)
 
 &emsp;&emsp;在这里，我们需要知道的一点就是，当我们使用`new`关键字来创建一个`String`对象的时候，此时一定会在堆中创建一个对象。因此，当程序执行第一行代码的时候，此时程序首先会在`String池`中查看时候有没有常量`"ABC"`，如果没有，则在`String池`中添加常量`"ABC"`(图中的①)，然后会在堆中自动的创建一个`intern`字符串对象`$_CON_STR1`(图中的②)，然后我们使用`new`关键字来创建一个`String`对象(图中的③)，并且以`$_CON_STR1`为参数，最后创建一个`String`类型的引用变量`S1`(图中的④)用以保存这个通过关键字`new`创建来的对象。
 
@@ -98,7 +98,7 @@ String S8 = S5 + "C";
 
 &emsp;&emsp;接下来，我们还有通过一张图进行演示：
 
-![String-字面量创建过程](http://static.shengouqiang.cn/blog/img/Java/LearnDay02/StringLearn03.jpg)
+![String-split方法](http://static.shengouqiang.cn/blog/img/Java/LearnDay02/StringLearn03.jpg)
 
 &emsp;&emsp;`split(String regex)`这个方法是上面那个方法的特例，此时他的效果和`split(String regex,0)`的效果是一致的。
 
