@@ -7,6 +7,6 @@
 &emsp;&emsp;对于本博客平台的文章，如果有错误，请留言指正。在这里，感谢各位大佬不吝赐教。
 
 ## 关于妃子笑
-**妃子笑** 是BiggerShen（沈构强）的个人站。
+**妃子笑** 是BiggerShen的个人站。
 
 到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。

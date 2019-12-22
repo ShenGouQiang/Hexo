@@ -91,7 +91,7 @@ word_count: true
 # 不蒜子网站计数设置
 # http://ibruce.info/2015/04/04/busuanzi/
 visit_counter:
-  on: false
+  on: true
   site_visit: true
   page_visit: true
 
@@ -189,10 +189,10 @@ friends:
 
 ##########评论设置#############
 comment:
-  on: false
-  type: gitment  # 评论系统：gitalk、disqus、gentie、gitment,注意：使用时，在下方对应位置进行配置
-  comment_count: false  # 文章标题下方显示评论数
-  preload_comment: false  # 预加载评论区
+  on: true
+  type: gitalk  # 评论系统：gitalk、disqus、gentie、gitment,注意：使用时，在下方对应位置进行配置
+  comment_count: true  # 文章标题下方显示评论数
+  preload_comment: true  # 预加载评论区
   ## false: 当点击评论条等区域时再加载评论模块
   ## true: 页面加载时加载评论区
 # 各评论系统配置 ↓↓
@@ -209,11 +209,11 @@ gentie:
   # 网易云跟帖暂时不支持查询评论数，所以启用时，把评论数关掉，上方comment_count: false。
 
 gitalk:
-  githubID: yelog
-  repo: yelog.github.io
-  ClientID:
-  ClientSecret:
-  adminUser: yelog
+  githubID: ShenGouQiang
+  repo: messageborad
+  ClientID: 289e2e7e285be7e7cd28
+  ClientSecret: 32c22c1c542a772dc0431865bbddab7b7ecedca2
+  adminUser: ShenGouQiang
   distractionFreeMode: true
   language: zh-CN
   perPage: 10
