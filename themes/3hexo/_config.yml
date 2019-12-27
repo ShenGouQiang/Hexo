@@ -3,7 +3,7 @@ version: 1.0.2
 avatar: http://static.shengouqiang.cn/blog/img/favicon.jpg
 favicon: /img/favicon.jpg
 
-#如果博客放置位置不是根目录，则可以通过配置此路径解决静态文件路径错误问题
+#如果网站放置位置不是根目录，则可以通过配置此路径解决静态文件路径错误问题
 # 比如访问地址为 yelog.org/blog 那就需要配置为 blog_path: /blog 才能正常访问
 blog_path: /
 cdn_path: http://static.shengouqiang.cn/blog/
@@ -63,7 +63,7 @@ menu:
 # 文末声明
 article_txt: 转载请注明来源，欢迎指出任何有错误或不够清晰的表达。可以邮件至 gouqiangshen@126.com
 
-bottom_text: ©2016-2022 BiggerShen
+bottom_text: 京ICP备19032600号-1
 # 自定义页面最下方的站点版权信息
 # 如果不填，则自定义为 ©2017 author (这个author为hexo根目录_config.yml中配置的)
 
@@ -189,7 +189,7 @@ friends:
 
 ##########评论设置#############
 comment:
-  on: true
+  on: false
   type: gitalk  # 评论系统：gitalk、disqus、gentie、gitment,注意：使用时，在下方对应位置进行配置
   comment_count: true  # 文章标题下方显示评论数
   preload_comment: true  # 预加载评论区
