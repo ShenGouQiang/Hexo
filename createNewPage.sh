@@ -12,7 +12,7 @@ if [ "$mulu" = "" ];then
 else
 	echo "filePath is $mulu"
 	if [ ! -d "$mulu" ];then
-		mkdir $mulu
+		mkdir -p $mulu
 		echo "filePath $mulu is created success"
 	else
 		echo "filePath $mulu has been exist"
