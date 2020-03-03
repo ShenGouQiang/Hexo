@@ -40,7 +40,8 @@ tags:
 - 是否足够快
 - 是否省内存
   
-对于`JDK`而言，如果我们保证我们想要保证效率，势必要
+
+对于`JDK`而言，它肯定不能再不能仅仅只是偏向于某一侧，而是在这两者见找到一个平衡。因此，在大量的实与统计后，`JDK`的工程师们给出的答复是`0.75`时，此时是一个最佳的平衡点。所以，在`JDK`中，`HashMap`的默认负载因子是`0.75`。
 
 ## 无参构造函数
 
@@ -53,6 +54,8 @@ tags:
         this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
     }
 ```
+
+&emsp;&emsp;对于无参的构造函数而言，我们发现，它仅仅只是将负载因子(`loadFactor`)设置成了默认值，并没有进行默认的`table`的一个初始化的过程。
 
 ## 仅设置初始容量的构造函数
 
@@ -68,6 +71,8 @@ tags:
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 ```
+
+&emsp;&emsp; 在这里，调用了另一个构造函数，这个构造函数是接下来我们要静姐的构造函数，在这里，我们不再重复进行讲解，看接下来的源码即可。
 
 ## 设置初始容量和负载因子的构造函数
 
@@ -94,6 +99,20 @@ tags:
         this.threshold = tableSizeFor(initialCapacity);
     }
 ```
+
+&emsp;&emsp; 在这个构造函数中，我们需要两个请求参数`initialCapacity`、`loadFactor`。接下来，我们观察下程序是如果做的。
+
+&emsp;&emsp; 首先，对于初始容量`initialCapacity`进行了参数上的校验，要求`initialCapacity`必须大于0，且如果超出了数组`table`长度的最大值`MAXIMUM_CAPACITY(2^30)`，则将数组的大小设置为2^30次方。
+
+&emsp;&emsp;到这里，可能有人会问，为什么HashMap的数组table的默认值只能是2^30次方呢？这是因为，我们首先看下`MAXIMUM_CAPACITY`在HashMap中的定义。
+
+```java
+static final int MAXIMUM_CAPACITY = 1 << 30;
+```
+
+&emsp;&emsp;通过上面的代码，我们发现，
+
+&emsp;&emsp;接下来，是对于负载因子`loadFactor`进行赋值的过程，这里要注明一下，就是负载因子在没有特殊的情况下，我们保持默认的0.75即可。不需要特意的进行改动。
 
 ## 以Map进行初始化的构造函数
 
