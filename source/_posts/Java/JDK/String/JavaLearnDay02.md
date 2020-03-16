@@ -1,6 +1,6 @@
 ---
 title: JDK学习--String
-permalink: Java/JavaLearnDay02
+permalink: Java/String/JavaLearnDay02
 date: 2019-11-27 19:04:22
 categories:
 - Java
