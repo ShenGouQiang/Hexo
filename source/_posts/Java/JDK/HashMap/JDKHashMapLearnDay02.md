@@ -72,6 +72,105 @@ tags:
 
 &emsp;&emsp;不知不觉，又讲了一堆的废话。我们还是回归正题，看下为什么`HashMap`中要自定义一个`hash`方法，而不是采用操作系统自带的`hash`方法，来获取`Key`的`hashcode`。
 
+&emsp;&emsp;通过上面的注释，我们发现，`HashMap`之所以这样做，是采用一种最简单的方式来让我们的值在table中更加均匀的分布的。主要的做法是
 
+1. 如果`key`为`null`,则放在`第0位`
+2. 如果`key`不为`null`,则调用系统的`hashCode`方法，获取hash值
+3. 将当前获取的`hash`值`右移16`位，然后与当前`hashcode`进行`异或`操作
+
+&emsp;&emsp;在这里，这个`hash`函数，其实就是一个扰动函数，为什么这么说呢？因为如果在这里我们直接以`hashCode`作为我们的散列特征的情况下，那么就会有一个问题，假如我们的`Bucket`的大小是`16`的话，那么真正能够起到的作用的，其实也就是`hashCode`的低位，而高位直接被屏蔽掉<span style="color:red;">(为什么会这样，在下面讲解index的时候会说)</span>。如果我们有一批数据，正好这些数据的`hashCode`的低位是相似的或者是很相同的，而高位的差别很大，在采用这样的方式进行获取`index`的时候，此时会发生极大的`hash碰撞`，极大的降低了`HashMap`的一个性能。因此，我们采用将一个`hashCode`的`高16位`与`低16位`进行`异或`的方式，使得到的一个最终的`hash`值更加随机，相当于间接的保留了部分`hashCode的高16位`的一个特征。可以极大的避免上述的问题，起到了干扰的作用。
+
+&emsp;&emsp;这是因为这样的情况，可以保证`HashMap`的一个均匀分布的结果。
 
 ## putVal方法
+
+```java
+    /**
+     * Implements Map.put and related methods
+     *
+     * @param hash hash for key
+     * @param key the key
+     * @param value the value to put
+     * @param onlyIfAbsent if true, don't change existing value
+     * @param evict if false, the table is in creation mode.
+     * @return previous value, or null if none
+     */
+    final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
+```
+
+&emsp;&emsp;上面的代码就是在JDK1.8中的HashMap中的put的真实操作。在这里，我们主要从三个方面进行讲解
+
+1. `index`的确定
+   1. 为什么`Bucket`的容量是cc（作用一）。
+2. `resize`
+   1. `resize`的原理
+   2. 为什么`Bucket`的容量是2<sup>n</sup>（作用二）。
+   3. `resize`何时会发生
+3. 当发生`hash碰撞`时的处理操作
+   1. 链表操作
+   2. 链表转树
+   3. 树转链表
+   4. 树操作
+
+&emsp;&emsp;其中关于树的部分，我会单独拉出一篇文章进行讲解，在这里不做过多的阐述。我们这篇文章主要是从1、2、3.1这三个部分进行讲解。
+
+### index的确定
+
+&emsp;&emsp;首先，我们看下关于index的一个确定的操作。这个操作和之前第二部分的`hash`方法的原理有关。同时，也可以让你更加的理解，为什么`HashMap`要用自己的`hash`方法。
+
+&emsp;&emsp;在上述的源码中，真正确定`index`的，只有一句话`(n - 1) & hash`。注意，这里的hash就是第二部分我们计算出的真实的hash值。而n这是获取`Bucket`的长度，如果`Bucket`为null，则会先进行`resize`操作，初始化`Bucket`。然后获取`Bucket`的长度。
+
+&emsp;&emsp;初看这段代码，我们会发现，就是一个<span style="color:red;">与(&)</span>操作。获取index就可以了。如果是这样的话，那么我们有几个问题?
+
+1. 既然<span style="color:red;">与(&)</span>操作和取模操作类似，那么为什么我们不用取模操作，而是通过<span style="color:red;">与(&)</span>操作呢？
+2. 既然我们获取到数组的长度为`n`了，那么为什么还要进行`n-1`操作呢？这不是始终要空出一个`index`，降低了使用效率吗？
+
+&emsp;&emsp;我们首先来解答第二个疑问，为什么要进行`n-1`操作。其实，这个就是要说的关于为什么`Bucket`的容量必须要为2<sup>n</sup>的一个原因。
+
+### resize
+
+### 哈希碰撞的解决(链表相关)
+
+
+
