@@ -67,5 +67,5 @@ if [ "$mulu" = "" ];then
 	echo "filePath is null,do not change permalink"
 else
 	echo "filePath is $mulu,will change permalink"
-	sed -i '' "s/permalink: $fileName/permalink: $mulu\/$fileName/" "$fileName.md"
+	sed -i '' "s#permalink: $fileName#permalink: $mulu\/$fileName#" "$fileName.md"
 fi
