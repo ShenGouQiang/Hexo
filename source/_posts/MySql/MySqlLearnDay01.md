@@ -62,7 +62,7 @@ select * from test;
 
 &emsp;&emsp;执行结果如下：
 
-![查询test表](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest01.jpg)
+![查询test表](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest01.jpg)
 
 &emsp;&emsp;接下来，我们在`session1`中执行如下的`SQL`语句
 
@@ -73,7 +73,7 @@ value (1);
 
 &emsp;&emsp;执行结果如下：
 
-![test表执行insert语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert01.jpg)
+![test表执行insert语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert01.jpg)
 
 
 &emsp;&emsp;此时，我们在`session2`中执行如下`SQL`语句：
@@ -84,7 +84,7 @@ select * from test;
 
 &emsp;&emsp;执行结果如下：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest02.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest02.jpg)
 
 &emsp;&emsp;此时我们发现，在`session2`中，可以查到`session1`中插入但是还没有`commit`的`SQL`语句。这样的情况，就是`脏读`的情况。而这个也正是`读未提交`隔离级别所带来的问题。有了上面的演示，此时我们可以很好的理解什么是`脏读`了。
 
@@ -98,15 +98,15 @@ select * from test;
 
 &emsp;&emsp;还是上面的例子，此时我们在`session2`中开启事务，然后查询`test`表，结果如下：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest05.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest05.jpg)
 
 &emsp;&emsp;此时在`session1`中插入一条记录：
 
-![test表执行insert语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert02.jpg)
+![test表执行insert语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert02.jpg)
 
 &emsp;&emsp;此时`session2`再次查询的结果为：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest06.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest06.jpg)
 
 &emsp;&emsp;通过上面的例子，我们发现，`读已提交`已经克服了`脏读`的问题。
 
@@ -132,7 +132,7 @@ select * from test;
 
 &emsp;&emsp;此时，我们的查询结果如下：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest03.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest03.jpg)
 
 &emsp;&emsp;接下来，我们在`session1`中将`test`表中的`id`改为2，然后提交事务：
 
@@ -148,7 +148,7 @@ select * from test;
 
 &emsp;&emsp;此时，我们的查询结果如下：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest04.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest04.jpg)
 
 &emsp;&emsp;果然，我们发现，在`session2`这个事务执行的过程中，因为有`session`1将`tes`t表的`id`改为了2，此时在`session2`这同一个事务中，会出现两次查询结果不一致的情况，也就是第一次查询的结果为1，第二次查询的结果为2。这个就是`不可重复读`。为了解决不可重复读的问题，接下来，我们讨论下`可重复读`这个隔离级别。
 
@@ -162,15 +162,15 @@ select * from test;
 
 &emsp;&emsp;还是上面的例子，此时我们在`session2`中开启事务，然后查询`test`表，结果如下：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest07.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest07.jpg)
 
 &emsp;&emsp;此时在`session1`中更新记录,并提交：
 
-![test表执行update语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testupdate01.jpg)
+![test表执行update语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testupdate01.jpg)
 
 &emsp;&emsp;此时`session2`再次查询的结果为：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest08.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest08.jpg)
 
 &emsp;&emsp;通过上面的例子，我们发现，`可重复读`已经克服了`不可重复读`的问题。
 
@@ -188,7 +188,7 @@ select * from test;
 select * from test;
 ```
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest09.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest09.jpg)
 
 &emsp;&emsp;此时在`session1`中插入一条`id=1`的记录，并且提交事务
 
@@ -197,11 +197,11 @@ insert into test (id)
 value (1);
 ```
 
-![test表执行insert语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert03.jpg)
+![test表执行insert语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert03.jpg)
 
 &emsp;&emsp;此时我们再次在`session2`中进行查询
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest10.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest10.jpg)
 
 &emsp;&emsp;此时我们发现两次结果就处于不一致的状态，多了一个`id=1`的记录。这个就是`幻读`。解决`幻读`的办法就是使用`串行化`隔离级别。
 
@@ -219,7 +219,7 @@ value (1);
 
 &emsp;&emsp;此时我们先在`session2`中查询表`test`，得到的结果如下：
 
-![test表执行select语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest11.jpg)
+![test表执行select语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/querytest11.jpg)
 
 &emsp;&emsp;此时我们再在`session1`中执行插入语句，插入一条`id=3`的记录
 
@@ -230,7 +230,7 @@ value (3);
 
 &emsp;&emsp;此时我们发现，`MySql`报错了，内容如下：
 
-![test表执行insert语句](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert04.jpg)
+![test表执行insert语句](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/testinsert04.jpg)
 
 &emsp;&emsp;这是说明，当前执行`insert`语句没有获取到锁。这也说明了上面`MySql`中对于`串行化`的定义。此时也就解决了`幻读`的问题。
 
@@ -252,4 +252,4 @@ value (3);
 
 &emsp;&emsp;我们采用一张图的方式，来说明下每个隔离级别的能力与对应的问题：
 
-![隔离级别总结图](http://static.shengouqiang.cn/blog/img/SQL/isolation/day01/isolation.jpg)
+![隔离级别总结图](https://static.shengouqiang.cn/blog/img/SQL/isolation/day01/isolation.jpg)
