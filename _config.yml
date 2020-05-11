@@ -79,7 +79,7 @@ theme: 3hexo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://gitee.com/biggershen/blog.git
+  repo: https://github.com/ShenGouQiang/blog.git
   branch: master
 search:
   path: search.xml
