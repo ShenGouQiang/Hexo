@@ -55,7 +55,7 @@ tags:
 
 #### markword
 
-![markword示意图](https://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/markword.jpg)
+![markword示意图](/img/JavaLock/JavaLockDay02/markword.jpg)
 
 &emsp;&emsp;接下来，我们解释一下各个字段的含义
 
@@ -123,7 +123,7 @@ tags:
 
 &emsp;&emsp;下面，我们可以借用网上的一张图片来进行说明
 
-![synchronize锁升级](https://static.shengouqiang.cn/blog/img/JavaLock/JavaLockDay02/lockUpdate.png)
+![synchronize锁升级](/img/JavaLock/JavaLockDay02/lockUpdate.png)
 
 ## 总结
 

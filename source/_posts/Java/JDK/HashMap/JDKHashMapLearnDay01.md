@@ -17,7 +17,7 @@ tags:
 
 &emsp;&emsp;本次我们主要讲解的`HashMap`是在`JDK1.8`版本的。
 
-![Java版本信息](https://static.shengouqiang.cn/blog/img/Java/JDK/DAY01/java-version.jpg)
+![Java版本信息](/img/Java/JDK/DAY01/java-version.jpg)
 
 &emsp;&emsp;接下来，我们在这篇文章主要讲解的是`HashMap`的构造函数。
 

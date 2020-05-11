@@ -144,8 +144,8 @@ public class LazySingleton{
 
 &emsp;&emsp;这种情况下，虽然可以保证在单线程的情况下，能够保证是单例模式的。但是在高并发下，依然会存在问题。我们可以通过下面的视频来进行讲解。
 
-<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://static.shengouqiang.cn/blog/img/video/fengmian1000480.jpg">
-      <source id="mp4" src="https://static.shengouqiang.cn/blog/video/DesignPattern/SingletonPattern/singletonOneIf.mp4" type="video/mp4">
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="/video/DesignPattern/SingletonPattern/singletonOneIf.mp4" type="video/mp4">
 </video>
 
 
@@ -168,8 +168,8 @@ public class LazySingleton{
 
 &emsp;&emsp;那么，如果是像上面的代码，仅仅只是锁代码块，会解决并发的问题吗？其实是解决不了的。在这里，我们还是通过一个动画的形式，进行讲解。
 
-<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://static.shengouqiang.cn/blog/img/video/fengmian1000480.jpg">
-      <source id="mp4" src="https://static.shengouqiang.cn/blog/video/DesignPattern/SingletonPattern/SingletonOneIfSynchronized.mp4" type="video/mp4">
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="/video/DesignPattern/SingletonPattern/SingletonOneIfSynchronized.mp4" type="video/mp4">
 </video>
 
 
@@ -192,8 +192,8 @@ public class LazySingleton{
 
 &emsp;&emsp;通过上面的代码，我们可以实现，在并发的模式下，依然可以保证我们的`INSTANCES`是单例的。接下来，我们依然通过视频进行讲解。
 
-<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://static.shengouqiang.cn/blog/img/video/fengmian1000480.jpg">
-      <source id="mp4" src="https://static.shengouqiang.cn/blog/video/DesignPattern/SingletonPattern/singletonTwoIfSynchronized.mp4" type="video/mp4">
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="/video/DesignPattern/SingletonPattern/singletonTwoIfSynchronized.mp4" type="video/mp4">
 </video>
 
 
