@@ -49,6 +49,7 @@ hexo d
 
 ```shell
 npm install hexo-deployer-git  --save
+npm install hexo --save
 ```
 
 
