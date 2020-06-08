@@ -112,7 +112,7 @@ article_list:
 # 文章列表背景图
 article_bg_img:
   on: true # 是否开启
-  src: /img/5d3521411f3f169375.png
+  src: /img/5d3521411f3f169375.jpg
   opacity: 0.3 # 背景图透明度，范围 0 ～ 1
 
 # 列表样式
