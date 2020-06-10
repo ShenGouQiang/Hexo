@@ -1,6 +1,6 @@
 ---
 title: JDK学习--ThreadLocal
-permalink: Java/Thread/JavaLearnDay01
+permalink: Java/JDK/Thread/JavaLearnDay01
 date: 2019-11-14 22:40:24
 categories:
 - Java
