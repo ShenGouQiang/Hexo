@@ -40,7 +40,7 @@ ssh-keygen -t rsa -C "github邮箱账号"
 
 &emsp;&emsp;此时我们看见出现了如下的提示：
 
-![填写公私钥的位置信息](/img/gitOneMoreAccount/saveTheGitHubKey.jpg)
+![填写公私钥的位置信息](https://oss.shengouqiang.cn/img/gitOneMoreAccount/saveTheGitHubKey.jpg)
 
 &emsp;&emsp;此时在这里我们写入:`id_rsa_github`，写完之后，我们输入回车，此时会出现是否要对公私钥添加密码信息，此时我们选择不需要，然后直接一路回车到最后就可以了。
 
@@ -52,7 +52,7 @@ ssh-keygen -t rsa -C "gitee邮箱账号"
 ```
 &emsp;&emsp;此时我们看见出现了如下的提示：
 
-![填写公私钥的位置信息](/img/gitOneMoreAccount/saveTheGiteeKey.jpg)
+![填写公私钥的位置信息](https://oss.shengouqiang.cn/img/gitOneMoreAccount/saveTheGiteeKey.jpg)
 
 &emsp;&emsp;此时在这里我们写入:`id_rsa_gitee`，写完之后，我们输入回车，此时会出现是否要对公私钥添加密码信息，此时我们选择不需要，然后直接一路回车到最后就可以了。
 
@@ -94,11 +94,11 @@ IdentityFile ~/.ssh/id_rsa_gitee
 2. 输入用户名、密码
 3. 进入我的码云，然后点击头像，进行设置
 
-![填写公私钥的位置信息](/img/gitOneMoreAccount/findTheSettings.jpg)
+![填写公私钥的位置信息](https://oss.shengouqiang.cn/img/gitOneMoreAccount/findTheSettings.jpg)
 
 4. 在这里，我们首先找到在第二步生成的`id_rsa_gitee.pub`文件，将文件的内容复制到下面中：
 
-![填写公私钥的位置信息](/img/gitOneMoreAccount/addTheSshKey.jpg)
+![填写公私钥的位置信息](https://oss.shengouqiang.cn/img/gitOneMoreAccount/addTheSshKey.jpg)
 
 ## 5.进行测试
 &emsp;&emsp;在这里，我们测试可以使用`ssh`的一个命令：
@@ -109,11 +109,11 @@ ssh -T gitee.com
 
 &emsp;&emsp;如果此时程序出现的是：
 
-![填写公私钥的位置信息](/img/gitOneMoreAccount/showSuccessResult.jpg)
+![填写公私钥的位置信息](https://oss.shengouqiang.cn/img/gitOneMoreAccount/showSuccessResult.jpg)
 
 &emsp;&emsp;那么此时恭喜你，你已经配置成功了。如果出现了
 
-![填写公私钥的位置信息](/img/gitOneMoreAccount/showErrorResult.jpg)
+![填写公私钥的位置信息](https://oss.shengouqiang.cn/img/gitOneMoreAccount/showErrorResult.jpg)
 
 &emsp;&emsp;那么你可以执行如下命令，查看问题的具体原因：
 

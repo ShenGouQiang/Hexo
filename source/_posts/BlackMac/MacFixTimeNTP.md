@@ -38,7 +38,7 @@ tags:
 6. 到这里，我们已经将`NTP`的`server`修改完毕，此时我们需要`重启`我们的系统。
 7. 重启系统后，我们打开`->系统偏好设置->日期与时间`，此时我们发现，我们的`server`已经改成了`ntp1.aliyun.com`。
 
-![NTP_Server](/img/BlackMac/MacFixTimeNTP/NTP_Server.jpg)
+![NTP_Server](https://oss.shengouqiang.cn/img/BlackMac/MacFixTimeNTP/NTP_Server.jpg)
 
 # 总结
 

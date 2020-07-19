@@ -43,21 +43,21 @@ tags:
 
 &emsp;&emsp;首先，我们新开一个`session`，然后执行`pstree`命令，如图所示：
 
-![父进程的PSTREE](/img/Redis/RDB_AOF/Parent_PSTree_01.jpg)
+![父进程的PSTREE](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/Parent_PSTree_01.jpg)
 
 &emsp;&emsp;我们发现，目前我们处在`bash`下，执行的`pstree`命令。此时我们设定一个变量`b`，值为`10`。
 
-![父进程设值](/img/Redis/RDB_AOF/Parent_Set_b_01.jpg)
+![父进程设值](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/Parent_Set_b_01.jpg)
 
 &emsp;&emsp;通过上图所示，我们已经在当前的`session`中，设置了一个变量`b`，值为`10`，并且已经能够成功的取出。
 
 &emsp;&emsp;接下来，我们创建一个子进程，使用`/bin/bash`命令。然后我们再看一下`pstree`。
 
-![子进程的PSTREE](/img/Redis/RDB_AOF/Child_PSTree_01.jpg)
+![子进程的PSTREE](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/Child_PSTree_01.jpg)
 
 &emsp;&emsp;此时我们发现，和之前的`pstree`进行比较，我们目前是在`bash->bash`下执行的`pstree`。此时我们在获取之前创建的变量`b`.
 
-![子进程取值](/img/Redis/RDB_AOF/Child_Get_b_01.jpg)
+![子进程取值](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/Child_Get_b_01.jpg)
 
 &emsp;&emsp;此时我们发现，我们并没有得到`b`的值，这是为什么呢？
 
@@ -69,15 +69,15 @@ tags:
 
 &emsp;&emsp;对于`Redis`而言，我们每次存储的一个`key-value`的键值对，都是存在真实的物理内存中的，而这些地址，在`Redis`中存在着一份映射关系。我们通过下面的图，举个栗子，<span style="color:red;" >(这里说明下，下图的内容仅仅只是为了理解，而不是Redis底层的真正实现) </span>。
 
-![工作进程映射关系](/img/Redis/RDB_AOF/memory_map_01.jpg)
+![工作进程映射关系](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/memory_map_01.jpg)
 
 &emsp;&emsp;此时`Redis`要进行数据持久化的时候，是通过调用系统的`fork`命令来创建一个子进程的。而子进程依然会保留着这份映射关系，并且`fork`的时间特别的快，不会阻塞到`client`端的请求。也就是会变成下图的样子：
 
-![fork子进程](/img/Redis/RDB_AOF/memory_map_fork_01.jpg)
+![fork子进程](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/memory_map_fork_01.jpg)
 
 &emsp;&emsp;如果我们的`Redis`的工作进程，需要对`k1`进行修改，此时`Redis`会采用`copy-on-write`的方式，也就是说，他不会去改`物理内存`中`1号位置`的值，而是将新的内容写入到`2号位置`，`改变指针`即可。这样对于`子进程`而言，我拿到的依然是`修改前`的值。
 
-![copy-on-write](/img/Redis/RDB_AOF/memory_map_fork_02.jpg)
+![copy-on-write](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/memory_map_fork_02.jpg)
 
 &emsp;&emsp;对于这样的操作方式，`Redis`也为我们提供了指令`BGSAVE`。我们可以通过调用`BGSAVE`，来实现将数据异步的存储到硬盘中。
 
@@ -139,7 +139,7 @@ save 60 10000
 
 &emsp;&emsp;在这里我们举个栗子：假如我们有一个新的`Redis`实例，里面的数据为空，此时我们有个程序，不停的对同一个`key`进行`incr`。在执行完`100W`次以后，此时我们的`AOF`文件会变得很大。因为`AOF`文件，相当于要记录下`100W`操作的每次的完整的命令。在这里，我们以`k1`为`key`做演示，仅`INCR`一次，我们看下`AOF`的文件内容：
 
-![Redis-INCR](/img/Redis/RDB_AOF/Redis_INCR_01.jpg)
+![Redis-INCR](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/Redis_INCR_01.jpg)
 
 &emsp;&emsp;此时我们通过客户端，执行` set incr get` 命令后，通过配置文件，找到对应的`AOF`文件，然后打开(我已将`appendfsync`改成了`always`,方便看到效果 )：
 
@@ -213,7 +213,7 @@ set k2 10
 get k2
 ```
 
-![工作进程映射关系](/img/Redis/RDB_AOF/AOF_RDB_ALL_USE.jpg)
+![工作进程映射关系](https://oss.shengouqiang.cn/img/Redis/RDB_AOF/AOF_RDB_ALL_USE.jpg)
 
 &emsp;&emsp;我们发现，文件的开头已经是一堆乱码了。但是在程序只有，依然是我们的`set k2 10`这个命令。同时我们发现，在`AOF`的文件的开头，是`REDIS`。这个算是`RDB`文件开头的一个标识。代表的是`RDB`文件的内容。
 

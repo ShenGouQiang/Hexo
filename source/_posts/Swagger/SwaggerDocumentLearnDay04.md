@@ -232,7 +232,7 @@ public class OrderWebController  implements OrderWebApi {
 
 &emsp;&emsp;但是真正的`Swagger`文档为
 
-![subTypes属性](/img/swagger/DocumentDay04/subTypes.png)
+![subTypes属性](https://oss.shengouqiang.cn/img/swagger/DocumentDay04/subTypes.png)
 
 ### reference属性
 

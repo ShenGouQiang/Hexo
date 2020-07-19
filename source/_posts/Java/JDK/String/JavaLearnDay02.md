@@ -33,7 +33,7 @@ String S5 = "BC";
 String S6 = S4 + S5;
 ```
 
-![String-字面量创建过程](/img/Java/LearnDay02/StringLearn01.jpg)
+![String-字面量创建过程](https://oss.shengouqiang.cn/img/Java/LearnDay02/StringLearn01.jpg)
 
 &emsp;&emsp;在`Java`编译器遇到上面的这句话时，首先会将`"ABC"`放入到常量池中，形成`.class`文件。而在JVM解释字节码、执行程序的时候，首先会在`String`池中创建常量`"ABC"`(图中的①)，然后在堆中自动的创建一个对象(在这里我们将这个堆中自动创建的对象称之为`$_CON_STR3`)(图中的②)。并且这个对象对应`String池`中常量`"ABC"`的地址，此时当我们创建一个`String`类型的引用变量`S1`的时候(图中的③)，此时直接指向了堆中的这个对象`$_CON_STR3`，而这个对象对应的又是`String`池中常量`"ABC"`的地址，因此`S1`也就相当于指向了常量`"ABC"`的地址。此时当`JVM`再执行这句话的时候，此时会发现`String池`中已经存在了`"ABC"`这个常量，同样的也存在了这个对象。因此，`JVM`会直接创建这个`String池`的引用变量`S2`会直接的指向内存中的对象`$_CON_STR3`(图中的④)。因此对于`S1==S2`这个结果，应该是`true`。
 
@@ -58,7 +58,7 @@ String S8 = S5 + "C";
 
 &emsp;&emsp;同样的，我们还是用一张图进行讲解：
 
-![String-String对象创建过程](/img/Java/LearnDay02/StringLearn02.jpg)
+![String-String对象创建过程](https://oss.shengouqiang.cn/img/Java/LearnDay02/StringLearn02.jpg)
 
 &emsp;&emsp;在这里，我们需要知道的一点就是，当我们使用`new`关键字来创建一个`String`对象的时候，此时一定会在堆中创建一个对象。因此，当程序执行第一行代码的时候，此时程序首先会在`String池`中查看时候有没有常量`"ABC"`，如果没有，则在`String池`中添加常量`"ABC"`(图中的①)，然后会在堆中自动的创建一个`intern`字符串对象`$_CON_STR1`(图中的②)，然后我们使用`new`关键字来创建一个`String`对象(图中的③)，并且以`$_CON_STR1`为参数，最后创建一个`String`类型的引用变量`S1`(图中的④)用以保存这个通过关键字`new`创建来的对象。
 
@@ -98,7 +98,7 @@ String S8 = S5 + "C";
 
 &emsp;&emsp;接下来，我们还有通过一张图进行演示：
 
-![String-split方法](/img/Java/LearnDay02/StringLearn03.jpg)
+![String-split方法](https://oss.shengouqiang.cn/img/Java/LearnDay02/StringLearn03.jpg)
 
 &emsp;&emsp;`split(String regex)`这个方法是上面那个方法的特例，此时他的效果和`split(String regex,0)`的效果是一致的。
 

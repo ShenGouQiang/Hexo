@@ -225,6 +225,6 @@ value = null
 
 &emsp;&emsp;对于上面代码不是很熟悉的小伙伴，可以先看下下面的视频展示，然后再回顾代码，可以更好的理解。
 
-<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="/img/video/fengmian1000480.jpg">
-      <source id="mp4" src="/video/Algorithm/LRU/LRU_Hash_Link.mp4" type="video/mp4">
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://oss.shengouqiang.cn/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="https://oss.shengouqiang.cn/video/Algorithm/LRU/LRU_Hash_Link.mp4" type="video/mp4">
 </video>
