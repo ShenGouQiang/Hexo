@@ -82,7 +82,7 @@ theme: 3hexo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/ShenGouQiang/Hexo.git
+  repo: git@github.com:ShenGouQiang/Hexo.git
   branch: blog
 search:
   path: search.xml
