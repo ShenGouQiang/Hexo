@@ -1,6 +1,6 @@
 ---
 title: Swagger文档API学习--ApiResponses注解
-permalink: Swagger/SwaggerDocumentLearnDay03
+permalink: Swagger/SwaggerDocumentLearnDay03/
 date: 2019-11-01 14:06:19
 categories:
 - Swagger

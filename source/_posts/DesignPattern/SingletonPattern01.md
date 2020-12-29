@@ -1,6 +1,6 @@
 ---
 title: 设计模式–单例模式
-permalink: DesignPattern/SingletonPattern01
+permalink: DesignPattern/SingletonPattern01/
 date: 2020-03-20 23:03:45
 categories:
 - 设计模式

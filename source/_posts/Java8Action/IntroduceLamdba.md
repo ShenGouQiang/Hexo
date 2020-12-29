@@ -1,6 +1,6 @@
 ---
 title: 对于Lamdba的引入
-permalink: Java8Action/IntroduceLamdba
+permalink: Java8Action/IntroduceLamdba/
 date: 2019-09-08 04:53:15
 categories:
 - Java

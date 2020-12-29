@@ -1,6 +1,6 @@
 ---
 title: Swagger文档API学习--ApiParam注解
-permalink: Swagger/SwaggerDocumentLearnDay07
+permalink: Swagger/SwaggerDocumentLearnDay07/
 date: 2019-11-03 17:30:23
 categories:
 - Swagger

@@ -1,6 +1,6 @@
 ---
 title: 设计模式-策略模式
-permalink: DesignPattern/StrategyPattern01
+permalink: DesignPattern/StrategyPattern01/
 date: 2020-03-27 21:06:47
 categories:
 - 设计模式

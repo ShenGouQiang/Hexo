@@ -1,6 +1,6 @@
 ---
 title: 利用双向链表+HashMap实现LRU算法
-permalink: Algorithm/AlgorithmLearnDay03
+permalink: Algorithm/AlgorithmLearnDay03/
 date: 2020-03-31 21:35:19
 categories:
 - 算法学习

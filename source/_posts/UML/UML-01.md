@@ -1,6 +1,6 @@
 ---
 title: UML学习概述
-permalink: UML/UML-01
+permalink: UML/UML-01/
 categories:
   - UML学习
 tags:

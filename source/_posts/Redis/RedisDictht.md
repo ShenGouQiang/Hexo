@@ -1,6 +1,6 @@
 ---
 title: Redis数据结构--字典
-permalink: Redis/RedisDictht
+permalink: Redis/RedisDictht/
 date: 2020-06-09 11:50:34
 categories:
 - 中间件

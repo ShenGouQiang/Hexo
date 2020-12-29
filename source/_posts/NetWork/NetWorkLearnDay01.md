@@ -1,6 +1,6 @@
 ---
 title: TCP之三次握手、四次挥手
-permalink: NetWork/NetWorkLearnDay01
+permalink: NetWork/NetWorkLearnDay01/
 date: 2020-08-24 21:57:41
 categories:
 - 计算机网络

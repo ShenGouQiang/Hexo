@@ -1,6 +1,6 @@
 ---
 title: Redis的RDB与AOF
-permalink: Redis/RedisPersistence
+permalink: Redis/RedisPersistence/
 date: 2020-06-08 16:47:08
 categories:
 - 中间件

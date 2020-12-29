@@ -1,6 +1,6 @@
 ---
 title: Swagger文档API学习--ApiImplicitParams注解
-permalink: Swagger/SwaggerDocumentLearnDay06
+permalink: Swagger/SwaggerDocumentLearnDay06/
 date: 2019-11-03 15:03:38
 categories:
 - Swagger

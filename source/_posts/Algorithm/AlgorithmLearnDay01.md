@@ -1,6 +1,6 @@
 ---
 title: 算法：从1+1000000的O(1)的时间复杂度
-permalink: Algorithm/AlgorithmLearnDay01
+permalink: Algorithm/AlgorithmLearnDay01/
 date: 2019-11-27 13:49:50
 categories:
 - 算法学习
