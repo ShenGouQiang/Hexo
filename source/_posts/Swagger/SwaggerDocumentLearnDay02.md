@@ -1,6 +1,6 @@
 ---
 title: Swagger文档API学习--ApiOperation注解
-permalink: Swagger/SwaggerDocumentLearnDay02
+permalink: Swagger/SwaggerDocumentLearnDay02/
 date: 2019-11-01 11:50:08
 categories:
 - Swagger

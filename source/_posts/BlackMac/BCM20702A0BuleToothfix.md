@@ -1,6 +1,6 @@
 ---
 title: 黑苹果--BCM20702A0型号蓝牙修复
-permalink: BlackMac/BCM20702A0BuleToothfix
+permalink: BlackMac/BCM20702A0BuleToothfix/
 date: 2020-06-03 22:27:43
 categories:
 - 黑苹果

@@ -1,6 +1,6 @@
 ---
 title: Markdown插入视频
-permalink: Other/MarkDownInsertVideo
+permalink: Other/MarkDownInsertVideo/
 date: 2019-09-23 15:26:17
 categories:
 - 其他

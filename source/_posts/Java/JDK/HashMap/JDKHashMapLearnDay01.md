@@ -1,6 +1,6 @@
 ---
 title: Java学习--HashMap详解(构造函数)
-permalink: Java/JDK/HashMap/JDKHashMapLearnDay01
+permalink: Java/JDK/HashMap/JDKHashMapLearnDay01/
 date: 2020-02-18 15:52:55
 categories:
 - Java

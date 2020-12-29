@@ -1,6 +1,6 @@
 ---
 title: 自编写Shell脚本-删除Maven无效的文件
-permalink: Shell/BatchDeleteUnusedMavenFile
+permalink: Shell/BatchDeleteUnusedMavenFile/
 date: 2020-08-13 00:09:56
 categories:
 - Linux

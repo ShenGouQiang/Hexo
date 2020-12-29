@@ -1,6 +1,6 @@
 ---
 title: 设计模式–责任链模式
-permalink: DesignPattern/ResponsibilityChainPattern01
+permalink: DesignPattern/ResponsibilityChainPattern01/
 date: 2019-10-27 18:06:22
 categories:
 - 设计模式

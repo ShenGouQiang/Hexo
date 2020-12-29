@@ -1,6 +1,6 @@
 ---
 title: MacOS--修改NTP
-permalink: BlackMac/MacFixTimeNTP
+permalink: BlackMac/MacFixTimeNTP/
 date: 2020-06-06 15:34:34
 categories:
 - 黑苹果

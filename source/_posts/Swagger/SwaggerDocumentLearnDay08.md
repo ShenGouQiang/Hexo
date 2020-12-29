@@ -1,6 +1,6 @@
 ---
 title: Swagger文档API学习--ApiIgnore注解
-permalink: Swagger/SwaggerDocumentLearnDay08
+permalink: Swagger/SwaggerDocumentLearnDay08/
 date: 2019-11-03 17:45:05
 categories:
 - Swagger

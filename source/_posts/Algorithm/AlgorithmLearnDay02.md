@@ -1,6 +1,6 @@
 ---
 title: 利用单链表实现LRU算法
-permalink: Algorithm/AlgorithmLearnDay02
+permalink: Algorithm/AlgorithmLearnDay02/
 date: 2020-03-25 21:53:13
 categories:
 - 算法学习

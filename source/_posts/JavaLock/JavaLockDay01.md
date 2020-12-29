@@ -1,6 +1,6 @@
 ---
 title: Java常见的锁问题汇总(持续更新中)
-permalink: JavaLock/JavaLockDay01
+permalink: JavaLock/JavaLockDay01/
 date: 2019-11-05 18:01:36
 categories:
 - Java

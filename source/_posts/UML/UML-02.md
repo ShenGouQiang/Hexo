@@ -1,6 +1,6 @@
 ---
 title: UML类图学习--类图
-permalink: UML/UML-02
+permalink: UML/UML-02/
 categories:
   - UML学习
 tags:

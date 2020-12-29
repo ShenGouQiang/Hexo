@@ -1,6 +1,6 @@
 ---
 title: Swagger文档API学习--ApiModelProperty注解
-permalink: Swagger/SwaggerDocumentLearnDay05
+permalink: Swagger/SwaggerDocumentLearnDay05/
 date: 2019-11-02 23:09:28
 categories:
 - Swagger

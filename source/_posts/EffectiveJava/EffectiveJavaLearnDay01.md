@@ -1,6 +1,6 @@
 ---
 title: EffectiveJava--第一条：用静态工厂方法代替构造器
-permalink: EffectiveJava/EffectiveJavaLearnDay01
+permalink: EffectiveJava/EffectiveJavaLearnDay01/
 date: 2019-11-22 20:47:02
 categories:
 - Java
