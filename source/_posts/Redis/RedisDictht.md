@@ -66,7 +66,7 @@ typedef struct dictEntry {
 
 &emsp;&emsp;接下来， 我们通过图片的方式，展示哈希表的结构：
 
-![哈希表存储结构](https://oss.shengouqiang.cn/img/Redis/Redis_Dict/Redis_dictht_struct.jpg)
+![哈希表存储结构](https://shengouqiang.cn/img/Redis/Redis_Dict/Redis_dictht_struct.jpg)
 
 ### 字典
 
@@ -116,7 +116,7 @@ typedef struct dictType {
 
 &emsp;&emsp;接下来， 我们通过图片的方式，展示字典的结构：
 
-![字典存储结构](https://oss.shengouqiang.cn/img/Redis/Redis_Dict/Redis_dict_struct.jpg)
+![字典存储结构](https://shengouqiang.cn/img/Redis/Redis_Dict/Redis_dict_struct.jpg)
 
 ## 算法
 

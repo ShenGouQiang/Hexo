@@ -17,7 +17,7 @@ tags:
 
 ## 大体过程
 
-![TCP协议流程图](https://oss.shengouqiang.cn/img/NetWork/Day01/TCP_01.png)
+![TCP协议流程图](https://shengouqiang.cn/img/NetWork/Day01/TCP_01.png)
 
 ## 详细介绍
 

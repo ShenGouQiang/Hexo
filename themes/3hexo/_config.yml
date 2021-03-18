@@ -1,7 +1,7 @@
 version: 1.0.2
 # 你的头像url
-avatar: https://oss.shengouqiang.cn/img/favicon.jpg
-favicon: https://oss.shengouqiang.cn/img/favicon.jpg
+avatar: https://shengouqiang.cn/img/favicon.jpg
+favicon: https://shengouqiang.cn/img/favicon.jpg
 
 #如果网站放置位置不是根目录，则可以通过配置此路径解决静态文件路径错误问题
 # 比如访问地址为 yelog.org/blog 那就需要配置为 blog_path: /blog 才能正常访问
@@ -112,7 +112,7 @@ article_list:
 # 文章列表背景图
 article_bg_img:
   on: true # 是否开启
-  src: https://oss.shengouqiang.cn/img/5d3521411f3f169375.jpg
+  src: https://shengouqiang.cn/img/5d3521411f3f169375.jpg
   opacity: 0.3 # 背景图透明度，范围 0 ～ 1
 
 # 列表样式
