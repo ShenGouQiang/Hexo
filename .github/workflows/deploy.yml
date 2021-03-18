@@ -20,13 +20,15 @@ jobs:
       - name: Setup hexo
         env:
           ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
         run: |
           mkdir -p ~/.ssh/
           echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config --global user.email "shengouqiang@gmail.com"
-          git config --global user.name "shengouqiang"
+          git config --global user.email "$USER_EMAIL"
+          git config --global user.name "$USER_NAME"
           npm install hexo-cli -g
           npm install hexo-deployer-git  --save
           #npm install hexo --save
