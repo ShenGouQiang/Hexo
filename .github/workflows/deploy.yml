@@ -38,8 +38,9 @@ jobs:
           #echo '1'
           hexo clean
           #echo '2'
-          #hexo g
+          hexo g
           #echo '3'
+          hexo d
       - name: Setup aliyun oss
         uses: manyuanrong/setup-ossutil@v2.0
         with:
@@ -52,5 +53,5 @@ jobs:
         run: |
           pwd
           echo `ls .`
-          ossutil cp -rf ./Hexo/public/ oss://$OSS_BUCKET_NAME/
+          ossutil cp -rf ./public/ oss://$OSS_BUCKET_NAME/
           hexo d
