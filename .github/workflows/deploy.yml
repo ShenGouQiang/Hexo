@@ -50,5 +50,6 @@ jobs:
         env:
           OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
         run: |
+          pwd
           ossutil cp -rf ./Hexo/public/ oss://$OSS_BUCKET_NAME/
           hexo d
