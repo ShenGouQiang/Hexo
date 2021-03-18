@@ -46,7 +46,7 @@ tags:
 
 对于Linux，而言，我们的IO大致上是同构下面的方式进行的：
 
-![IO基本模型](https://oss.shengouqiang.cn/img/Java/IO/IO_Base_Module.jpg)
+![IO基本模型](https://shengouqiang.cn/img/Java/IO/IO_Base_Module.jpg)
 
 通过上图我们可知，对于Linux而言，无论是用于网络传输的Socket的IO，还是基于磁盘文件读取的IO操作。他们都是首先会将内容存放到内核(Kernel)的缓冲区中， 然后我们的系统进程再从内核(Kernel)中读取出来。但是用户态进程对于内核的调用的处理方式，和内核对于IO操作的处理方式，就组成了不同的IO类型，接下来，我们逐一进行讲解。
 
@@ -54,7 +54,7 @@ tags:
 
 BIO，也叫做同步阻塞IO。那么这个IO的模型是什么样子的呢？我们可以看下图：
 
-![BIO 模型](https://oss.shengouqiang.cn/img/Java/IO/Linxu_BIO_01.jpg)
+![BIO 模型](https://shengouqiang.cn/img/Java/IO/Linxu_BIO_01.jpg)
 
 在Linux系统中，一切皆文件。对于不同的Socket、IO，在Linux系统中，都是采用文件描述符(fd,全程是file descriptor)来标识的。因此对于一个Socket而言，就是一个文件描述符。
 
@@ -75,7 +75,7 @@ BIO，也叫做同步阻塞IO。那么这个IO的模型是什么样子的呢？�
 
 但是上面这样的处理方式是有问题的。假如我们服务的并发量很高，此时我们又100个Socket，那么我们就要有对应的100个进程。并且，创建一个进程是很耗费系统资源的。基于以上问题,Kernel进行了改进，将可以将Socket改为非阻塞的方式。因此，我们的程序就可以有了下面的变化：
 
-![NIO+轮询 模型](https://oss.shengouqiang.cn/img/Java/IO/Linxu_NIO_01.jpg)
+![NIO+轮询 模型](https://shengouqiang.cn/img/Java/IO/Linxu_NIO_01.jpg)
 
 在这样的方式下，我们不再需要100个进程，只需要一个进程，对这100个fd去进行轮询即可。这是因为此时我们的Socket是非阻塞的方式。
 

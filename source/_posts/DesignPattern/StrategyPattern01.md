@@ -285,4 +285,4 @@ Cat(name=zhao, weight=48.0, age=15, sex=MALE)
 
 &emsp;&emsp;最后，我们总结下，对于策略模式而言，我们可以通过策略模式，在不改变原有代码的情况下<span style="color:red;">(这里的原有代码指的是非客户端代码)</span>。我们可以通过继承接口的方式，来实现一个新的模式。从而达到`开闭原则`。并且，以后不管有多少种策略，我们只需要不停的实现这个新的接口，来新写一个策略具体实现即可。大致上的一个调用关系如下：
 
-![UML类图之接口描述](https://oss.shengouqiang.cn/img/DesignPattern/StrategyPattern01/StrategyCallingRelationship.jpg)
+![UML类图之接口描述](https://shengouqiang.cn/img/DesignPattern/StrategyPattern01/StrategyCallingRelationship.jpg)

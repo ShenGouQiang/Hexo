@@ -94,7 +94,7 @@ public class Client {
 
 &emsp;&emsp;程序运行截图：
 
-![程序运行结果](https://oss.shengouqiang.cn/img/DesignPattern/ObserverPattern01/01.jpg)
+![程序运行结果](https://shengouqiang.cn/img/DesignPattern/ObserverPattern01/01.jpg)
 
 ## 优化一：提炼出警察个数问题
 
@@ -170,7 +170,7 @@ public class Client {
 
 &emsp;&emsp;程序运行截图：
 
-![程序运行结果](https://oss.shengouqiang.cn/img/DesignPattern/ObserverPattern01/02.jpg)
+![程序运行结果](https://shengouqiang.cn/img/DesignPattern/ObserverPattern01/02.jpg)
 
 &emsp;&emsp;至此，我们已经实现了将警察的个数与小偷逮捕的过程进行了解构。在小偷逮捕的过程中，我们可以随意的修改警察的个数，而不是修改`Thief`的代码了
 
@@ -291,7 +291,7 @@ public class PoliceOne implements ArrestInterface {
 
 &emsp;&emsp;程序运行截图：
 
-![程序运行结果](https://oss.shengouqiang.cn/img/DesignPattern/ObserverPattern01/03.jpg)
+![程序运行结果](https://shengouqiang.cn/img/DesignPattern/ObserverPattern01/03.jpg)
 
 &emsp;&emsp;至此，我们发现，无论是小偷，还是警察，他们在内部依赖的都是借口。而不是具体的实现类。当我们有刑警追捕大盗的时候，我们仅仅只是需要新写两个具体的类，分别实现`TheftAndRobberyInterface`和`ArrestInterface`接口即可。无须改动其他的内容。同时，客户让我们的代码更加的灵活，例如：如果警察有事，需要刑警代替警察追捕小偷呢？我们只需要改动，客户端的代码即可。这样在满足了`开放-封闭原则`的同时，我们也满足了`依赖倒转原则`。
 

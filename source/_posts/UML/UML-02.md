@@ -41,7 +41,7 @@ date: 2019-09-12 23:07:55
 ### 接口
 &emsp;&emsp;对于接口而言，我们在上文已经说明了，在UML中我们把接口当作一中特殊的类。下面我们先来一个图片，看一下，在UML中接口是长什么样子的，在这里，我们以ProcessOn为例进行描述，与网上的图片可能有差异。
 
-![UML类图之接口描述](https://oss.shengouqiang.cn/img/UML/10/interface.png)
+![UML类图之接口描述](https://shengouqiang.cn/img/UML/10/interface.png)
 
 &emsp;&emsp;其实，在这里，我们用这一个图就可以说明：
 
@@ -56,7 +56,7 @@ date: 2019-09-12 23:07:55
 ### 真正的类
 &emsp;&emsp;对于实体类而言，在processOn方法中，与接口的展示是一致的。只不过在实体类中，可以存在成员变量。
 
-![UML类图之实类描述](https://oss.shengouqiang.cn/img/UML/10/class.png)
+![UML类图之实类描述](https://shengouqiang.cn/img/UML/10/class.png)
 
 &emsp;&emsp;在这里，我们对于方法不在进行过多的阐述，因为与之前的接口中的说明一致，在这里，我们发现在"Student"类，存在成员变量"name"、"id"。改描述与方法一致。在这里，不再阐述。
 
@@ -72,44 +72,44 @@ date: 2019-09-12 23:07:55
 &emsp;&emsp;依赖关系是用<font color=red>虚线箭头</font>来表示的，箭头指向的方向，就是当前类所需要依赖的实体。
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之依赖关系描述](https://oss.shengouqiang.cn/img/UML/10/dependency.png)
+![UML类图之依赖关系描述](https://shengouqiang.cn/img/UML/10/dependency.png)
 
 ### 泛化关系
 &emsp;&emsp;泛化关系这个名词头一次听的一定比较懵逼，不知道是什么高大上的意思。其实，泛化关系就是继承关系，是用<font color=red>空心三角形+实线</font>来表示的，箭头指向的方向，就是当前类所需要依赖的实体。
 
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之泛化关系描述](https://oss.shengouqiang.cn/img/UML/10/generalization.jpg)
+![UML类图之泛化关系描述](https://shengouqiang.cn/img/UML/10/generalization.jpg)
 
 ### 关联关系
 &emsp;&emsp;关联关系是一种相关影响的关系。例如，森林可以影响气候，而气候也可以影响森林。关联关系是用<font color=red>双向箭头+实线</font>来进行表示的。
 
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之关联关系描述](https://oss.shengouqiang.cn/img/UML/10/composition.png)
+![UML类图之关联关系描述](https://shengouqiang.cn/img/UML/10/composition.png)
 
 ### 聚合关系
 &emsp;&emsp;聚合关系是类之间的一种较弱的耦合关系，如一个字符串数组和一个字符串就是一种聚合关系。在UML中，聚合关系用<font color=red>空心的菱形+实线箭头</font>来表示，箭头指向为被聚合的类。
 
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之聚合关系描述](https://oss.shengouqiang.cn/img/UML/10/association.png)
+![UML类图之聚合关系描述](https://shengouqiang.cn/img/UML/10/association.png)
 
 ### 组合关系
 &emsp;&emsp;组合关系是类之间一种整体与部分之间的关系，如一只青蛙有四条腿，青蛙类与青蛙腿类之间的关系就是组合关系。在UML中，组合关系用<font color=red>实心的菱形+实线箭头</font>来表示，箭头指向为被组合的类。
 
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之组合关系描述](https://oss.shengouqiang.cn/img/UML/10/aggregation.png)
+![UML类图之组合关系描述](https://shengouqiang.cn/img/UML/10/aggregation.png)
 
 ### 实现关系
 &emsp;&emsp;一般来讲实现关系是针对类与接口之间的关系而言的。在UML中，实现关系用<font color=red>空心三角形+虚线</font>来表示。
 
 &emsp;&emsp;下面我们举例说明：
 
-![UML类图之实现关系描述](https://oss.shengouqiang.cn/img/UML/10/realization.png)
+![UML类图之实现关系描述](https://shengouqiang.cn/img/UML/10/realization.png)
 
 ## 组合成一个整体
 
-![UML类图之实现关系描述](https://oss.shengouqiang.cn/img/UML/10/all.png)
+![UML类图之实现关系描述](https://shengouqiang.cn/img/UML/10/all.png)
 

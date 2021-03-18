@@ -24,7 +24,7 @@ tags:
 
 &emsp;&emsp;首先，我们看下`ThreadLocal`的UML类图：
 
-![ThreadLocal-UML类图](https://oss.shengouqiang.cn/img/Java/LearnDay01/ThreadLocalUML.jpg)
+![ThreadLocal-UML类图](https://shengouqiang.cn/img/Java/LearnDay01/ThreadLocalUML.jpg)
 
 &emsp;&emsp;通过类图，我们发现，`ThreadLocal`的内部，主要是通过一个内部类`ThreadLocalMap`来实现的。而`ThreadLocalMap`内部，由定义了一个`Entry`内部类。同时，在途中我们发现了`InheritableThreadLocal`。对于这连个类的不同，我们会在下面的文章中逐一进行讲解。下面，我们先来说一下`ThreadLocal`这个类。
 
@@ -232,7 +232,7 @@ protected T initialValue() {
 
 &emsp;&emsp;整个`get`方法的调用流程图如下：
 
-![ThreadLocal-GET方法](https://oss.shengouqiang.cn/img/Java/LearnDay01/ThreadLocalGet.jpg)
+![ThreadLocal-GET方法](https://shengouqiang.cn/img/Java/LearnDay01/ThreadLocalGet.jpg)
 
 ### ThreadLocalMap内部类
 
@@ -460,7 +460,7 @@ private int expungeStaleEntry(int staleSlot) {
 
 &emsp;&emsp;接下来，我们看下，他们默认的在数组中的位置：
 
-![Entry数组初始位置](https://oss.shengouqiang.cn/img/Java/LearnDay01/EntryPicture01.jpg)
+![Entry数组初始位置](https://shengouqiang.cn/img/Java/LearnDay01/EntryPicture01.jpg)
 
 &emsp;&emsp;我们假设在`index`为`4`的时候，此时的`ThreadLocal`为`null`,则触发`expungeStaleEntry`操作。此时我们会将`tab[4]`的`value`设置为`null`。同时，`tab[4]=null`。然后我们从`index=5`的时候开始算，此时`i=5`。
 
@@ -470,7 +470,7 @@ private int expungeStaleEntry(int staleSlot) {
 
 &emsp;&emsp;因此，对于`i=5`而言，首先会将`tab[5]=null`,然后从`index=4`处开始`线性嗅探`，此时发现`table[5]`为`null`,然后将`20`重新插入到`tab[5]`中。接下来以此类推。最终的结果是：
 
-![Entry数组初始位置](https://oss.shengouqiang.cn/img/Java/LearnDay01/EntryPicture02.jpg)
+![Entry数组初始位置](https://shengouqiang.cn/img/Java/LearnDay01/EntryPicture02.jpg)
 
 ### set方法
 
