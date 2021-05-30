@@ -123,7 +123,9 @@ systemctl stop nginx
 
 ### 附件
 
-[JDK文件](https://shengouqiang.cn/nas/jdk8.zip)
+[JDK文件-第一部分](https://shengouqiang.cn/nas/jdk8.zip.001)
+
+[JDK文件-第二部分](https://shengouqiang.cn/nas/jdk8.zip.002)
 
 [Jrebel文件](https://shengouqiang.cn/nas/Jrebel.zip)
 
