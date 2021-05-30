@@ -35,7 +35,7 @@ tags:
 
 ### 附件
 
-[Frp文件](https://shengouqiang.cn/nas/frp.zip)
+[Frp文件](https://shengouqiang.cn/nas/frp.zip?_blank)
 
 ### 设置开机自启动
 
@@ -72,13 +72,13 @@ systemctl stop frps
 
 ### 附件
 
-[BBR文件](https://shengouqiang.cn/nas/bbr.sh)
+<a href="https://shengouqiang.cn/nas/bbr.sh?_blank" target="_blank">BBR文件</a>
 
 ## nginx
 
 ### 附件
 
-[Nginx文件](https://shengouqiang.cn/nas/nginx.zip)
+[Nginx文件](https://shengouqiang.cn/nas/nginx.zip?_blank)
 
 ### 前置配置
 
@@ -123,11 +123,11 @@ systemctl stop nginx
 
 ### 附件
 
-[JDK文件-第一部分](https://shengouqiang.cn/nas/jdk8.zip.001)
+[JDK文件-第一部分](https://shengouqiang.cn/nas/jdk8.zip.001?_blank)
 
-[JDK文件-第二部分](https://shengouqiang.cn/nas/jdk8.zip.002)
+[JDK文件-第二部分](https://shengouqiang.cn/nas/jdk8.zip.002?_blank)
 
-[Jrebel文件](https://shengouqiang.cn/nas/Jrebel.zip)
+[Jrebel文件](https://shengouqiang.cn/nas/Jrebel.zip?_blank)
 
 ### 环境配置
 
@@ -234,7 +234,7 @@ mysql -uroot -p
 
 #### 附件
 
-[AriaNg文件](https://shengouqiang.cn/nas/aria.zip)
+[AriaNg文件](https://shengouqiang.cn/nas/aria.zip?_blank)
 
 ### Aria Pro
 
