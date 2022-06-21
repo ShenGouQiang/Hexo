@@ -10,7 +10,7 @@ tags:
 
 # Swagger文档API学习--ApiResponses注解
 
-&emsp;&emsp;今天我们讲解`Swagger`的第三个注解，也是一个比较重要的注解---`@ApiResponses`注解。根据以往的惯例，首先先上源码。
+今天我们讲解`Swagger`的第三个注解，也是一个比较重要的注解---`@ApiResponses`注解。根据以往的惯例，首先先上源码。
 
 ## ApiResponses源码
 
@@ -126,32 +126,32 @@ public @interface ApiResponse {
 
 ## @ApiResponses注解
 
-&emsp;&emsp;通过上面的源码，我们依然可以看出，这个注解可以使用在方法上和类的上面，但是一般的情况下， 我们都是用在方法上面。代表的是一个`Http`请求的返回值的描述。通过上面我们可以看出，`@ApiResponses`仅仅只是接收一个`@ApiResponse`的数组，因此，真正的重点其实是`@ApiResponse`注解。
+通过上面的源码，我们依然可以看出，这个注解可以使用在方法上和类的上面，但是一般的情况下， 我们都是用在方法上面。代表的是一个`Http`请求的返回值的描述。通过上面我们可以看出，`@ApiResponses`仅仅只是接收一个`@ApiResponse`的数组，因此，真正的重点其实是`@ApiResponse`注解。
 
 ### code属性
 
-&emsp;&emsp;`http`返回状态码
+`http`返回状态码
 
 ### message属性
 
-&emsp;&emsp;响应码对应的描述
+响应码对应的描述
 
 ### response属性
 
-&emsp;&emsp;描述的是返回的类型
+描述的是返回的类型
 
 ### responseHeaders属性
 
-&emsp;&emsp;指定`response`中`header`的信息列表
+指定`response`中`header`的信息列表
 
 ### responseContainer属性
 
-&emsp;&emsp;在这里，说明的是包装相应的容器。默认情况下，有效值为 `List`、`Set`、`Map`，任何其它值都将被忽略
+在这里，说明的是包装相应的容器。默认情况下，有效值为 `List`、`Set`、`Map`，任何其它值都将被忽略
 
 ### examples属性
 
-&emsp;&emsp;`response`返回的举例说明
+`response`返回的举例说明
 
 ## 总计
 
-&emsp;&emsp;`@ApiResponses`主要描述的是接口的返回信息。
+`@ApiResponses`主要描述的是接口的返回信息。

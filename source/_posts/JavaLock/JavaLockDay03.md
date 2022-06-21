@@ -12,15 +12,15 @@ tags:
 
 # Java--ReentrantLock
 
-&emsp;&emsp;在`JDK`的代码中，我们用于实现`同步方法`的常用的来说，有三种
+在`JDK`的代码中，我们用于实现`同步方法`的常用的来说，有三种
 
 1. `synchronize`
 2. `ReentrantLock`
 3. `countDownLatch`
 
-&emsp;&emsp;其中，我们已经在上一篇文章中讲解了<a href="/JavaLock/JavaLockDay02/">synchronize</a>，现在，我们讲解下`ReentrantLock`。
+其中，我们已经在上一篇文章中讲解了<a href="/JavaLock/JavaLockDay02/">synchronize</a>，现在，我们讲解下`ReentrantLock`。
 
-&emsp;&emsp;在`ReentrantLock`中，我们的锁既可以是`公平锁`,也可以是`非公平锁`。至于具体是哪一种，是根据我们在初始化`ReentrantLock`时，通过构造函数的请求参数来设置的。另外，提一句，`synchronize`只能是非公平锁。 
+在`ReentrantLock`中，我们的锁既可以是`公平锁`,也可以是`非公平锁`。至于具体是哪一种，是根据我们在初始化`ReentrantLock`时，通过构造函数的请求参数来设置的。另外，提一句，`synchronize`只能是非公平锁。 
 
 ```java
     public ReentrantLock() {
@@ -32,21 +32,21 @@ tags:
     }
 ```
 
-&emsp;&emsp;通过上面的代码，我们可以发现，如果我们调用无参的构造函数`ReentrantLock()`，则默认的是`非公平锁`；而如果我们调用的是有参的构造函数`ReentrantLock(boolean fair)`,则取决于我们传入的参数，如果是`false`，则采用的是`非公平锁`，而如果是`true`，则采用的是`公平锁`。
+通过上面的代码，我们可以发现，如果我们调用无参的构造函数`ReentrantLock()`，则默认的是`非公平锁`；而如果我们调用的是有参的构造函数`ReentrantLock(boolean fair)`,则取决于我们传入的参数，如果是`false`，则采用的是`非公平锁`，而如果是`true`，则采用的是`公平锁`。
 
-&emsp;&emsp;那么，对于`公平锁`和`非公平锁`，`ReentrantLock`是怎么实现的呢？
+那么，对于`公平锁`和`非公平锁`，`ReentrantLock`是怎么实现的呢？
 
-&emsp;&emsp;我们通过上面的代码可以看出，如果我们采用`ReentrantLock()`和`ReentrantLock(false)`的时候，此时获取的是`非公平锁`。此时，我们使用的是`NonfairSync`这个静态内部类产生的对象，那么`ReentrantLock`是怎么实现非公平锁的呢？
+我们通过上面的代码可以看出，如果我们采用`ReentrantLock()`和`ReentrantLock(false)`的时候，此时获取的是`非公平锁`。此时，我们使用的是`NonfairSync`这个静态内部类产生的对象，那么`ReentrantLock`是怎么实现非公平锁的呢？
 
-&emsp;&emsp;在我们真正的讲解`ReentrantLock`的非公平锁，其实，我们就是在讲`NonFairSync`这个类。既然，我们想要讲解这个类，那么就面临着我们要知道这个类的一个类图：
+在我们真正的讲解`ReentrantLock`的非公平锁，其实，我们就是在讲`NonFairSync`这个类。既然，我们想要讲解这个类，那么就面临着我们要知道这个类的一个类图：
 
 ![ReentrantLockNonFairLock](https://shengouqiang.cn/img/JavaLock/JavaLockDay03/NonFairSync.jpg)
 
-&emsp;&emsp;接下来，问主要看下这个类。
+接下来，问主要看下这个类。
 
 ## NonFairSync实现非公平锁(加锁)
 
-&emsp;&emsp;首先，我们看下`NonfairSync`的源码：
+首先，我们看下`NonfairSync`的源码：
 
 ```java
 static final class NonfairSync extends Sync {
@@ -95,23 +95,23 @@ public abstract class AbstractQueuedSynchronizer
 }
 ```
 
-&emsp;&emsp;在上面，我们已经罗列出了所有的主要的源码的信息。接下来，我们一点一点的进行分析。
+在上面，我们已经罗列出了所有的主要的源码的信息。接下来，我们一点一点的进行分析。
 
 ### lock方法
 
-&emsp;&emsp;首先，我们查看`NonFairSync`的`lock`方法，我们发现，其实对于`lock`方法而言，很简单。就是如果当前线程需要锁，则首先通过`CAS`自旋的方式，去获取锁，如果锁不存在，那么就去执行`acquire`方法。
+首先，我们查看`NonFairSync`的`lock`方法，我们发现，其实对于`lock`方法而言，很简单。就是如果当前线程需要锁，则首先通过`CAS`自旋的方式，去获取锁，如果锁不存在，那么就去执行`acquire`方法。
 
 ### acquire方法
 
-&emsp;&emsp;然而，在`acquire`方法中，我们看到，主要的业务逻辑在`if`的判断中。在这里，我们发现，`JDK`的库工程师们采用了`模板方法`的设计模式，将整个加锁的过程，已经固化了，只是在不同的地方，需要实现者自己去实现而已。因此，`tryAcquire`方法就是由`NonFairSync`自己去实现的。而`NonFairSync`中的`tryAcquire`方法，仅仅只是调用底层的`nonfairTryAcquire`方法而已。而在`nonfairTryAcquire`方法中，我们发现一个神奇的事情，那就是这个方法中对于获取锁，它仍然通过了一次`CAS`自旋的方式去获取锁。如果没有获取到，才会执行下面的步骤。
+然而，在`acquire`方法中，我们看到，主要的业务逻辑在`if`的判断中。在这里，我们发现，`JDK`的库工程师们采用了`模板方法`的设计模式，将整个加锁的过程，已经固化了，只是在不同的地方，需要实现者自己去实现而已。因此，`tryAcquire`方法就是由`NonFairSync`自己去实现的。而`NonFairSync`中的`tryAcquire`方法，仅仅只是调用底层的`nonfairTryAcquire`方法而已。而在`nonfairTryAcquire`方法中，我们发现一个神奇的事情，那就是这个方法中对于获取锁，它仍然通过了一次`CAS`自旋的方式去获取锁。如果没有获取到，才会执行下面的步骤。
 
-&emsp;&emsp;那在这里就有一个问题了，因为我们在之前的`lock`方法中，已经通过`CAS`自旋的方式去尝试获取锁而失败了，那么为什么我们还要在`nonfairTryAcquire`中再执行一次呢？其实，这里面有一个效率的问题。在这里，是一个典型的通过增加一些冗余代码的方式，来提高执行效率的问题。
+那在这里就有一个问题了，因为我们在之前的`lock`方法中，已经通过`CAS`自旋的方式去尝试获取锁而失败了，那么为什么我们还要在`nonfairTryAcquire`中再执行一次呢？其实，这里面有一个效率的问题。在这里，是一个典型的通过增加一些冗余代码的方式，来提高执行效率的问题。
 
-&emsp;&emsp;OK，到这里，我们开始重新的讲解一下`acquire`这个方法。在这个方法中，我们发现：他的主要部分是放在了`if`语句的里面。在`if`语句中，采用的是短路的原则，来进行一步一步的设置。接下俩，我们讲解下：
+OK，到这里，我们开始重新的讲解一下`acquire`这个方法。在这个方法中，我们发现：他的主要部分是放在了`if`语句的里面。在`if`语句中，采用的是短路的原则，来进行一步一步的设置。接下俩，我们讲解下：
 
 ### tryAcquire方法
 
-&emsp;&emsp;我们首先执行的是`tryAcquire`方法。通过名字可以知道，这个代码的含义是"获取锁"。只有我们获取失败的时候，才会执行后续的流程。
+我们首先执行的是`tryAcquire`方法。通过名字可以知道，这个代码的含义是"获取锁"。只有我们获取失败的时候，才会执行后续的流程。
 
 1.  `tryAcquire`方法调用的是`nonfairTryAcquire`方法。
 2.  在`nonfairTryAcquire`中，我们首先会拿到当前线程，通过新创建一个`Node`的方式，将当前线程信息存放到`Node`信息中。此时我们会判断当前线程是否已经获取到锁。
@@ -121,11 +121,11 @@ public abstract class AbstractQueuedSynchronizer
 
 ### addWaiter方法
 
-&emsp;&emsp;这个方法的调用前提是在`tryAcquire`获取锁失败的时候进行调用的。这个方法的主要目的是为了将未获取到锁的线程，通过`Node`的方式来添加到`队列`中。到此，我们需要介绍一下`AbstractQueuedSynchronizer`也就是`AQS`和他用户存储阻塞线程的`队列`的数据结构。
+这个方法的调用前提是在`tryAcquire`获取锁失败的时候进行调用的。这个方法的主要目的是为了将未获取到锁的线程，通过`Node`的方式来添加到`队列`中。到此，我们需要介绍一下`AbstractQueuedSynchronizer`也就是`AQS`和他用户存储阻塞线程的`队列`的数据结构。
 
 #### AbstractQueuedSynchronizer
 
-&emsp;&emsp;`AbstractQueuedSynchronizer`，我们俗称`AQS`。这个类是实现`ReentrantLock`锁的重要类。这个类采用的是设计模式中的`模板方法`。他帮我们默认了提供了一套关于锁的解决方法。但是对于内部的一些实现，是需要子类去自己实现的,例如`tryAcquire`方法。同时，我们的`NonFairSync`也是继承了这个类。在这个类中，存在了两个成员变量`head`和`tail`。这两个变量，一个是指定了`队列`的头节点，一个指定了`队列`的尾节点。注意的是，这个`队列`采用的是`懒加载`模式。默认情况下，`head`和`tail`的值为`null`。如果举例，我们可以这样表示：
+`AbstractQueuedSynchronizer`，我们俗称`AQS`。这个类是实现`ReentrantLock`锁的重要类。这个类采用的是设计模式中的`模板方法`。他帮我们默认了提供了一套关于锁的解决方法。但是对于内部的一些实现，是需要子类去自己实现的,例如`tryAcquire`方法。同时，我们的`NonFairSync`也是继承了这个类。在这个类中，存在了两个成员变量`head`和`tail`。这两个变量，一个是指定了`队列`的头节点，一个指定了`队列`的尾节点。注意的是，这个`队列`采用的是`懒加载`模式。默认情况下，`head`和`tail`的值为`null`。如果举例，我们可以这样表示：
 
 ![ReentrantLockNonFairLock](https://shengouqiang.cn/img/JavaLock/JavaLockDay03/AQSStructor.jpg)
 
@@ -133,7 +133,7 @@ public abstract class AbstractQueuedSynchronizer
 
 #### `队列`的存储结构
 
-&emsp;&emsp;在`AbstractQueuedSynchronizer`中，我们所有的未获取到锁的线程都会添加到一个`队列`当中。而这个队列，采用的是一个数据结构中典型的`无头的双向链表`的数据模型。对于`列表`中的每一个节点`Node`，主要是由
+在`AbstractQueuedSynchronizer`中，我们所有的未获取到锁的线程都会添加到一个`队列`当中。而这个队列，采用的是一个数据结构中典型的`无头的双向链表`的数据模型。对于`列表`中的每一个节点`Node`，主要是由
 
 - `waitStatus`<span style="color:red;"> - </span>当前节点的状态，其中有
     - `SIGNAL`<span style="color:red;"> - </span>值为`-1`，被标识为该等待唤醒状态的后继结点，当其前继结点的线程释放了同步锁或被取消，将会通知该后继结点的线程执行。说白了，就是处于唤醒状态，只要前继结点释放锁，就会通知标识为SIGNAL状态的后继结点的线程执行
@@ -145,13 +145,13 @@ public abstract class AbstractQueuedSynchronizer
 - `next`<span style="color:red;"> - </span>当前节点的后置节点
 - `thread`<span style="color:red;"> - </span>当前节点对应的线程
 
-&emsp;&emsp;当前，`Node`节点还存在一些其他的变量，在这里，我们主要关注的就是上面的这几个。对于`AQS`而言，我们创建的队列正是通过`Node`节点组成的一个`FIFO`的队列。他的格式如下
+当前，`Node`节点还存在一些其他的变量，在这里，我们主要关注的就是上面的这几个。对于`AQS`而言，我们创建的队列正是通过`Node`节点组成的一个`FIFO`的队列。他的格式如下
 
 ![AQS的FIFO队列](https://shengouqiang.cn/img/JavaLock/JavaLockDay03/AQSFIFOQUEUE.jpg)
 
 ***
 
-&emsp;&emsp;OK，有了上面的前提，我们再看看`addWaiter`这段代码。同样的，这段代码中，`JDK`的库工程师们依然采用了通过冗余代码来提高效率的方式来提升性能，因此，我们只需要看`enq`这个方法即可。其中，源码如下：
+OK，有了上面的前提，我们再看看`addWaiter`这段代码。同样的，这段代码中，`JDK`的库工程师们依然采用了通过冗余代码来提高效率的方式来提升性能，因此，我们只需要看`enq`这个方法即可。其中，源码如下：
 
 ```java
     private Node enq(final Node node) {
@@ -171,15 +171,15 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;在这段代码中，我们依然是通过一个死循环的方式来执行的。首先我们会判断`tail`这个指针。如果我们发现`tail`指针为`null`，那么此时这个队列中根本就不存在。这个也是之前我们讲解的，`AQS`的`队列`采用的`懒加载`的模式进行初始化的(也就是说，并不是事先初始化，而是在我们使用的时候进行初始化)。因此，在`for`循环中的第一个`if`中，就是为了来初始化`队列`的操作。在初始化完成操作之后，会将`head`和`tail`都指向这个新创建的`Node`节点。注意，这个节点不存在任何的`thread`信息。它仅仅指向的是一个`阻塞队列`。
+在这段代码中，我们依然是通过一个死循环的方式来执行的。首先我们会判断`tail`这个指针。如果我们发现`tail`指针为`null`，那么此时这个队列中根本就不存在。这个也是之前我们讲解的，`AQS`的`队列`采用的`懒加载`的模式进行初始化的(也就是说，并不是事先初始化，而是在我们使用的时候进行初始化)。因此，在`for`循环中的第一个`if`中，就是为了来初始化`队列`的操作。在初始化完成操作之后，会将`head`和`tail`都指向这个新创建的`Node`节点。注意，这个节点不存在任何的`thread`信息。它仅仅指向的是一个`阻塞队列`。
 
-&emsp;&emsp;在这里，我们会想到，会不会存在并发的问题呢？其实，是不存在。因为就算是有多个线程进入了`for`循环内，此时多个线程都获取到了`tail`为`null`的情况，此时都回去执行`compareAndSetHead`方法。但是在`compareAndSetHead`中，采用了`CAS`自旋锁的方式进行设置，因此，只可能有一个线程成功，其他的线程都是不会成功的。这样也就解决了`并发`的问题。
+在这里，我们会想到，会不会存在并发的问题呢？其实，是不存在。因为就算是有多个线程进入了`for`循环内，此时多个线程都获取到了`tail`为`null`的情况，此时都回去执行`compareAndSetHead`方法。但是在`compareAndSetHead`中，采用了`CAS`自旋锁的方式进行设置，因此，只可能有一个线程成功，其他的线程都是不会成功的。这样也就解决了`并发`的问题。
 
-&emsp;&emsp;当执行完第一个`if`语句后，或者是当前的`队列`不为空时，此时会执行`else`里面的语句。此时，我们会当前节点`node`的`prev`指向队列的前一个节点，然后通过`CAS`自旋的方式，将当前节点添加到队列的后面。然后将前面一个节点`next`指向当前节点。最后返回插入节点的`prev`节点。
+当执行完第一个`if`语句后，或者是当前的`队列`不为空时，此时会执行`else`里面的语句。此时，我们会当前节点`node`的`prev`指向队列的前一个节点，然后通过`CAS`自旋的方式，将当前节点添加到队列的后面。然后将前面一个节点`next`指向当前节点。最后返回插入节点的`prev`节点。
 
 ### acquireQueued方法
 
-&emsp;&emsp;你有可能会问，到目前为止，我们都是将线程添加到了阻塞队列中，但是并没有去获取锁啊。别急，`acquireQueued`方法就是对于锁`队列`的操作过程。同时，也是`lock`方法的重点方法，我们会以最简便的方式，来进行讲解。
+你有可能会问，到目前为止，我们都是将线程添加到了阻塞队列中，但是并没有去获取锁啊。别急，`acquireQueued`方法就是对于锁`队列`的操作过程。同时，也是`lock`方法的重点方法，我们会以最简便的方式，来进行讲解。
 
 方法的源码如下：
 
@@ -240,24 +240,24 @@ public abstract class AbstractQueuedSynchronizer
     }       
 ```
 
-&emsp;&emsp;首先，我们发现这里仍然是一个`死循环`的方式。然后再`for`循环中进行了两次判断。
+首先，我们发现这里仍然是一个`死循环`的方式。然后再`for`循环中进行了两次判断。
 
-&emsp;&emsp;对于第一个`if`语句，我们首先获取当前节点`prev`节点是不是一个`head`节点，如果不是`head`节点，则跳出当前的`if`判断。那么，这里就有一个问题，我们为什么非要看当前节点是不是在`head`之后的第一个呢？是因为
+对于第一个`if`语句，我们首先获取当前节点`prev`节点是不是一个`head`节点，如果不是`head`节点，则跳出当前的`if`判断。那么，这里就有一个问题，我们为什么非要看当前节点是不是在`head`之后的第一个呢？是因为
 
 1. `head`节点是不存在获取权限判断的。`head`节点存在的目的，是为了形成一个队列
 2. 我们始终认为，`head`节点后面的第一个节点是目前正在获取锁的节点，对于之后的节点，都需要前置的节点已经获取锁才可以。
 3. 对于当前获取锁的节点，我们需要保证我们的后续节点的`waitState`一定是`SIGNAL`。
 
-&emsp;&emsp;所以，在这里，我们解释了为什么判断当前的节点的`prev`一定是`head`的原因。接下来，就是如果当前的`node`是`head`的后置节点，我们就要去获取锁，如果获取锁失败，则会执行第二个`if`语句。如果获取成功
+所以，在这里，我们解释了为什么判断当前的节点的`prev`一定是`head`的原因。接下来，就是如果当前的`node`是`head`的后置节点，我们就要去获取锁，如果获取锁失败，则会执行第二个`if`语句。如果获取成功
 
 1. 将当前的node节点设置为`head`节点。
 2. 将之前的head节点弃用,从`GCRoots`下摘掉，帮助`GC`进行清理
 3. 将`failed`改成false，表示我们已经获取到锁。防止在`finally`中执行`cancelAcquire`操作。
 4. 通过返回一个`false`
 
-&emsp;&emsp;你有可能会问，我们已经拿到锁了，为什么还要返回`false`呢？其实，这个方法的返回值表示的并不是我们有没有拿到锁，而是我们在获取锁的过程中，是否发生了`interrupt`操作。正是因为我们拿到了锁，所以，才是返回`false`。
+你有可能会问，我们已经拿到锁了，为什么还要返回`false`呢？其实，这个方法的返回值表示的并不是我们有没有拿到锁，而是我们在获取锁的过程中，是否发生了`interrupt`操作。正是因为我们拿到了锁，所以，才是返回`false`。
 
-&emsp;&emsp;接下来，我们看下关于第二个`if`操作。第二个`if`操作，主要对于如果我们获取锁失败，或者当前节点不是`head`的后继节点的情况，这样的情况，笼统的讲，就是将自己变成`waiting`状态。具体如下：
+接下来，我们看下关于第二个`if`操作。第二个`if`操作，主要对于如果我们获取锁失败，或者当前节点不是`head`的后继节点的情况，这样的情况，笼统的讲，就是将自己变成`waiting`状态。具体如下：
 
 1. 程序首先执行`shouldParkAfterFailedAcquire`方法，通过这个方法，我们可以猜到，这个方法的目的就是当我们获取锁失败的时候，应该去阻塞我们的线程。在这里`Park`和我们的`wait`是很像的。通过方法的源码我们可以知道：
     - 如果当前节点的`prev`节点是`SIGNAL`状态，则是允许我们将当前节点阻塞的。因为只有是`SIGNAL`状态的节点，才会被`head`进行唤醒，并且获取锁。
@@ -267,7 +267,7 @@ public abstract class AbstractQueuedSynchronizer
 
 ### cancelAcquire方法
 
-&emsp;&emsp;如果程序在执行的过程中，发生了异常，此时会执行`finally`的方法。正常来讲，`finally`方法是方法结束后必须执行的方法，那么在这里，我们为什么要说是在发生异常后执行的呢？因为如果程序正常退出`for`循环，`failed`一定是`false`。只有当程序发生异常，此时`failed`才会为`true`。接下来，我们看下`cancelAcquire`方法的源码：
+如果程序在执行的过程中，发生了异常，此时会执行`finally`的方法。正常来讲，`finally`方法是方法结束后必须执行的方法，那么在这里，我们为什么要说是在发生异常后执行的呢？因为如果程序正常退出`for`循环，`failed`一定是`false`。只有当程序发生异常，此时`failed`才会为`true`。接下来，我们看下`cancelAcquire`方法的源码：
 
 ```java
     private void cancelAcquire(Node node) {
@@ -315,7 +315,7 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;此时在程序中，我们进行了判断。
+此时在程序中，我们进行了判断。
 
 1. 如果当前节点为`null`,则不作任何处理，直接方法结束
 2. 将当前`node`与`thread`进行解绑
@@ -335,7 +335,7 @@ public abstract class AbstractQueuedSynchronizer
 
 ### unlock方法
 
-&emsp;&emsp;首先，废话不多说，我们先上源码：
+首先，废话不多说，我们先上源码：
 
 ```java
  public final boolean release(int arg) {
@@ -349,14 +349,14 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;通过当前代码，我们可以发现：首先我们会尝试释放锁，如果释放锁成功，我们会当前`head`指向的`node`进行判断，
+通过当前代码，我们可以发现：首先我们会尝试释放锁，如果释放锁成功，我们会当前`head`指向的`node`进行判断，
 
 1. 如果不为`null`，则代表队列有值
 2. 如果`waitState`不是初始化
 
-&emsp;&emsp;只有满足以上两点，我们才能够将锁给接下来的线程。
+只有满足以上两点，我们才能够将锁给接下来的线程。
 
-&emsp;&emsp;首先，我们看下`tryRelease`方法
+首先，我们看下`tryRelease`方法
 
 ```java
     protected final boolean tryRelease(int releases) {
@@ -373,9 +373,9 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;首先我们会对当前的`state`减1操作，代表我们已经出了一次同步方法。如果此时我们的`state`为0，代表此时线程已经不再需要锁，同时我们会把重入锁的对象设置为`null`。
+首先我们会对当前的`state`减1操作，代表我们已经出了一次同步方法。如果此时我们的`state`为0，代表此时线程已经不再需要锁，同时我们会把重入锁的对象设置为`null`。
 
-&emsp;&emsp;接下来，我们看下`unparkSuccessor`方法。
+接下来，我们看下`unparkSuccessor`方法。
 
 ```java
     private void unparkSuccessor(Node node) {
@@ -406,13 +406,13 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;首先我们获取当前节点的`waitState`,如果当前节点为`SIGNAL`，则将节点更新为初始化状态。这是因为我们的入参`node`正好是`head`。而`head`正好是我们之前认为的已经获取到锁的线程，现在这个线程已经释放了锁，因此，我们必须将该线程的`waitState`的状态从小于0改掉，在这里，我们一般是改成0,然后我们会从`tail`开始往回找，直到找到最后一个`waitState`为`SIGNAL`的，如果存在，我们直接将其唤醒即可。
+首先我们获取当前节点的`waitState`,如果当前节点为`SIGNAL`，则将节点更新为初始化状态。这是因为我们的入参`node`正好是`head`。而`head`正好是我们之前认为的已经获取到锁的线程，现在这个线程已经释放了锁，因此，我们必须将该线程的`waitState`的状态从小于0改掉，在这里，我们一般是改成0,然后我们会从`tail`开始往回找，直到找到最后一个`waitState`为`SIGNAL`的，如果存在，我们直接将其唤醒即可。
 
 ## ReentrantLock实现公平锁
 
 ### lock方法 
 
-&emsp;&emsp;对于`ReentrantLock`而言，它的`公平锁`和`非公平锁`非常的类似，在这里，我们进行不同部分的代码讲解即可：
+对于`ReentrantLock`而言，它的`公平锁`和`非公平锁`非常的类似，在这里，我们进行不同部分的代码讲解即可：
 
 ```java
     final void lock() {
@@ -420,7 +420,7 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;我们发现，在这里，它并没有通过`CAS`在一开始的时候去获取锁，而是走了通用的逻辑`acquire`。而我们的公平锁类`FairSync`通用的也实现了`tryAcquire`方法。
+我们发现，在这里，它并没有通过`CAS`在一开始的时候去获取锁，而是走了通用的逻辑`acquire`。而我们的公平锁类`FairSync`通用的也实现了`tryAcquire`方法。
 
 ### tryAcquire方法
 
@@ -448,7 +448,7 @@ public abstract class AbstractQueuedSynchronizer
 
 ### hasQueuedPredecessors
 
-&emsp;&emsp;在这里，我们发现，唯一的不同在于方法`hasQueuedPredecessors`,而`hasQueuedPredecessors`的源码为：
+在这里，我们发现，唯一的不同在于方法`hasQueuedPredecessors`,而`hasQueuedPredecessors`的源码为：
 
 ```java
     public final boolean hasQueuedPredecessors() {
@@ -463,8 +463,8 @@ public abstract class AbstractQueuedSynchronizer
     }
 ```
 
-&emsp;&emsp;在这个方法中，进行了判断，对于`head`的后置节点是否是当前的节点，如果不是当前的节点，则代表在当前的node节点之前，有更加重要的节点要获取锁，如果是当前节点，则代表当前节点就是要获取锁的节点。这样的好处是所有的节点都是按照`FIFO`的方式来获取锁。保证了获取锁的公平性。
+在这个方法中，进行了判断，对于`head`的后置节点是否是当前的节点，如果不是当前的节点，则代表在当前的node节点之前，有更加重要的节点要获取锁，如果是当前节点，则代表当前节点就是要获取锁的节点。这样的好处是所有的节点都是按照`FIFO`的方式来获取锁。保证了获取锁的公平性。
 
 ## 总结
 
-&emsp;&emsp;`ReentrantLock`在实际的开发过程中是十分的重要的。对于`ReentrantLock`的源码的研究是十分的有必要的。
+`ReentrantLock`在实际的开发过程中是十分的重要的。对于`ReentrantLock`的源码的研究是十分的有必要的。

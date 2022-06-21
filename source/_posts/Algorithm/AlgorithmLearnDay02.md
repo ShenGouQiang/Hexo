@@ -13,7 +13,7 @@ tags:
 
 # 利用单链表实现LRU算法
 
-&emsp;&emsp;首先，我们先看下对于`Node`的定义：
+首先，我们先看下对于`Node`的定义：
 
 ```java
 package datastructure.linklist.node;
@@ -35,7 +35,7 @@ public class SingletonNode<T> {
 
 ```
 
-&emsp;&emsp;接下来，我们通过
+接下来，我们通过
 
 1. 随机生成一堆数字，代表要读取的页码
 2. 实现LRU算法
@@ -229,7 +229,7 @@ public class LRUBySingletonLinkList {
 }
 ```
 
-&emsp;&emsp;接下来，我们看下运行结果：
+接下来，我们看下运行结果：
 
 ```
 [1, 2, 4, 4, 6, 2, 4, 4, 9, 1, 10, 6, 4, 1, 4, 1, 3, 5, 6, 10]

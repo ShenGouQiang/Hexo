@@ -10,7 +10,7 @@ tags:
 
 # Swagger文档API学习--ApiParam注解
 
-&emsp;&emsp;这个注解也是用来描述一些请求的请求参数的。和`@ApiImplicitParams`比较类似。
+这个注解也是用来描述一些请求的请求参数的。和`@ApiImplicitParams`比较类似。
 
 ## 源码
 
@@ -159,66 +159,66 @@ public @interface ApiParam {
 
 ### name属性
 
-&emsp;&emsp;参数的命名。
+参数的命名。
 
 ### value属性
 
-&emsp;&emsp;参数的简明描述。
+参数的简明描述。
 
 ### defaultValue属性
 
-&emsp;&emsp;参数默认值
+参数默认值
 
 ### allowableValues属性
 
-&emsp;&emsp;标明字段的取值范围，设置的方式有三种
-&emsp;&emsp;&emsp;&emsp;1.第一种是采用枚举的形式。
-&emsp;&emsp;&emsp;&emsp;&emsp;例如：`allowableValue="{first, second, third}"`
-&emsp;&emsp;&emsp;&emsp;2.第二种是采用一个有限的范围，例如`"range[1, 5]"`、`"range(1, 5)"`、`"range[1, 5)"`。其中，
-&emsp;&emsp;&emsp;&emsp;&emsp;2.1 `[`表示是大于等于
-&emsp;&emsp;&emsp;&emsp;&emsp;2.2 `(`表示是大于
-&emsp;&emsp;&emsp;&emsp;&emsp;2.3 `]`表示是小于等于
-&emsp;&emsp;&emsp;&emsp;&emsp;2.4 `)`表示是小于
-&emsp;&emsp;&emsp;&emsp;3.标识的是一个无限的范围。其中，我们使用`infinity`表示无限大，使用`-infinity`表示负无限大。
-&emsp;&emsp;&emsp;&emsp;&emsp;例如:`"range[1, infinity]"`。
+标明字段的取值范围，设置的方式有三种
+1.第一种是采用枚举的形式。
+例如：`allowableValue="{first, second, third}"`
+2.第二种是采用一个有限的范围，例如`"range[1, 5]"`、`"range(1, 5)"`、`"range[1, 5)"`。其中，
+2.1 `[`表示是大于等于
+2.2 `(`表示是大于
+2.3 `]`表示是小于等于
+2.4 `)`表示是小于
+3.标识的是一个无限的范围。其中，我们使用`infinity`表示无限大，使用`-infinity`表示负无限大。
+例如:`"range[1, infinity]"`。
 
 ### required属性
 
-&emsp;&emsp;确定是否是必传字段，默认`是false`。
+确定是否是必传字段，默认`是false`。
 
 ### access属性
 
-&emsp;&emsp;这个属性的意思是允许从API文档中过滤属性，详情，我们可以参见`io.swagger.core.filter.SwaggerSpecFilter`。在接下来的代码中我们会讲到。
+这个属性的意思是允许从API文档中过滤属性，详情，我们可以参见`io.swagger.core.filter.SwaggerSpecFilter`。在接下来的代码中我们会讲到。
 
 ### allowMultiple属性
 
-&emsp;&emsp;表示的是允许多个，一般用在`Array`、`List`上面。
+表示的是允许多个，一般用在`Array`、`List`上面。
 
 ### hidden属性
 
-&emsp;&emsp;从参数列表中隐藏该属性，默认`是false`。
+从参数列表中隐藏该属性，默认`是false`。
 
 ### example属性
 
-&emsp;&emsp;对于非`body`类型的参数的一个举例说明。
+对于非`body`类型的参数的一个举例说明。
 
 ### examples属性
 
-&emsp;&emsp;参数的举例说明，仅适用于`body`类型。
+参数的举例说明，仅适用于`body`类型。
 
  ### type属性
 
-&emsp;&emsp;参数的类型。这字段适用于`paramType`为非`body`的情况，可选的参数类型为：
-&emsp;&emsp;&emsp;&emsp;1. string
-&emsp;&emsp;&emsp;&emsp;2. number
-&emsp;&emsp;&emsp;&emsp;3. integer
-&emsp;&emsp;&emsp;&emsp;4. boolean
-&emsp;&emsp;&emsp;&emsp;5. array
-&emsp;&emsp;&emsp;&emsp;6. file --如果是file的话，那么`consumes`字段必须是`multipart/form-data`, `application/x-www-form-urlencoded`中的一种或几种。
+参数的类型。这字段适用于`paramType`为非`body`的情况，可选的参数类型为：
+1. string
+2. number
+3. integer
+4. boolean
+5. array
+6. file --如果是file的话，那么`consumes`字段必须是`multipart/form-data`, `application/x-www-form-urlencoded`中的一种或几种。
 
 ### format属性
 
-&emsp;&emsp;自定义参数的格式。
+自定义参数的格式。
 
 实际参数名(Common Name)|类型(type)|参数格式(format)|备注(Comments)
 :-:|:-:|:-:|:-:
@@ -236,22 +236,22 @@ password|string|password|用于提示是否需要掩码输入
 
 ### allowEmptyValue属性
 
-&emsp;&emsp;允许参数为空，模式是`false`。
+允许参数为空，模式是`false`。
 
 ### readOnly属性
 
-&emsp;&emsp;设置参数是只读模式，不允许修改。
+设置参数是只读模式，不允许修改。
 
 ### collectionFormat属性
 
-&emsp;&emsp;在这里，如果我们的参数类型是一个数组的话，在这里，我们可以设定数组的格式，通常有：
-&emsp;&emsp;&emsp;&emsp;1. csv---利用逗号`,`分割值
-&emsp;&emsp;&emsp;&emsp;2. ssv---利用空格分割值
-&emsp;&emsp;&emsp;&emsp;3. tsv---利用制表符`\t`分割值
-&emsp;&emsp;&emsp;&emsp;4. pipes---利用管道`|`分割值
-&emsp;&emsp;&emsp;&emsp;5. multi---多元素分割值。
-&emsp;&emsp;默认情况下，是`csv`格式的。
+在这里，如果我们的参数类型是一个数组的话，在这里，我们可以设定数组的格式，通常有：
+1. csv---利用逗号`,`分割值
+2. ssv---利用空格分割值
+3. tsv---利用制表符`\t`分割值
+4. pipes---利用管道`|`分割值
+5. multi---多元素分割值。
+默认情况下，是`csv`格式的。
 
 ## 总结
 
-&emsp;&emsp;`@ApiImplicitParams`和`@ApiParam`注解的功能高度的类似，在实际的使用中，我们可以有选择的使用即可。
+`@ApiImplicitParams`和`@ApiParam`注解的功能高度的类似，在实际的使用中，我们可以有选择的使用即可。

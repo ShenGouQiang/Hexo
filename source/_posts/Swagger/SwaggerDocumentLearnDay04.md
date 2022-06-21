@@ -10,7 +10,7 @@ tags:
 
 # Swagger文档API学习--ApiModel注解
 
-&emsp;&emsp;`@ApiModel`这个注解是比较重要的一个注解。因为在实际的开发过程中，我们知道了请求的地址后，我们更加重要的是关心这个接口的请求入参和返回值。而对于`@ApiModel`这个注解,可以良好的展示出请求参数的含义和返回参数的含义。
+`@ApiModel`这个注解是比较重要的一个注解。因为在实际的开发过程中，我们知道了请求的地址后，我们更加重要的是关心这个接口的请求入参和返回值。而对于`@ApiModel`这个注解,可以良好的展示出请求参数的含义和返回参数的含义。
 
 ## 源码展示
 
@@ -71,31 +71,31 @@ public @interface ApiModel {
 
 ## `@ApiModel`这个注解
 
-&emsp;&emsp;这个注解的是作用在类上面的，是用来描述类的一些基本信息的。下面，我们会逐个的进行讲解。
+这个注解的是作用在类上面的，是用来描述类的一些基本信息的。下面，我们会逐个的进行讲解。
 
 ### value属性
 
-&emsp;&emsp;这个属性，提供的是类的一个备用名。如果我们不设置的的话，那么默认情况下，将使用的是`class`类的名字。
+这个属性，提供的是类的一个备用名。如果我们不设置的的话，那么默认情况下，将使用的是`class`类的名字。
 
 ### description属性
 
-&emsp;&emsp;对于类，提供一个详细的描述信息
+对于类，提供一个详细的描述信息
 
 ### parent属性
 
-&emsp;&emsp;这个属性，描述的是类的一些父类的信息。
+这个属性，描述的是类的一些父类的信息。
 
 ### discriminator属性
 
-&emsp;&emsp;这个属性解释起来有些麻烦，因为这个类主要是体现出了断言当中。
+这个属性解释起来有些麻烦，因为这个类主要是体现出了断言当中。
 
 ### subTypes属性
 
-&emsp;&emsp;举个实例，如果我们此时有一个父类`Animal`。同时，对于这个父类，我们的系统中有这个类的子类`Cat`、`Dog`、`Pig`等。如果我们在我们的父类上，通过这个属性，指定了我们想要使用的子类的话，那么在生成`Swagger`的文档的话，会自动的展示的是`Animal`这个属性，但是在属性的字段中，会显示出子类的一些独有的属性，其实在这里，是不推荐使用的。因为这样会让别人认为，这些子类独有的属性，也是父类才有的。
+举个实例，如果我们此时有一个父类`Animal`。同时，对于这个父类，我们的系统中有这个类的子类`Cat`、`Dog`、`Pig`等。如果我们在我们的父类上，通过这个属性，指定了我们想要使用的子类的话，那么在生成`Swagger`的文档的话，会自动的展示的是`Animal`这个属性，但是在属性的字段中，会显示出子类的一些独有的属性，其实在这里，是不推荐使用的。因为这样会让别人认为，这些子类独有的属性，也是父类才有的。
 
-&emsp;&emsp;假如我们有如下的几个类：
+假如我们有如下的几个类：
 
-&emsp;&emsp;Pet类
+Pet类
 
 ```java
 @ApiModel(value = "Pet", subTypes = {Cat.class},discriminator = "type")
@@ -175,7 +175,7 @@ public class Pet {
 }
 ```
 
-&emsp;&emsp;Cat类
+Cat类
 
 ```java
 import  javax.xml.bind.annotation.XmlRootElement;
@@ -194,7 +194,7 @@ public class Cat extends Pet {
 }
 ```
 
-&emsp;&emsp;接口类
+接口类
 
 ```java
 public interface OrderWebApi {
@@ -204,7 +204,7 @@ public interface OrderWebApi {
 }
 ```
 
-&emsp;&emsp;真正的`Controller`类
+真正的`Controller`类
 
 ```java
 @RestController
@@ -230,14 +230,14 @@ public class OrderWebController  implements OrderWebApi {
 
 ```
 
-&emsp;&emsp;但是真正的`Swagger`文档为
+但是真正的`Swagger`文档为
 
 ![subTypes属性](https://shengouqiang.cn/img/swagger/DocumentDay04/subTypes.png)
 
 ### reference属性
 
-&emsp;&emsp;指定对相应类型定义的引用，覆盖指定的任何其他元数据。
+指定对相应类型定义的引用，覆盖指定的任何其他元数据。
 
 ## 总结
 
-&emsp;&emsp;这个注解主要讲解的是`model`的信息信息，但是对于`POJO`中的内在属性需要参考下一篇文章讲解的`@ApiModelProperty`属性。
+这个注解主要讲解的是`model`的信息信息，但是对于`POJO`中的内在属性需要参考下一篇文章讲解的`@ApiModelProperty`属性。

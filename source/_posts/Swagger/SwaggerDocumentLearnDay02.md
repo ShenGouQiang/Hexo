@@ -10,7 +10,7 @@ tags:
 
 # Swagger文档API学习--ApiOperation注解
 
-&emsp;&emsp;今天我们讲解下`Swagger`文档的第二个注解`@ApiOperation`。首先我们先看一下源码。
+今天我们讲解下`Swagger`文档的第二个注解`@ApiOperation`。首先我们先看一下源码。
 
 ```java
 /**
@@ -204,84 +204,84 @@ public @interface ApiOperation {
 }
 ```
 
-&emsp;&emsp;接下来，我们一个一个的进行讲解。
+接下来，我们一个一个的进行讲解。
 
 ## @ApiOperation注解
 
-&emsp;&emsp;通过上面的代码，我们可以知道，这个注解可以使用在方法上和类的上面，但是一般的情况下， 我们都是用在方法上面。代表的是一个`Http`请求方法的描述。
+通过上面的代码，我们可以知道，这个注解可以使用在方法上和类的上面，但是一般的情况下， 我们都是用在方法上面。代表的是一个`Http`请求方法的描述。
 
 ### value属性
 
-&emsp;&emsp;对于`value`属性，表示的是这个方法的一个总结性的描述，在官网的文档中，建议的是我们在描述的时候，尽可能的总结，将字数控制在`120`个字符以为就行。
+对于`value`属性，表示的是这个方法的一个总结性的描述，在官网的文档中，建议的是我们在描述的时候，尽可能的总结，将字数控制在`120`个字符以为就行。
 
 ### notes属性
 
-&emsp;&emsp;对于`note`属性，标识的是对于一个方法的具体性的描述。
+对于`note`属性，标识的是对于一个方法的具体性的描述。
 
 ### tags属性
 
-&emsp;&emsp;这个操作和之前的`@API`的`tags`属性特别的像，都是给类、请求进行分组、打标签使用的。但是在这里有一点是需要注意的，就是如果同时设置了`@API`的`tags`属性和`@ApiOperation`的`tags`属性，那么此时会通过`@API`的`tags`属性将`Controller`进行分类，而通过`@ApiOperation`的`tags`属性，`Controller`中的请求进行分类。
+这个操作和之前的`@API`的`tags`属性特别的像，都是给类、请求进行分组、打标签使用的。但是在这里有一点是需要注意的，就是如果同时设置了`@API`的`tags`属性和`@ApiOperation`的`tags`属性，那么此时会通过`@API`的`tags`属性将`Controller`进行分类，而通过`@ApiOperation`的`tags`属性，`Controller`中的请求进行分类。
 
 ### response属性
 
-&emsp;&emsp;这个属性设置的是当前请求的返回值类型。例如，我们返回的如果是一个`String`的话，那么在这里写的就是  `String.class`。
+这个属性设置的是当前请求的返回值类型。例如，我们返回的如果是一个`String`的话，那么在这里写的就是  `String.class`。
 
 ### responseContainer属性
 
-&emsp;&emsp;在这里，说明的是包装相应的容器。默认情况下，有效值为 `List`、`Set`、`Map`，任何其它值都将被忽略。
+在这里，说明的是包装相应的容器。默认情况下，有效值为 `List`、`Set`、`Map`，任何其它值都将被忽略。
 
 ### responseReference属性
 
-&emsp;&emsp;这里设置的是一个相应类型的引用。这个引用可以是本地的，也可以是远程的。如果设置了这个值，将会覆盖`response`属性的值。
+这里设置的是一个相应类型的引用。这个引用可以是本地的，也可以是远程的。如果设置了这个值，将会覆盖`response`属性的值。
 
 ### httpMethod属性
 
-&emsp;&emsp;请求方式，例如`GET`、`HEAD`、`POST`、`PUT`、`DELETE`、`OPTIONS`。
+请求方式，例如`GET`、`HEAD`、`POST`、`PUT`、`DELETE`、`OPTIONS`。
 
 ### position属性
 
-&emsp;&emsp;这个属性在`Swagger1.5X`版本中已经不再推荐使用了。因此标记了`@Deprecated`注解。如果配置了多个请求方法，想改变显示的顺序位置
+这个属性在`Swagger1.5X`版本中已经不再推荐使用了。因此标记了`@Deprecated`注解。如果配置了多个请求方法，想改变显示的顺序位置
 
 ### nickname属性
 
-&emsp;&emsp;这个字段对应的是`operationId`字段。第三方工具使用`operationId`来唯一表示此操作.在`Swagger2.0`之后的版本中，这个字段是不在强制的，如果没有，则系统默认为空。
+这个字段对应的是`operationId`字段。第三方工具使用`operationId`来唯一表示此操作.在`Swagger2.0`之后的版本中，这个字段是不在强制的，如果没有，则系统默认为空。
 
 ### produces属性
 
-&emsp;&emsp;指定返回的内容类型，仅当`request`请求头中的(`Accept`)类型中包含该指定类型才返回，例如:`application/json`。
+指定返回的内容类型，仅当`request`请求头中的(`Accept`)类型中包含该指定类型才返回，例如:`application/json`。
 
 ### consumes属性
 
-&emsp;&emsp;指定处理请求的提交内容类型(`Content-Type`)，例如`application/json`。
+指定处理请求的提交内容类型(`Content-Type`)，例如`application/json`。
 
 ### protocols属性
 
-&emsp;&emsp;标识的是当前的请求支持的协议，例如：`http`、`https`、`ws`、`wss`。
+标识的是当前的请求支持的协议，例如：`http`、`https`、`ws`、`wss`。
 
 ### authorizations属性
 
-&emsp;&emsp;高级特性认证时配置。
+高级特性认证时配置。
 
 ### hidden属性
 
-&emsp;&emsp;配置为`true`将在文档中隐藏。隐藏整个`Controller`资源。作用与`@ApiIgnore`类似，但是没有`@ApiIgnore`功能强大。
+配置为`true`将在文档中隐藏。隐藏整个`Controller`资源。作用与`@ApiIgnore`类似，但是没有`@ApiIgnore`功能强大。
 
 ### responseHeaders属性
 
-&emsp;&emsp;指定`response`中`header`的信息列表
+指定`response`中`header`的信息列表
 
 ### code属性
 
-&emsp;&emsp;`http`返回状态码
+`http`返回状态码
 
 ### extensions属性
 
-&emsp;&emsp;可选的扩展数组,举例：`extensions = @Extension(properties ={@ExtensionProperty(name = "author", value = "test@xx.com")})`。
+可选的扩展数组,举例：`extensions = @Extension(properties ={@ExtensionProperty(name = "author", value = "test@xx.com")})`。
 
 ### ignoreJsonView属性
 
-&emsp;&emsp;忽略`JsonView`注解，主要的目的是为了做到向下兼容
+忽略`JsonView`注解，主要的目的是为了做到向下兼容
 
 ## 总结
 
-&emsp;&emsp;今天我们讲解了关于`@ApiOperation`注解的用法。在下面的文章中，我们会总结其他的注解。
+今天我们讲解了关于`@ApiOperation`注解的用法。在下面的文章中，我们会总结其他的注解。

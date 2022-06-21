@@ -10,7 +10,7 @@ tags:
 
 # Swagger文档API学习--ApiImplicitParams注解
 
-&emsp;&emsp;这个注解主要是用来描述方法的请求参数的。例如我们在做`MVC`的开发过程中，当我们需要别人给我们传递参数的时候，我们就可以使用这样的注解，而在我们的代码当中，我们可以使用`Request request`进行接收。例如下面的代码：
+这个注解主要是用来描述方法的请求参数的。例如我们在做`MVC`的开发过程中，当我们需要别人给我们传递参数的时候，我们就可以使用这样的注解，而在我们的代码当中，我们可以使用`Request request`进行接收。例如下面的代码：
 
 ```java
  @ApiImplicitParams({
@@ -46,7 +46,7 @@ public @interface ApiImplicitParams {
 }
 ```
 
-&emsp;&emsp;通过源码我们知道,`@ApiImplicitParams`注解仅仅只是接收一个`@ApiImplicitParam`注解的数组而已，因此，真正的重点在于`@ApiImplicitParam`注解。
+通过源码我们知道,`@ApiImplicitParams`注解仅仅只是接收一个`@ApiImplicitParam`注解的数组而已，因此，真正的重点在于`@ApiImplicitParam`注解。
 
 ## 源码 -- ApiImplicitParam
 
@@ -220,82 +220,82 @@ public @interface ApiImplicitParam {
 
 ### name属性
 
-&emsp;&emsp;请求参数的名字，如果在你的代码中，设置了`paramType`,则该属性代表的是请求路径中的某个关联值，如果没有设置`paramType`属性，则name代表的就是普通的参数的名字。
+请求参数的名字，如果在你的代码中，设置了`paramType`,则该属性代表的是请求路径中的某个关联值，如果没有设置`paramType`属性，则name代表的就是普通的参数的名字。
 
 ### value属性
 
-&emsp;&emsp;参数的简明描述。
+参数的简明描述。
 
 ### defaultValue属性
 
-&emsp;&emsp;参数默认值
+参数默认值
 
 ### allowableValues属性
 
-&emsp;&emsp;标明字段的取值范围，设置的方式有三种
-&emsp;&emsp;&emsp;&emsp;1.第一种是采用枚举的形式。
-&emsp;&emsp;&emsp;&emsp;&emsp;例如：`allowableValue="{first, second, third}"`
-&emsp;&emsp;&emsp;&emsp;2.第二种是采用一个有限的范围，例如`"range[1, 5]"`、`"range(1, 5)"`、`"range[1, 5)"`。其中，
-&emsp;&emsp;&emsp;&emsp;&emsp;2.1 `[`表示是大于等于
-&emsp;&emsp;&emsp;&emsp;&emsp;2.2 `(`表示是大于
-&emsp;&emsp;&emsp;&emsp;&emsp;2.3 `]`表示是小于等于
-&emsp;&emsp;&emsp;&emsp;&emsp;2.4 `)`表示是小于
-&emsp;&emsp;&emsp;&emsp;3.标识的是一个无限的范围。其中，我们使用`infinity`表示无限大，使用`-infinity`表示负无限大。
-&emsp;&emsp;&emsp;&emsp;&emsp;例如:`"range[1, infinity]"`。
+标明字段的取值范围，设置的方式有三种
+1.第一种是采用枚举的形式。
+例如：`allowableValue="{first, second, third}"`
+2.第二种是采用一个有限的范围，例如`"range[1, 5]"`、`"range(1, 5)"`、`"range[1, 5)"`。其中，
+2.1 `[`表示是大于等于
+2.2 `(`表示是大于
+2.3 `]`表示是小于等于
+2.4 `)`表示是小于
+3.标识的是一个无限的范围。其中，我们使用`infinity`表示无限大，使用`-infinity`表示负无限大。
+例如:`"range[1, infinity]"`。
 
 ### required属性
 
-&emsp;&emsp;确定是否是必传字段，默认`是false`。
+确定是否是必传字段，默认`是false`。
 
 ### access属性
 
-&emsp;&emsp;这个属性的意思是允许从API文档中过滤属性，详情，我们可以参见`io.swagger.core.filter.SwaggerSpecFilter`。在接下来的代码中我们会讲到。
+这个属性的意思是允许从API文档中过滤属性，详情，我们可以参见`io.swagger.core.filter.SwaggerSpecFilter`。在接下来的代码中我们会讲到。
 
 ### allowMultiple属性
 
-&emsp;&emsp;表示的是允许多个，一般用在`Array`、`List`上面。
+表示的是允许多个，一般用在`Array`、`List`上面。
 
 ### dataType属性
 
-&emsp;&emsp;参数的数据类型，如果我们设置了这个属性，将被覆盖掉通过内省获得的参数的数据类型。并且这个数据类型可以是基本数据类型，也可以是类的名字。如果是基本数据类型，为了防止抛出`XXX`的错误
-&emsp;&emsp;&emsp;&emsp;1.我们可以采用配置`example`属性一起使用
-&emsp;&emsp;&emsp;&emsp;2.我们可以通过升级`swagger-annotations`和`swagger-models`的版本来避免，升级到`XXX`版本即可。
+参数的数据类型，如果我们设置了这个属性，将被覆盖掉通过内省获得的参数的数据类型。并且这个数据类型可以是基本数据类型，也可以是类的名字。如果是基本数据类型，为了防止抛出`XXX`的错误
+1.我们可以采用配置`example`属性一起使用
+2.我们可以通过升级`swagger-annotations`和`swagger-models`的版本来避免，升级到`XXX`版本即可。
 
 ### dataTypeClass属性
 
-&emsp;&emsp;指定参数的class文件。如果我们在设置中提供了该参数，将自动的覆盖掉`dataType`参数。
+指定参数的class文件。如果我们在设置中提供了该参数，将自动的覆盖掉`dataType`参数。
 
 ### paramType属性
 
-&emsp;&emsp;参数的参数类型，一般有：
-&emsp;&emsp;&emsp;&emsp;1. path
-&emsp;&emsp;&emsp;&emsp;2. query
-&emsp;&emsp;&emsp;&emsp;3. body
-&emsp;&emsp;&emsp;&emsp;4. header
-&emsp;&emsp;&emsp;&emsp;5. form
+参数的参数类型，一般有：
+1. path
+2. query
+3. body
+4. header
+5. form
 
 ### example属性
 
-&emsp;&emsp;对于非`body`类型的参数的一个举例说明。
+对于非`body`类型的参数的一个举例说明。
 
 ### examples属性
 
-&emsp;&emsp;参数的举例说明，仅适用于`body`类型。
+参数的举例说明，仅适用于`body`类型。
 
 ### type属性
 
-&emsp;&emsp;参数的类型。这字段适用于`paramType`为非`body`的情况，可选的参数类型为：
-&emsp;&emsp;&emsp;&emsp;1. string
-&emsp;&emsp;&emsp;&emsp;2. number
-&emsp;&emsp;&emsp;&emsp;3. integer
-&emsp;&emsp;&emsp;&emsp;4. boolean
-&emsp;&emsp;&emsp;&emsp;5. array
-&emsp;&emsp;&emsp;&emsp;6. file --如果是file的话，那么`consumes`字段必须是`multipart/form-data`, `application/x-www-form-urlencoded`中的一种或几种。
+参数的类型。这字段适用于`paramType`为非`body`的情况，可选的参数类型为：
+1. string
+2. number
+3. integer
+4. boolean
+5. array
+6. file --如果是file的话，那么`consumes`字段必须是`multipart/form-data`, `application/x-www-form-urlencoded`中的一种或几种。
 
 
 ### format属性
 
-&emsp;&emsp;自定义参数的格式。
+自定义参数的格式。
 
 实际参数名(Common Name)|类型(type)|参数格式(format)|备注(Comments)
 :-:|:-:|:-:|:-:
@@ -313,23 +313,23 @@ password|string|password|用于提示是否需要掩码输入
 
 ### allowEmptyValue属性
 
-&emsp;&emsp;允许参数为空，模式是`false`。
+允许参数为空，模式是`false`。
 
 ### readOnly属性
 
-&emsp;&emsp;设置参数是只读模式，不允许修改。
+设置参数是只读模式，不允许修改。
 
 ### collectionFormat属性
 
-&emsp;&emsp;在这里，如果我们的参数类型是一个数组的话，在这里，我们可以设定数组的格式，通常有：
-&emsp;&emsp;&emsp;&emsp;1. csv---利用逗号`,`分割值
-&emsp;&emsp;&emsp;&emsp;2. ssv---利用空格分割值
-&emsp;&emsp;&emsp;&emsp;3. tsv---利用制表符`\t`分割值
-&emsp;&emsp;&emsp;&emsp;4. pipes---利用管道`|`分割值
-&emsp;&emsp;&emsp;&emsp;5. multi---多元素分割值。
-&emsp;&emsp;默认情况下，是`csv`格式的。
+在这里，如果我们的参数类型是一个数组的话，在这里，我们可以设定数组的格式，通常有：
+1. csv---利用逗号`,`分割值
+2. ssv---利用空格分割值
+3. tsv---利用制表符`\t`分割值
+4. pipes---利用管道`|`分割值
+5. multi---多元素分割值。
+默认情况下，是`csv`格式的。
 
 
 ## 总结
 
-&emsp;&emsp;`@ApiImplicitParams`和`@ApiImplicitParam`注解主要是用来描述请求参数的一些基本信息的，在实际的工作中经常会用的到。
+`@ApiImplicitParams`和`@ApiImplicitParam`注解主要是用来描述请求参数的一些基本信息的，在实际的工作中经常会用的到。
