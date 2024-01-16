@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>利用单链表实现LRU算法 | 妃子笑</title>
+  <meta name="keywords" content=" 算法 , 算法学习 , 面试算法总结 ">
+  <meta name="description" content="利用单链表实现LRU算法 | 妃子笑">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:type" content="website">
+<meta property="og:title" content="关于&amp;留言板">
+<meta property="og:url" content="https://shengouqiang.cn/about/index.html">
+<meta property="og:site_name" content="妃子笑">
+<meta property="og:description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-08T00:06:42.000Z">
+<meta property="article:modified_time" content="2024-01-16T03:51:15.920Z">
+<meta property="article:author" content="BiggerShen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="https://shengouqiang.cn/img/favicon.jpg">
+
+<link href="/css/style.css?v=1.0.2" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.0.2" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.2" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.2" ></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="true">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="https://shengouqiang.cn/img/favicon.jpg" />
+</a>
+<div class="author">
+    <span>BiggerShen</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="github" href="https://github.com/ShenGouQiang" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:gouqiangshen@126.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=745060797&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="neteasemusic" href="https://music.163.com/#/user/home?id=113720929" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-neteasemusic"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(39)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法学习"><i class="fold iconfont icon-right"></i>算法学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="常用算法证明">常用算法证明<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="黑苹果">黑苹果<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="设计模式">设计模式<small>(4)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(9)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="EffectiveJava">EffectiveJava<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="集合">集合<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Java8学习">Java8学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="JDK">JDK<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="锁问题">锁问题<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其他">其他<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Linux"><i class="fold iconfont icon-right"></i>Linux<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Shell脚本">Shell脚本<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySql"><i class="fold iconfont icon-right"></i>MySql<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="理论学习">理论学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="命令语句">命令语句<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="计算机网络">计算机网络<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="中间件"><i class="fold iconfont icon-right"></i>中间件<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Swagger">Swagger<small>(8)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="UML学习">UML学习<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="39">
+<input type="hidden" id="yelog_site_word_count" value="65.8k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://shengouqiang.cn">妃子笑</a></li>
+            
+            <li><a target="_blank" href="https://yelog.org">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://www.xiaominfo.com">八一菜刀</a></li>
+            
+            <li><a target="_blank" href="https://www.processon.com/view/link/5d9d5dcbe4b0aca79abdf1db">学习计划</a></li>
+            
+            <li><a target="_blank" href="http://ruanyifeng.com/blog/">阮一峰网站</a></li>
+            
+            <li><a target="_blank" href="https://www.52doc.com/">我爱电子书</a></li>
+            
+            <li><a target="_blank" href="https://cloud.tencent.com/developer/column/80381">BAT的乌托邦</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="以 in: 开头进行全文搜索" autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">算法学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">面试算法总结</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">黑苹果</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">蓝牙修复</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">免驱</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">NTP</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">时间同步</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">NVIDIA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">驱动</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">设计模式</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">代码优化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java进阶</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Lamdba</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Java8</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">锁问题</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">每天一个Linux命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">MySql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">隔离级别</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">mysql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">mysql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">计算机网络</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">https</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">视频</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Markdown用法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">其他</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Frps</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Nginx</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">BBR</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Jrebel</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">MySql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Aria</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">数据结构</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">字典</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">持久化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">RDB</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">AOF</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">脚本</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">Swagger</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">UML</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">工具学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">集合</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Map</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">JDK学习</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        <a  class="其他 "
+           href="/Other/VpsAndNasAboutConfig/"
+           data-tag="其他,Frps,Nginx,BBR,Jrebel,MySql,Aria"
+           data-author="" >
+            <span class="post-title" title="一次Frp引发的VPS的相关配置">一次Frp引发的VPS的相关配置</span>
+            <span class="post-date" title="2021-05-30 19:58:11">2021/05/30</span>
+        </a>
+        
+        <a  class="计算机网络 "
+           href="/NetWork/NetWorkLearnDay01/"
+           data-tag="计算机网络,https"
+           data-author="" >
+            <span class="post-title" title="TCP之三次握手、四次挥手">TCP之三次握手、四次挥手</span>
+            <span class="post-date" title="2020-08-24 21:57:41">2020/08/24</span>
+        </a>
+        
+        <a  class="Linux Shell脚本 "
+           href="/Shell/BatchDeleteUnusedMavenFile/"
+           data-tag="Linux,脚本"
+           data-author="" >
+            <span class="post-title" title="自编写Shell脚本-删除Maven无效的文件">自编写Shell脚本-删除Maven无效的文件</span>
+            <span class="post-date" title="2020-08-13 00:09:56">2020/08/13</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisDictht/"
+           data-tag="Redis,数据结构,字典"
+           data-author="" >
+            <span class="post-title" title="Redis数据结构--字典">Redis数据结构--字典</span>
+            <span class="post-date" title="2020-06-09 11:50:34">2020/06/09</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisPersistence/"
+           data-tag="Redis,持久化,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis的RDB与AOF">Redis的RDB与AOF</span>
+            <span class="post-date" title="2020-06-08 16:47:08">2020/06/08</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/NVIDIA_380_10_10_10_40_137_DRIVER/"
+           data-tag="黑苹果,NVIDIA,驱动"
+           data-author="" >
+            <span class="post-title" title="MacOS-NVIDIA显卡驱动380.10.10.10.40.137">MacOS-NVIDIA显卡驱动380.10.10.10.40.137</span>
+            <span class="post-date" title="2020-06-07 16:39:06">2020/06/07</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/MacFixTimeNTP/"
+           data-tag="黑苹果,NTP,时间同步"
+           data-author="" >
+            <span class="post-title" title="MacOS--修改NTP">MacOS--修改NTP</span>
+            <span class="post-date" title="2020-06-06 15:34:34">2020/06/06</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/BCM20702A0BuleToothfix/"
+           data-tag="黑苹果,蓝牙修复,免驱"
+           data-author="" >
+            <span class="post-title" title="黑苹果--BCM20702A0型号蓝牙修复">黑苹果--BCM20702A0型号蓝牙修复</span>
+            <span class="post-date" title="2020-06-03 22:27:43">2020/06/03</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay03/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用双向链表+HashMap实现LRU算法">利用双向链表+HashMap实现LRU算法</span>
+            <span class="post-date" title="2020-03-31 21:35:19">2020/03/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/StrategyPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式-策略模式">设计模式-策略模式</span>
+            <span class="post-date" title="2020-03-27 21:06:47">2020/03/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay02/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用单链表实现LRU算法">利用单链表实现LRU算法</span>
+            <span class="post-date" title="2020-03-25 21:53:13">2020/03/25</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/SingletonPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–单例模式">设计模式–单例模式</span>
+            <span class="post-date" title="2020-03-20 23:03:45">2020/03/20</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay02/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(put操作)">Java学习--HashMap详解(put操作)</span>
+            <span class="post-date" title="2020-03-18 11:48:18">2020/03/18</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay01/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(构造函数)">Java学习--HashMap详解(构造函数)</span>
+            <span class="post-date" title="2020-02-18 15:52:55">2020/02/18</span>
+        </a>
+        
+        <a  class="MySql 理论学习 "
+           href="/mysql/MySqlLearnDay01/"
+           data-tag="MySql学习,隔离级别"
+           data-author="" >
+            <span class="post-title" title="MySql--隔离级别">MySql--隔离级别</span>
+            <span class="post-date" title="2019-12-12 20:32:31">2019/12/12</span>
+        </a>
+        
+        <a  class="Java JDK "
+           href="/Java/JDK/String/JavaLearnDay02/"
+           data-tag="Java学习,JDK学习"
+           data-author="" >
+            <span class="post-title" title="JDK学习--String">JDK学习--String</span>
+            <span class="post-date" title="2019-11-27 19:04:22">2019/11/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay01/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="算法：从1+1000000的O(1)的时间复杂度">算法：从1+1000000的O(1)的时间复杂度</span>
+            <span class="post-date" title="2019-11-27 13:49:50">2019/11/27</span>
+        </a>
+        
+        <a  class="Java EffectiveJava "
+           href="/EffectiveJava/EffectiveJavaLearnDay01/"
+           data-tag="Java学习,代码优化,Java进阶"
+           data-author="" >
+            <span class="post-title" title="EffectiveJava--第一条：用静态工厂方法代替构造器">EffectiveJava--第一条：用静态工厂方法代替构造器</span>
+            <span class="post-date" title="2019-11-22 20:47:02">2019/11/22</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/Java/JDK/Thread/JavaLearnDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="JDK学习--ThreadLocal">JDK学习--ThreadLocal</span>
+            <span class="post-date" title="2019-11-14 22:40:24">2019/11/14</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay03/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--ReentrantLock">Java--ReentrantLock</span>
+            <span class="post-date" title="2019-11-08 21:07:14">2019/11/08</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay02/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--synchronize关键字">Java--synchronize关键字</span>
+            <span class="post-date" title="2019-11-05 20:49:00">2019/11/05</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java常见的锁问题汇总(持续更新中)">Java常见的锁问题汇总(持续更新中)</span>
+            <span class="post-date" title="2019-11-05 18:01:36">2019/11/05</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay08/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiIgnore注解">Swagger文档API学习--ApiIgnore注解</span>
+            <span class="post-date" title="2019-11-03 17:45:05">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay07/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiParam注解">Swagger文档API学习--ApiParam注解</span>
+            <span class="post-date" title="2019-11-03 17:30:23">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay06/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiImplicitParams注解">Swagger文档API学习--ApiImplicitParams注解</span>
+            <span class="post-date" title="2019-11-03 15:03:38">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay05/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModelProperty注解">Swagger文档API学习--ApiModelProperty注解</span>
+            <span class="post-date" title="2019-11-02 23:09:28">2019/11/02</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay04/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModel注解">Swagger文档API学习--ApiModel注解</span>
+            <span class="post-date" title="2019-11-01 15:25:31">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay03/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiResponses注解">Swagger文档API学习--ApiResponses注解</span>
+            <span class="post-date" title="2019-11-01 14:06:19">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay02/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiOperation注解">Swagger文档API学习--ApiOperation注解</span>
+            <span class="post-date" title="2019-11-01 11:50:08">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay01/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--API注解">Swagger文档API学习--API注解</span>
+            <span class="post-date" title="2019-10-31 21:18:25">2019/10/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ResponsibilityChainPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–责任链模式">设计模式–责任链模式</span>
+            <span class="post-date" title="2019-10-27 18:06:22">2019/10/27</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ObserverPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式--观察者模式">设计模式--观察者模式</span>
+            <span class="post-date" title="2019-09-28 12:23:42">2019/09/28</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Other/MarkDownInsertVideo/"
+           data-tag="视频,Markdown用法,其他"
+           data-author="" >
+            <span class="post-title" title="Markdown插入视频">Markdown插入视频</span>
+            <span class="post-date" title="2019-09-23 15:26:17">2019/09/23</span>
+        </a>
+        
+        <a  class="Linux "
+           href="/Linux/Linux-order-day-01/"
+           data-tag="每天一个Linux命令,命令,Linux"
+           data-author="" >
+            <span class="post-title" title="每天一个Linux命令--ls">每天一个Linux命令--ls</span>
+            <span class="post-date" title="2019-09-23 13:31:03">2019/09/23</span>
+        </a>
+        
+        <a  class="MySql 命令语句 "
+           href="/mysql/MYSQL-LEARN-DAY-01/"
+           data-tag="mysql学习,mysql"
+           data-author="" >
+            <span class="post-title" title="MySql学习--基本命令学习">MySql学习--基本命令学习</span>
+            <span class="post-date" title="2019-09-21 14:24:12">2019/09/21</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Git/gitOneMoreAccount/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="同一电脑配置多个Git账号">同一电脑配置多个Git账号</span>
+            <span class="post-date" title="2019-09-16 21:58:58">2019/09/16</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-02/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML类图学习--类图">UML类图学习--类图</span>
+            <span class="post-date" title="2019-09-12 23:07:55">2019/09/12</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-01/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML学习概述">UML学习概述</span>
+            <span class="post-date" title="2019-09-12 22:51:28">2019/09/12</span>
+        </a>
+        
+        <a  class="Java Java8学习 "
+           href="/Java8Action/IntroduceLamdba/"
+           data-tag="Lamdba,Java8"
+           data-author="" >
+            <span class="post-title" title="对于Lamdba的引入">对于Lamdba的引入</span>
+            <span class="post-date" title="2019-09-08 04:53:15">2019/09/08</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-Algorithm/AlgorithmLearnDay02" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">利用单链表实现LRU算法</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a href="javascript:" data-rel="算法学习">算法学习</a>/
+            
+                <a href="javascript:" data-rel="常用算法证明">常用算法证明</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color3">算法</a>
+            
+            <a href="javascript:" class="color5">算法学习</a>
+            
+            <a href="javascript:" class="color2">面试算法总结</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2024-01-16 03:51:15'>2020-03-25 21:53</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:864</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8D%95%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0LRU%E7%AE%97%E6%B3%95"><span class="toc-text">利用单链表实现LRU算法</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-6 i,
+    .toc-level-6 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="利用单链表实现LRU算法"><a href="#利用单链表实现LRU算法" class="headerlink" title="利用单链表实现LRU算法"></a>利用单链表实现LRU算法</h1><p>首先，我们先看下对于<code>Node</code>的定义：</p>
+<pre><code class="java">package datastructure.linklist.node;
+
+import lombok.Data;
+
+/**
+ * 单链表节点
+ * @author BiggerShen
+ * @date 2020/3/25
+ */
+@Data
+public class SingletonNode&lt;T&gt; &#123;
+
+    private T data;
+
+    private SingletonNode&lt;T&gt; next;
+&#125;
+</code></pre>
+<p>接下来，我们通过</p>
+<ol>
+<li>随机生成一堆数字，代表要读取的页码</li>
+<li>实现LRU算法</li>
+</ol>
+<pre><code class="java">package datastructure.linklist.operate;
+
+import datastructure.linklist.node.SingletonNode;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
+/**
+ * using singleton link list to achive a LRU algorithm
+ *
+ * @author BiggerShen
+ * @date 2020/3/25
+ */
+public class LRUBySingletonLinkList &#123;
+
+    /**
+     * Randomly generate a list connection with listSize,
+     * and minNum is the mininum value of the list and must be greater than zero,
+     * and maxNum is the maxnum value of the list and must be greater than zero
+     *
+     * @param listSize the size of the list connection
+     * @param minNum   the mininum value of the list connection
+     * @param maxNum   the maxnum value of the list connection
+     * @return
+     */
+    public static List&lt;Integer&gt; randomIntegerList(Integer listSize, Integer minNum, Integer maxNum) &#123;
+        if (listSize &lt;= 0) &#123;
+            throw new RuntimeException(&quot;the size of the list connection must be greater than zero&quot;);
+        &#125;
+        if (minNum &lt; 0) &#123;
+            throw new RuntimeException(&quot;the mininum of the list connection must be greater than zero&quot;);
+        &#125;
+        if (maxNum &lt; 0) &#123;
+            throw new RuntimeException(&quot;the maxnum of the list connection must be greater than zero&quot;);
+        &#125;
+        if (maxNum &lt; minNum) &#123;
+            throw new RuntimeException(&quot;the maxNum must be greater than minNum&quot;);
+        &#125;
+        int sub = maxNum - minNum;
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;(realListCapacity(listSize));
+        for (int i = 0; i &lt; listSize; i++) &#123;
+            result.add(new Random().nextInt(sub + 1) + minNum);
+        &#125;
+        return result;
+    &#125;
+
+    /**
+     * Returns a power of two size for the given target capacity.
+     *
+     * @param originCapacity
+     * @return
+     */
+    public static Integer realListCapacity(Integer originCapacity) &#123;
+        int n = originCapacity - 1;
+        n |= n &gt;&gt;&gt; 1;
+        n |= n &gt;&gt;&gt; 2;
+        n |= n &gt;&gt;&gt; 4;
+        n |= n &gt;&gt;&gt; 8;
+        n |= n &gt;&gt;&gt; 16;
+        return (n &lt; 0) ? 1 : n + 1;
+    &#125;
+
+    /**
+     * achive the LRU algorithm
+     *
+     * @param readList    random List
+     * @param LRUCacheNum LRU CacheNum
+     * @return
+     */
+    public static SingletonNode&lt;Integer&gt; getLinkListByLRU(List&lt;Integer&gt; readList, Integer LRUCacheNum) &#123;
+        SingletonNode&lt;Integer&gt; head = new SingletonNode&lt;&gt;();
+        readList.forEach(i -&gt; &#123;
+            if (checkValueIsContainedByLinkList(head, i)) &#123;
+                swapTheValueToHead(head, i);
+            &#125; else &#123;
+                if (getLinkListSize(head) &gt;= LRUCacheNum) &#123;
+                    deleteLastNode(head);
+                    swapTheValueToHead(head, i);
+                &#125; else &#123;
+                    swapTheValueToHead(head, i);
+                &#125;
+            &#125;
+            showList(head);
+        &#125;);
+        return head;
+    &#125;
+
+    /**
+     * get the size of the link connection
+     *
+     * @param head
+     * @return
+     */
+    private static Integer getLinkListSize(SingletonNode&lt;Integer&gt; head) &#123;
+        SingletonNode&lt;Integer&gt; tmp = head;
+        int size = 0;
+        while (!Objects.isNull(tmp)) &#123;
+            size++;
+            tmp = tmp.getNext();
+        &#125;
+        return size;
+    &#125;
+
+    /**
+     * Determines whether this value exists in the current collection
+     *
+     * @return
+     */
+    private static Boolean checkValueIsContainedByLinkList(SingletonNode&lt;Integer&gt; head, Integer value) &#123;
+        SingletonNode&lt;Integer&gt; tmp = head;
+        while (!Objects.isNull(tmp)) &#123;
+            if (Objects.equals(tmp.getData(), value)) &#123;
+                return true;
+            &#125;
+            tmp = tmp.getNext();
+        &#125;
+        return false;
+    &#125;
+
+    /**
+     * delete the last one of the list value
+     *
+     * @param head
+     */
+    private static void deleteLastNode(SingletonNode&lt;Integer&gt; head) &#123;
+        SingletonNode&lt;Integer&gt; tmp = head;
+        SingletonNode&lt;Integer&gt; tmpPrev = null;
+        while (!Objects.isNull(tmp.getNext())) &#123;
+            tmpPrev = tmp;
+            tmp = tmp.getNext();
+        &#125;
+        tmpPrev.setNext(null);
+    &#125;
+
+
+    /**
+     * change the target value to the head
+     *
+     * @param head
+     * @param value
+     */
+    private static void swapTheValueToHead(SingletonNode&lt;Integer&gt; head, Integer value) &#123;
+        SingletonNode&lt;Integer&gt; tmpValue = new SingletonNode&lt;&gt;();
+        tmpValue.setData(value);
+        SingletonNode&lt;Integer&gt; tmp = head;
+        tmpValue.setNext(tmp.getNext());
+        tmp.setNext(tmpValue);
+        tmp = tmpValue.getNext();
+        SingletonNode&lt;Integer&gt; tmpPrev = tmpValue;
+        while (!Objects.isNull(tmp)) &#123;
+            if (Objects.equals(tmp.getData(), value)) &#123;
+                tmpPrev.setNext(tmp.getNext());
+                return;
+            &#125;
+            tmpPrev = tmp;
+            tmp = tmp.getNext();
+        &#125;
+    &#125;
+
+    /**
+     * print the link list
+     *
+     * @param head
+     */
+    private static void showList(SingletonNode&lt;Integer&gt; head) &#123;
+        SingletonNode&lt;Integer&gt; tmp = head;
+        while (!Objects.isNull(tmp)) &#123;
+            if (Objects.isNull(tmp.getData())) &#123;
+                tmp = tmp.getNext();
+                continue;
+            &#125;
+            System.out.print(tmp.getData() + &quot;\t&quot;);
+            tmp = tmp.getNext();
+        &#125;
+        System.out.println();
+    &#125;
+
+    public static void main(String[] args) &#123;
+        List&lt;Integer&gt; randomReadList = randomIntegerList(20, 1, 10);
+        System.out.println(randomReadList);
+        SingletonNode&lt;Integer&gt; head = getLinkListByLRU(randomReadList, 4);
+
+    &#125;
+&#125;</code></pre>
+<p>接下来，我们看下运行结果：</p>
+<pre><code>[1, 2, 4, 4, 6, 2, 4, 4, 9, 1, 10, 6, 4, 1, 4, 1, 3, 5, 6, 10]
+1    
+2    1    
+4    2    1    
+4    2    1    
+6    4    2    
+2    6    4    
+4    2    6    
+4    2    6    
+9    4    2    
+1    9    4    
+10    1    9    
+6    10    1    
+4    6    10    
+1    4    6    
+4    1    6    
+1    4    6    
+3    1    4    
+5    3    1    
+6    5    3    
+10    6    5    </code></pre>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎指出任何有错误或不够清晰的表达。可以邮件至 gouqiangshen@126.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a href="javascript:void(0)" class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>利用单链表实现LRU算法</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">864</span></p>
+    <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="BiggerShen">BiggerShen</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-03-25, 21:53:13</p>
+    <p><span class="copy-title">最后更新:</span>2024-01-16, 03:51:15</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/Algorithm/AlgorithmLearnDay02/" title="利用单链表实现LRU算法">https://shengouqiang.cn/Algorithm/AlgorithmLearnDay02/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><a href ='http://beian.miit.gov.cn' target="_blank">京ICP备19032600号    京ICP备19032600号-1</a></p>
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" href="javascript:void(0)"></a>
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="https://shengouqiang.cn/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="https://shengouqiang.cn/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.2" ></script>
+
+<script src="/js/script.js?v=1.0.2" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#算法','#算法学习','#面试算法总结','#黑苹果','#蓝牙修复','#免驱','#NTP','#时间同步','#NVIDIA','#驱动','#设计模式','#Java学习','#代码优化','#Java进阶','#Git','#Lamdba','#Java8','#锁问题','#每天一个Linux命令','#命令','#Linux','#MySql学习','#隔离级别','#mysql学习','#mysql','#计算机网络','#https','#视频','#Markdown用法','#其他','#Frps','#Nginx','#BBR','#Jrebel','#MySql','#Aria','#Redis','#数据结构','#字典','#持久化','#RDB','#AOF','#脚本','#Swagger','#UML','#工具学习','#Java','#集合','#Map','#JDK学习',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("/js/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 582px;
+    }
+    .nav.fullscreen {
+        margin-left: -582px;
+    }
+    .nav-left {
+        width: 160px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 552px;
+        }
+        .nav.fullscreen {
+            margin-left: -552px;
+        }
+        .nav-left {
+            width: 160px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 552px;
+            margin-left: -552px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 552px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://shengouqiang.cn/img/5d3521411f3f169375.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

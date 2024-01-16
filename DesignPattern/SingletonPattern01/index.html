@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>设计模式–单例模式 | 妃子笑</title>
+  <meta name="keywords" content=" 设计模式 ">
+  <meta name="description" content="设计模式–单例模式 | 妃子笑">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:type" content="website">
+<meta property="og:title" content="关于&amp;留言板">
+<meta property="og:url" content="https://shengouqiang.cn/about/index.html">
+<meta property="og:site_name" content="妃子笑">
+<meta property="og:description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-08T00:06:42.000Z">
+<meta property="article:modified_time" content="2024-01-16T03:51:15.920Z">
+<meta property="article:author" content="BiggerShen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="https://shengouqiang.cn/img/favicon.jpg">
+
+<link href="/css/style.css?v=1.0.2" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.0.2" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.2" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.2" ></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="true">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="https://shengouqiang.cn/img/favicon.jpg" />
+</a>
+<div class="author">
+    <span>BiggerShen</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="github" href="https://github.com/ShenGouQiang" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:gouqiangshen@126.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=745060797&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="neteasemusic" href="https://music.163.com/#/user/home?id=113720929" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-neteasemusic"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(39)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法学习"><i class="fold iconfont icon-right"></i>算法学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="常用算法证明">常用算法证明<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="黑苹果">黑苹果<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="设计模式">设计模式<small>(4)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(9)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="EffectiveJava">EffectiveJava<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="集合">集合<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Java8学习">Java8学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="JDK">JDK<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="锁问题">锁问题<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其他">其他<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Linux"><i class="fold iconfont icon-right"></i>Linux<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Shell脚本">Shell脚本<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySql"><i class="fold iconfont icon-right"></i>MySql<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="理论学习">理论学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="命令语句">命令语句<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="计算机网络">计算机网络<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="中间件"><i class="fold iconfont icon-right"></i>中间件<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Swagger">Swagger<small>(8)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="UML学习">UML学习<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="39">
+<input type="hidden" id="yelog_site_word_count" value="65.8k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://shengouqiang.cn">妃子笑</a></li>
+            
+            <li><a target="_blank" href="https://yelog.org">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://www.xiaominfo.com">八一菜刀</a></li>
+            
+            <li><a target="_blank" href="https://www.processon.com/view/link/5d9d5dcbe4b0aca79abdf1db">学习计划</a></li>
+            
+            <li><a target="_blank" href="http://ruanyifeng.com/blog/">阮一峰网站</a></li>
+            
+            <li><a target="_blank" href="https://www.52doc.com/">我爱电子书</a></li>
+            
+            <li><a target="_blank" href="https://cloud.tencent.com/developer/column/80381">BAT的乌托邦</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="以 in: 开头进行全文搜索" autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">算法学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">面试算法总结</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">黑苹果</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">蓝牙修复</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">免驱</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">NTP</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">时间同步</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">NVIDIA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">驱动</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">设计模式</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">代码优化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java进阶</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Lamdba</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Java8</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">锁问题</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">每天一个Linux命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">MySql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">隔离级别</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">mysql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">mysql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">计算机网络</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">https</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">视频</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Markdown用法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">其他</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Frps</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Nginx</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">BBR</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Jrebel</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">MySql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Aria</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">数据结构</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">字典</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">持久化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">RDB</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">AOF</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">脚本</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">Swagger</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">UML</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">工具学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">集合</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Map</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">JDK学习</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        <a  class="其他 "
+           href="/Other/VpsAndNasAboutConfig/"
+           data-tag="其他,Frps,Nginx,BBR,Jrebel,MySql,Aria"
+           data-author="" >
+            <span class="post-title" title="一次Frp引发的VPS的相关配置">一次Frp引发的VPS的相关配置</span>
+            <span class="post-date" title="2021-05-30 19:58:11">2021/05/30</span>
+        </a>
+        
+        <a  class="计算机网络 "
+           href="/NetWork/NetWorkLearnDay01/"
+           data-tag="计算机网络,https"
+           data-author="" >
+            <span class="post-title" title="TCP之三次握手、四次挥手">TCP之三次握手、四次挥手</span>
+            <span class="post-date" title="2020-08-24 21:57:41">2020/08/24</span>
+        </a>
+        
+        <a  class="Linux Shell脚本 "
+           href="/Shell/BatchDeleteUnusedMavenFile/"
+           data-tag="Linux,脚本"
+           data-author="" >
+            <span class="post-title" title="自编写Shell脚本-删除Maven无效的文件">自编写Shell脚本-删除Maven无效的文件</span>
+            <span class="post-date" title="2020-08-13 00:09:56">2020/08/13</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisDictht/"
+           data-tag="Redis,数据结构,字典"
+           data-author="" >
+            <span class="post-title" title="Redis数据结构--字典">Redis数据结构--字典</span>
+            <span class="post-date" title="2020-06-09 11:50:34">2020/06/09</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisPersistence/"
+           data-tag="Redis,持久化,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis的RDB与AOF">Redis的RDB与AOF</span>
+            <span class="post-date" title="2020-06-08 16:47:08">2020/06/08</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/NVIDIA_380_10_10_10_40_137_DRIVER/"
+           data-tag="黑苹果,NVIDIA,驱动"
+           data-author="" >
+            <span class="post-title" title="MacOS-NVIDIA显卡驱动380.10.10.10.40.137">MacOS-NVIDIA显卡驱动380.10.10.10.40.137</span>
+            <span class="post-date" title="2020-06-07 16:39:06">2020/06/07</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/MacFixTimeNTP/"
+           data-tag="黑苹果,NTP,时间同步"
+           data-author="" >
+            <span class="post-title" title="MacOS--修改NTP">MacOS--修改NTP</span>
+            <span class="post-date" title="2020-06-06 15:34:34">2020/06/06</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/BCM20702A0BuleToothfix/"
+           data-tag="黑苹果,蓝牙修复,免驱"
+           data-author="" >
+            <span class="post-title" title="黑苹果--BCM20702A0型号蓝牙修复">黑苹果--BCM20702A0型号蓝牙修复</span>
+            <span class="post-date" title="2020-06-03 22:27:43">2020/06/03</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay03/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用双向链表+HashMap实现LRU算法">利用双向链表+HashMap实现LRU算法</span>
+            <span class="post-date" title="2020-03-31 21:35:19">2020/03/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/StrategyPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式-策略模式">设计模式-策略模式</span>
+            <span class="post-date" title="2020-03-27 21:06:47">2020/03/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay02/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用单链表实现LRU算法">利用单链表实现LRU算法</span>
+            <span class="post-date" title="2020-03-25 21:53:13">2020/03/25</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/SingletonPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–单例模式">设计模式–单例模式</span>
+            <span class="post-date" title="2020-03-20 23:03:45">2020/03/20</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay02/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(put操作)">Java学习--HashMap详解(put操作)</span>
+            <span class="post-date" title="2020-03-18 11:48:18">2020/03/18</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay01/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(构造函数)">Java学习--HashMap详解(构造函数)</span>
+            <span class="post-date" title="2020-02-18 15:52:55">2020/02/18</span>
+        </a>
+        
+        <a  class="MySql 理论学习 "
+           href="/mysql/MySqlLearnDay01/"
+           data-tag="MySql学习,隔离级别"
+           data-author="" >
+            <span class="post-title" title="MySql--隔离级别">MySql--隔离级别</span>
+            <span class="post-date" title="2019-12-12 20:32:31">2019/12/12</span>
+        </a>
+        
+        <a  class="Java JDK "
+           href="/Java/JDK/String/JavaLearnDay02/"
+           data-tag="Java学习,JDK学习"
+           data-author="" >
+            <span class="post-title" title="JDK学习--String">JDK学习--String</span>
+            <span class="post-date" title="2019-11-27 19:04:22">2019/11/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay01/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="算法：从1+1000000的O(1)的时间复杂度">算法：从1+1000000的O(1)的时间复杂度</span>
+            <span class="post-date" title="2019-11-27 13:49:50">2019/11/27</span>
+        </a>
+        
+        <a  class="Java EffectiveJava "
+           href="/EffectiveJava/EffectiveJavaLearnDay01/"
+           data-tag="Java学习,代码优化,Java进阶"
+           data-author="" >
+            <span class="post-title" title="EffectiveJava--第一条：用静态工厂方法代替构造器">EffectiveJava--第一条：用静态工厂方法代替构造器</span>
+            <span class="post-date" title="2019-11-22 20:47:02">2019/11/22</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/Java/JDK/Thread/JavaLearnDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="JDK学习--ThreadLocal">JDK学习--ThreadLocal</span>
+            <span class="post-date" title="2019-11-14 22:40:24">2019/11/14</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay03/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--ReentrantLock">Java--ReentrantLock</span>
+            <span class="post-date" title="2019-11-08 21:07:14">2019/11/08</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay02/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--synchronize关键字">Java--synchronize关键字</span>
+            <span class="post-date" title="2019-11-05 20:49:00">2019/11/05</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java常见的锁问题汇总(持续更新中)">Java常见的锁问题汇总(持续更新中)</span>
+            <span class="post-date" title="2019-11-05 18:01:36">2019/11/05</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay08/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiIgnore注解">Swagger文档API学习--ApiIgnore注解</span>
+            <span class="post-date" title="2019-11-03 17:45:05">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay07/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiParam注解">Swagger文档API学习--ApiParam注解</span>
+            <span class="post-date" title="2019-11-03 17:30:23">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay06/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiImplicitParams注解">Swagger文档API学习--ApiImplicitParams注解</span>
+            <span class="post-date" title="2019-11-03 15:03:38">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay05/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModelProperty注解">Swagger文档API学习--ApiModelProperty注解</span>
+            <span class="post-date" title="2019-11-02 23:09:28">2019/11/02</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay04/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModel注解">Swagger文档API学习--ApiModel注解</span>
+            <span class="post-date" title="2019-11-01 15:25:31">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay03/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiResponses注解">Swagger文档API学习--ApiResponses注解</span>
+            <span class="post-date" title="2019-11-01 14:06:19">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay02/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiOperation注解">Swagger文档API学习--ApiOperation注解</span>
+            <span class="post-date" title="2019-11-01 11:50:08">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay01/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--API注解">Swagger文档API学习--API注解</span>
+            <span class="post-date" title="2019-10-31 21:18:25">2019/10/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ResponsibilityChainPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–责任链模式">设计模式–责任链模式</span>
+            <span class="post-date" title="2019-10-27 18:06:22">2019/10/27</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ObserverPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式--观察者模式">设计模式--观察者模式</span>
+            <span class="post-date" title="2019-09-28 12:23:42">2019/09/28</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Other/MarkDownInsertVideo/"
+           data-tag="视频,Markdown用法,其他"
+           data-author="" >
+            <span class="post-title" title="Markdown插入视频">Markdown插入视频</span>
+            <span class="post-date" title="2019-09-23 15:26:17">2019/09/23</span>
+        </a>
+        
+        <a  class="Linux "
+           href="/Linux/Linux-order-day-01/"
+           data-tag="每天一个Linux命令,命令,Linux"
+           data-author="" >
+            <span class="post-title" title="每天一个Linux命令--ls">每天一个Linux命令--ls</span>
+            <span class="post-date" title="2019-09-23 13:31:03">2019/09/23</span>
+        </a>
+        
+        <a  class="MySql 命令语句 "
+           href="/mysql/MYSQL-LEARN-DAY-01/"
+           data-tag="mysql学习,mysql"
+           data-author="" >
+            <span class="post-title" title="MySql学习--基本命令学习">MySql学习--基本命令学习</span>
+            <span class="post-date" title="2019-09-21 14:24:12">2019/09/21</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Git/gitOneMoreAccount/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="同一电脑配置多个Git账号">同一电脑配置多个Git账号</span>
+            <span class="post-date" title="2019-09-16 21:58:58">2019/09/16</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-02/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML类图学习--类图">UML类图学习--类图</span>
+            <span class="post-date" title="2019-09-12 23:07:55">2019/09/12</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-01/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML学习概述">UML学习概述</span>
+            <span class="post-date" title="2019-09-12 22:51:28">2019/09/12</span>
+        </a>
+        
+        <a  class="Java Java8学习 "
+           href="/Java8Action/IntroduceLamdba/"
+           data-tag="Lamdba,Java8"
+           data-author="" >
+            <span class="post-title" title="对于Lamdba的引入">对于Lamdba的引入</span>
+            <span class="post-date" title="2019-09-08 04:53:15">2019/09/08</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-DesignPattern/SingletonPattern01" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">设计模式–单例模式</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a href="javascript:" data-rel="设计模式">设计模式</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color5">设计模式</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2024-01-16 03:51:15'>2020-03-20 23:03</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:2.6k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%93%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">设计模式–单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%87%92%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">懒汉模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8Double-Check"><span class="toc-text">为什么要使用Double Check</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E5%88%A4%E6%96%AD%E7%9A%84getInstances"><span class="toc-text">无判断的getInstances</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AA%E6%9C%89%E4%B8%80%E5%B1%82if%E5%88%A4%E6%96%AD%E7%9A%84getInstances"><span class="toc-text">只有一层if判断的getInstances</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95if-synchronized-%E6%96%B9%E6%B3%95"><span class="toc-text">单if+synchronized 方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8Cif-synchronized-%E6%96%B9%E6%B3%95"><span class="toc-text">双if+synchronized 方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8-volatile"><span class="toc-text">为什么要使用 volatile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%BA%8F%E5%88%97%E5%8C%96%E5%AF%BC%E8%87%B4%E7%9A%84%E5%8D%95%E4%BE%8B%E5%A4%B1%E8%B4%A5"><span class="toc-text">因序列化导致的单例失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%8F%8D%E5%B0%84%E5%AF%BC%E8%87%B4%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E5%A4%B1%E8%B4%A5"><span class="toc-text">因反射导致的序列化失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%85%8B%E9%9A%86%E5%AF%BC%E8%87%B4%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E5%A4%B1%E8%B4%A5"><span class="toc-text">因克隆导致的序列化失败</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A5%BF%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">饿汉模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Effective-Java%E4%B8%AD%E7%94%A8enum%E5%AE%9E%E7%8E%B0"><span class="toc-text">Effective Java中用enum实现</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-6 i,
+    .toc-level-6 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="设计模式–单例模式"><a href="#设计模式–单例模式" class="headerlink" title="设计模式–单例模式"></a>设计模式–单例模式</h1><p>在写这篇文章之前，想了好久。一直在想要不要写这么一篇文章出来。为什么呢？主要是这个模式在我的后续的学习当中真的十分的重要。但同样的，这个模式现在又是一个被玩坏了的模式。因为只要你去面试，就一定会被问道。但是呢？问的又不是特别的深(大厂可能问的深，请原谅我这个渣渣，哈哈~~)。思来想去，觉得还是要写一下，在这里，我不会说明单例模式的一个发展的过程。仅仅只贴出最终的一个结果。并且简单说明下，在反射、序列号、克隆的情况下，对于单例模式的破坏，以及如何的修复。</p>
+<h2 id="懒汉模式"><a href="#懒汉模式" class="headerlink" title="懒汉模式"></a>懒汉模式</h2><p>首先，我们先贴上代码</p>
+<pre><code class="java">package designpatterns.singleton;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * 懒汉模式
+ *
+ * 防止：
+ *  1.并发
+ *  2.反射(防君子，不妨小人)
+ *  3.克隆
+ *
+ * @author shengouqiang
+ * @date 2020/3/19
+ */
+public class LazySingleton implements Serializable,Cloneable&#123;
+
+    private static int loadCount = 0;
+
+    private static volatile LazySingleton INSTANCES;
+
+    private LazySingleton()&#123;
+        synchronized (HungarySingleton.class)&#123;
+            if(loadCount &lt; 1)&#123;
+                loadCount++;
+            &#125;else&#123;
+                throw new RuntimeException(&quot;HungarySingleton 已被加载过，请直接调用getInstances处理&quot;);
+            &#125;
+        &#125;
+    &#125;
+
+    private Object readResolve()&#123;
+        return getInstances();
+    &#125;
+
+    public static LazySingleton getInstances()&#123;
+        if(Objects.isNull(INSTANCES))&#123;
+            synchronized (LazySingleton.class)&#123;
+                if(Objects.isNull(INSTANCES))&#123;
+                    INSTANCES = new LazySingleton();
+                &#125;
+            &#125;
+        &#125;
+        return INSTANCES;
+    &#125;
+
+    @Override
+    protected Object clone()&#123;
+        return getInstances();
+    &#125;
+&#125;</code></pre>
+<p>在上面的代码中，我们这个代码中的次要部分，这些部分，主要是用来防止序列号、反射、和克隆的破坏，实际上，真正的代码是：</p>
+<pre><code class="java">package designpatterns.singleton;
+
+import java.util.Objects;
+
+/**
+ * 懒汉模式
+ *
+ * 防止：
+ *  1.并发
+ *  2.反射(防君子，不妨小人)
+ *  3.克隆
+ *
+ * @author shengouqiang
+ * @date 2020/3/19
+ */
+public class LazySingleton&#123;
+
+    private static volatile LazySingleton INSTANCES;
+
+    private LazySingleton()&#123;
+    &#125;
+
+    public static LazySingleton getInstances()&#123;
+        if(Objects.isNull(INSTANCES))&#123;
+            synchronized (LazySingleton.class)&#123;
+                if(Objects.isNull(INSTANCES))&#123;
+                    INSTANCES = new LazySingleton();
+                &#125;
+            &#125;
+        &#125;
+        return INSTANCES;
+    &#125;
+&#125;</code></pre>
+<p>OK，上面的这个就是懒汉模式下的单例最核心的代码。在这里，我会主要讲解懒汉式，至于其他的比较简单。</p>
+<p><code>懒汉</code>，顾名思义，就是在真正我们要用到的时候才会去做这件事情，有点类似于现在的<code>拖延症</code>。它是在真正要用到单例实例的时候才会进行初始化操作。降低了内存的开销<span style="color:red;">(说句实话，真心觉得没啥用，纯粹是为了应付面试的一个优点)</span>。在这里，我们要注意的是<code>DCL</code>。这里的<code>DCL</code>是从一篇文章中学到的一个关键字，<code>DCL</code>的真实含义是<code>Double Check + volatile</code>。也就是说，在我们写懒汉模式下，我们要注意的一个步骤。</p>
+<h3 id="为什么要使用Double-Check"><a href="#为什么要使用Double-Check" class="headerlink" title="为什么要使用Double Check"></a>为什么要使用Double Check</h3><p>在这里，我们要说明为什么要使用<code>Double Check</code>。这是因为，对于单例模式，我们要保证的是在我们的系统中，只能有一个实例。因此，在高并发的情况下，可能会出现多个实例的问题，不仅影响到内存的使用率，更有可能因为我们的业务代码的问题，导致一些隐藏的<code>bug</code>，很难被修复。</p>
+<p>在这里，我们要进行逐步优化的优化</p>
+<h4 id="无判断的getInstances"><a href="#无判断的getInstances" class="headerlink" title="无判断的getInstances"></a>无判断的getInstances</h4><pre><code class="java">    public static LazySingleton getInstances()&#123;      
+        return INSTANCES = new LazySingleton();
+    &#125;</code></pre>
+<p>我们可以发现，在这种情况下，如果有两个线程，都需要调用<code>getInstances</code>方法，则每次返回，都返回的是一个新的值。因此这种情况下，是肯定不行的。</p>
+<p>那么接下来，我们家一层if判断，看下结果：</p>
+<h4 id="只有一层if判断的getInstances"><a href="#只有一层if判断的getInstances" class="headerlink" title="只有一层if判断的getInstances"></a>只有一层if判断的getInstances</h4><pre><code class="java">    public static LazySingleton getInstances()&#123;
+        if(Objects.isNull(INSTANCES))&#123;
+            INSTANCES = new LazySingleton();
+        &#125;
+        return INSTANCES;
+    &#125;</code></pre>
+<p>这种情况下，虽然可以保证在单线程的情况下，能够保证是单例模式的。但是在高并发下，依然会存在问题。我们可以通过下面的视频来进行讲解。</p>
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://shengouqiang.cn/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="https://shengouqiang.cn/video/DesignPattern/SingletonPattern/singletonOneIf.mp4" type="video/mp4">
+</video>
+
+
+<p>既然这样，涉及到高并发的问题，那么我们可以采用锁的方式</p>
+<h4 id="单if-synchronized-方法"><a href="#单if-synchronized-方法" class="headerlink" title="单if+synchronized 方法"></a>单if+synchronized 方法</h4><pre><code class="java">    public static LazySingleton getInstances()&#123;
+        if(Objects.isNull(INSTANCES))&#123;
+            synchronized (LazySingleton.class)&#123;
+                INSTANCES = new LazySingleton();
+            &#125;
+        &#125;
+        return INSTANCES;
+    &#125;</code></pre>
+<p>在这里，也有人会问，那为什么不直接将<code>synchronized</code>放入到<code>getInstances</code>方法上呢？首先这么做，也是可以结果多线程的并发问题，但是无论在什么时候，我们调用一次<code>getInstances</code>方法的时候，都要进行一次<code>加锁、释放锁</code>的操作。并且如果后续程序中出现<code>synchronized</code>的方法时候，还会造成阻塞的问题。</p>
+<p>那么，如果是像上面的代码，仅仅只是锁代码块，会解决并发的问题吗？其实是解决不了的。在这里，我们还是通过一个动画的形式，进行讲解。</p>
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://shengouqiang.cn/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="https://shengouqiang.cn/video/DesignPattern/SingletonPattern/SingletonOneIfSynchronized.mp4" type="video/mp4">
+</video>
+
+
+<p>既然如此，我们在<code>synchronized</code>内再进行一次<code>if</code>判断，就可以实现并发情况下的单例模式：</p>
+<h4 id="双if-synchronized-方法"><a href="#双if-synchronized-方法" class="headerlink" title="双if+synchronized 方法"></a>双if+synchronized 方法</h4><pre><code class="java">    public static LazySingleton getInstances()&#123;
+        if(Objects.isNull(INSTANCES))&#123;
+            synchronized (LazySingleton.class)&#123;
+                if(Objects.isNull(INSTANCES))&#123;
+                    INSTANCES = new LazySingleton();
+                &#125;
+            &#125;
+        &#125;
+        return INSTANCES;
+    &#125;</code></pre>
+<p>通过上面的代码，我们可以实现，在并发的模式下，依然可以保证我们的<code>INSTANCES</code>是单例的。接下来，我们依然通过视频进行讲解。</p>
+<video id="video" controls="controls" controlslist="nodownload"  width="1000" height="480" preload="none" poster="https://shengouqiang.cn/img/video/fengmian1000480.jpg">
+      <source id="mp4" src="https://shengouqiang.cn/video/DesignPattern/SingletonPattern/singletonTwoIfSynchronized.mp4" type="video/mp4">
+</video>
+
+
+<p>至此，我们讲解了关于单例模式中<code>DCL</code>的中<code>DC</code>。接下来，我们讲解下<code>DCL</code>中的<code>L</code>。</p>
+<h3 id="为什么要使用-volatile"><a href="#为什么要使用-volatile" class="headerlink" title="为什么要使用 volatile"></a>为什么要使用 volatile</h3><p>大致的讲，就是为了实现变量在多个线程之间的可见性，以及防止指令重排。在这里，我不会过多的进行讲解。我会在之后的文章中，单独用一篇文章进行讲解的。</p>
+<h3 id="因序列化导致的单例失败"><a href="#因序列化导致的单例失败" class="headerlink" title="因序列化导致的单例失败"></a>因序列化导致的单例失败</h3><p>在之前的<code>懒汉式</code>单例模式的完成代码内，我们发现，有一部分代码是</p>
+<pre><code class="java">    private Object readResolve()&#123;
+        return getInstances();
+    &#125;</code></pre>
+<p>在这里，我们发现这段代码在<code>LazySingleton</code>中并没有被调用，那么为什么还要添加这段代码呢？这是因为，这段代码是为了方式在反序列化的时候，给<code>ObjectInputStream</code>进行调用的。</p>
+<p>为什么要这么说呢？我们知道，当我们在将对象<code>序列化、反序列化</code>的时候，都是通过<code>ObjectInputStream/ObjectOutputStream</code>操作的。那么当我们反序列化的时候，会调用<code>readObject</code>方法。而反序列化一个对象在<code>ObjectStreamConstants</code>中的定义是<code>TC_OBJECT</code>，也就是<code>0x73</code>。此时会调用<code>readOrdinaryObject</code>方法。而在<code>readOrdinaryObject</code>方法中，会通过<code>reflect</code>，来检测当前的类中是否存在<code>readResolve</code>方法。如果存在，则直接返回我们重新的<code>readResolve</code>方法的返回值。</p>
+<p>下面是这段源代码，如果有想要研究的同学，可以参考这段源代码：</p>
+<pre><code class="java">        if (obj != null &amp;&amp;
+            handles.lookupException(passHandle) == null &amp;&amp;
+            desc.hasReadResolveMethod())
+        &#123;
+            Object rep = desc.invokeReadResolve(obj);
+            if (unshared &amp;&amp; rep.getClass().isArray()) &#123;
+                rep = cloneArray(rep);
+            &#125;
+            if (rep != obj) &#123;
+                handles.setObject(passHandle, obj = rep);
+            &#125;
+        &#125;</code></pre>
+<p>因此，对于防止反序列化来破坏单例模式的方法，我们可以在我们的单例模式代码中，添加<code>readReslove</code>方法即可。</p>
+<h3 id="因反射导致的序列化失败"><a href="#因反射导致的序列化失败" class="headerlink" title="因反射导致的序列化失败"></a>因反射导致的序列化失败</h3><p>对于反射破坏单例模式的问题，我这里仅仅只给出一个基本的方案。因此<code>reflect</code>实在是太强大了。无论怎么防止，程序员们都能够进行破坏。因此，在这里，我仅仅只是给出一个最简单的方式。也就是在程序中添加一个内置的计数器，每次在调用构造函数的时候，进行判断计数器是否大于1，如果大于1，则代表当前系统中已经存在当前实例。如果小于1，则可以通过构造函数进行获取。</p>
+<p>正式因为反射模式的强大。因此，才说这种方式是一种<code>“防君子，不防小人”</code>的办法了。</p>
+<h3 id="因克隆导致的序列化失败"><a href="#因克隆导致的序列化失败" class="headerlink" title="因克隆导致的序列化失败"></a>因克隆导致的序列化失败</h3><p>对于克隆破坏的单例模式，我们仅仅只需要实现<code>Cloneable</code>接口。然后直接调用<code>getInstances</code>方法返回即可。也就是下面的代码：</p>
+<pre><code class="java">    @Override
+    protected Object clone()&#123;
+        return getInstances();
+    &#125;</code></pre>
+<h2 id="饿汉模式"><a href="#饿汉模式" class="headerlink" title="饿汉模式"></a>饿汉模式</h2><p>首先，我们先贴上代码</p>
+<pre><code class="java">package designpatterns.singleton;
+
+import java.io.Serializable;
+
+/**
+ * 饿汉模式
+ *
+ * 防止：
+ *  1.并发
+ *  2.反射(防君子，不妨小人)
+ *  3.克隆
+ *
+ * @author shengouqiang
+ * @date 2020/3/19
+ */
+public class HungarySingleton implements Serializable,Cloneable &#123;
+
+    private static int loadCount = 0;
+
+    private HungarySingleton()&#123;
+        synchronized (HungarySingleton.class)&#123;
+            if(loadCount &lt; 1)&#123;
+                loadCount++;
+            &#125;else&#123;
+                throw new RuntimeException(&quot;HungarySingleton 已被加载过，请直接调用getInstances处理&quot;);
+            &#125;
+        &#125;
+
+    &#125;
+
+    private Object readResolve()&#123;
+        return getInstances();
+    &#125;
+
+    private static class  HungarySingletonHolder &#123;
+        private static final HungarySingleton INSTANCES = new HungarySingleton();
+        private HungarySingletonHolder()&#123;
+
+        &#125;
+    &#125;
+
+    public static HungarySingleton getInstances() &#123;
+        return HungarySingletonHolder.INSTANCES;
+    &#125;
+
+    @Override
+    protected Object clone()&#123;
+        return getInstances();
+    &#125;
+&#125;</code></pre>
+<p>对于<code>饿汉</code>模式而言，他的单例是通过<code>JVM</code>对于一个class仅加载一次来进行保证的。至于具体的内部细节，我会在后期的<code>jvm</code>章节进行讲解。我们在这里，只需要知道，当<code>jvm</code>的<code>ClassLoader</code>加载一个<code>class</code>后，会自动的初始化静态变量。虽然这么说不是十分的严谨，但是对于理解<code>饿汉</code>模式已经足够了。因此，在<code>懒汉</code>和<code>饿汉</code>模式中，相比较而言，<code>饿汉</code>模式是比较简单的。也是比较推荐的一种。</p>
+<p>而这里之所以采用匿名内部类，是因为应付有些面试的时候，说<code>饿汉</code>模式的情况下，我都不需要使用这个单例，但是你还是加载到内存里面的一种<code>吹毛求疵</code>的问题。</p>
+<p>至于<code>反射</code>、<code>序列化</code>和<code>克隆</code>的讲解，和<code>懒汉模式相同</code>，在这里不再过多的赘述了。</p>
+<h2 id="Effective-Java中用enum实现"><a href="#Effective-Java中用enum实现" class="headerlink" title="Effective Java中用enum实现"></a>Effective Java中用enum实现</h2><p>首先，我们先贴上代码</p>
+<pre><code class="java">package designpatterns.singleton;
+
+import java.io.Serializable;
+
+/**
+ * 枚举模式
+ *
+ * @author shengouqiang
+ * @date 2020/3/19
+ */
+public enum EnumSingleton&#123;
+    INSTANCES;
+
+    public static EnumSingleton getInstances()&#123;
+        return INSTANCES;
+    &#125;
+&#125;</code></pre>
+<p>对于这种写法，是<code>Effective Java</code>的作者推荐的一种写法。对于这种写法，因为<code>enum</code>的原因，天生的提供了<code>反射</code>、<code>序列化</code>、<code>克隆</code>的手法来放着程序创建多个实例。</p>
+<p>但是这种写法比较的让人迷惑，因为我们想要的是一个单例模式，是一个类，而这样做，把我们的单例变成了一个枚举，就感觉别扭。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎指出任何有错误或不够清晰的表达。可以邮件至 gouqiangshen@126.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a href="javascript:void(0)" class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>设计模式–单例模式</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">2.6k</span></p>
+    <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="BiggerShen">BiggerShen</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-03-20, 23:03:45</p>
+    <p><span class="copy-title">最后更新:</span>2024-01-16, 03:51:15</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/DesignPattern/SingletonPattern01/" title="设计模式–单例模式">https://shengouqiang.cn/DesignPattern/SingletonPattern01/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><a href ='http://beian.miit.gov.cn' target="_blank">京ICP备19032600号    京ICP备19032600号-1</a></p>
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" href="javascript:void(0)"></a>
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="https://shengouqiang.cn/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="https://shengouqiang.cn/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.2" ></script>
+
+<script src="/js/script.js?v=1.0.2" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#算法','#算法学习','#面试算法总结','#黑苹果','#蓝牙修复','#免驱','#NTP','#时间同步','#NVIDIA','#驱动','#设计模式','#Java学习','#代码优化','#Java进阶','#Git','#Lamdba','#Java8','#锁问题','#每天一个Linux命令','#命令','#Linux','#MySql学习','#隔离级别','#mysql学习','#mysql','#计算机网络','#https','#视频','#Markdown用法','#其他','#Frps','#Nginx','#BBR','#Jrebel','#MySql','#Aria','#Redis','#数据结构','#字典','#持久化','#RDB','#AOF','#脚本','#Swagger','#UML','#工具学习','#Java','#集合','#Map','#JDK学习',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("/js/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 582px;
+    }
+    .nav.fullscreen {
+        margin-left: -582px;
+    }
+    .nav-left {
+        width: 160px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 552px;
+        }
+        .nav.fullscreen {
+            margin-left: -552px;
+        }
+        .nav-left {
+            width: 160px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 552px;
+            margin-left: -552px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 552px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://shengouqiang.cn/img/5d3521411f3f169375.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

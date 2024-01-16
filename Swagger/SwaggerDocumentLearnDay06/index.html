@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Swagger文档API学习--ApiImplicitParams注解 | 妃子笑</title>
+  <meta name="keywords" content=" Swagger ">
+  <meta name="description" content="Swagger文档API学习--ApiImplicitParams注解 | 妃子笑">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:type" content="website">
+<meta property="og:title" content="关于&amp;留言板">
+<meta property="og:url" content="https://shengouqiang.cn/about/index.html">
+<meta property="og:site_name" content="妃子笑">
+<meta property="og:description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-08T00:06:42.000Z">
+<meta property="article:modified_time" content="2024-01-16T03:51:15.920Z">
+<meta property="article:author" content="BiggerShen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="https://shengouqiang.cn/img/favicon.jpg">
+
+<link href="/css/style.css?v=1.0.2" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.0.2" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.2" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.2" ></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="true">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="https://shengouqiang.cn/img/favicon.jpg" />
+</a>
+<div class="author">
+    <span>BiggerShen</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="github" href="https://github.com/ShenGouQiang" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:gouqiangshen@126.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=745060797&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="neteasemusic" href="https://music.163.com/#/user/home?id=113720929" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-neteasemusic"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(39)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法学习"><i class="fold iconfont icon-right"></i>算法学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="常用算法证明">常用算法证明<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="黑苹果">黑苹果<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="设计模式">设计模式<small>(4)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(9)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="EffectiveJava">EffectiveJava<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="集合">集合<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Java8学习">Java8学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="JDK">JDK<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="锁问题">锁问题<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其他">其他<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Linux"><i class="fold iconfont icon-right"></i>Linux<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Shell脚本">Shell脚本<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySql"><i class="fold iconfont icon-right"></i>MySql<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="理论学习">理论学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="命令语句">命令语句<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="计算机网络">计算机网络<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="中间件"><i class="fold iconfont icon-right"></i>中间件<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Swagger">Swagger<small>(8)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="UML学习">UML学习<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="39">
+<input type="hidden" id="yelog_site_word_count" value="65.8k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://shengouqiang.cn">妃子笑</a></li>
+            
+            <li><a target="_blank" href="https://yelog.org">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://www.xiaominfo.com">八一菜刀</a></li>
+            
+            <li><a target="_blank" href="https://www.processon.com/view/link/5d9d5dcbe4b0aca79abdf1db">学习计划</a></li>
+            
+            <li><a target="_blank" href="http://ruanyifeng.com/blog/">阮一峰网站</a></li>
+            
+            <li><a target="_blank" href="https://www.52doc.com/">我爱电子书</a></li>
+            
+            <li><a target="_blank" href="https://cloud.tencent.com/developer/column/80381">BAT的乌托邦</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="以 in: 开头进行全文搜索" autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">算法学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">面试算法总结</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">黑苹果</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">蓝牙修复</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">免驱</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">NTP</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">时间同步</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">NVIDIA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">驱动</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">设计模式</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">代码优化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java进阶</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Lamdba</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Java8</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">锁问题</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">每天一个Linux命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">MySql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">隔离级别</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">mysql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">mysql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">计算机网络</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">https</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">视频</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Markdown用法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">其他</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Frps</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Nginx</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">BBR</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Jrebel</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">MySql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Aria</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">数据结构</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">字典</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">持久化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">RDB</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">AOF</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">脚本</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">Swagger</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">UML</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">工具学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">集合</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Map</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">JDK学习</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        <a  class="其他 "
+           href="/Other/VpsAndNasAboutConfig/"
+           data-tag="其他,Frps,Nginx,BBR,Jrebel,MySql,Aria"
+           data-author="" >
+            <span class="post-title" title="一次Frp引发的VPS的相关配置">一次Frp引发的VPS的相关配置</span>
+            <span class="post-date" title="2021-05-30 19:58:11">2021/05/30</span>
+        </a>
+        
+        <a  class="计算机网络 "
+           href="/NetWork/NetWorkLearnDay01/"
+           data-tag="计算机网络,https"
+           data-author="" >
+            <span class="post-title" title="TCP之三次握手、四次挥手">TCP之三次握手、四次挥手</span>
+            <span class="post-date" title="2020-08-24 21:57:41">2020/08/24</span>
+        </a>
+        
+        <a  class="Linux Shell脚本 "
+           href="/Shell/BatchDeleteUnusedMavenFile/"
+           data-tag="Linux,脚本"
+           data-author="" >
+            <span class="post-title" title="自编写Shell脚本-删除Maven无效的文件">自编写Shell脚本-删除Maven无效的文件</span>
+            <span class="post-date" title="2020-08-13 00:09:56">2020/08/13</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisDictht/"
+           data-tag="Redis,数据结构,字典"
+           data-author="" >
+            <span class="post-title" title="Redis数据结构--字典">Redis数据结构--字典</span>
+            <span class="post-date" title="2020-06-09 11:50:34">2020/06/09</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisPersistence/"
+           data-tag="Redis,持久化,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis的RDB与AOF">Redis的RDB与AOF</span>
+            <span class="post-date" title="2020-06-08 16:47:08">2020/06/08</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/NVIDIA_380_10_10_10_40_137_DRIVER/"
+           data-tag="黑苹果,NVIDIA,驱动"
+           data-author="" >
+            <span class="post-title" title="MacOS-NVIDIA显卡驱动380.10.10.10.40.137">MacOS-NVIDIA显卡驱动380.10.10.10.40.137</span>
+            <span class="post-date" title="2020-06-07 16:39:06">2020/06/07</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/MacFixTimeNTP/"
+           data-tag="黑苹果,NTP,时间同步"
+           data-author="" >
+            <span class="post-title" title="MacOS--修改NTP">MacOS--修改NTP</span>
+            <span class="post-date" title="2020-06-06 15:34:34">2020/06/06</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/BCM20702A0BuleToothfix/"
+           data-tag="黑苹果,蓝牙修复,免驱"
+           data-author="" >
+            <span class="post-title" title="黑苹果--BCM20702A0型号蓝牙修复">黑苹果--BCM20702A0型号蓝牙修复</span>
+            <span class="post-date" title="2020-06-03 22:27:43">2020/06/03</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay03/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用双向链表+HashMap实现LRU算法">利用双向链表+HashMap实现LRU算法</span>
+            <span class="post-date" title="2020-03-31 21:35:19">2020/03/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/StrategyPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式-策略模式">设计模式-策略模式</span>
+            <span class="post-date" title="2020-03-27 21:06:47">2020/03/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay02/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用单链表实现LRU算法">利用单链表实现LRU算法</span>
+            <span class="post-date" title="2020-03-25 21:53:13">2020/03/25</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/SingletonPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–单例模式">设计模式–单例模式</span>
+            <span class="post-date" title="2020-03-20 23:03:45">2020/03/20</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay02/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(put操作)">Java学习--HashMap详解(put操作)</span>
+            <span class="post-date" title="2020-03-18 11:48:18">2020/03/18</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay01/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(构造函数)">Java学习--HashMap详解(构造函数)</span>
+            <span class="post-date" title="2020-02-18 15:52:55">2020/02/18</span>
+        </a>
+        
+        <a  class="MySql 理论学习 "
+           href="/mysql/MySqlLearnDay01/"
+           data-tag="MySql学习,隔离级别"
+           data-author="" >
+            <span class="post-title" title="MySql--隔离级别">MySql--隔离级别</span>
+            <span class="post-date" title="2019-12-12 20:32:31">2019/12/12</span>
+        </a>
+        
+        <a  class="Java JDK "
+           href="/Java/JDK/String/JavaLearnDay02/"
+           data-tag="Java学习,JDK学习"
+           data-author="" >
+            <span class="post-title" title="JDK学习--String">JDK学习--String</span>
+            <span class="post-date" title="2019-11-27 19:04:22">2019/11/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay01/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="算法：从1+1000000的O(1)的时间复杂度">算法：从1+1000000的O(1)的时间复杂度</span>
+            <span class="post-date" title="2019-11-27 13:49:50">2019/11/27</span>
+        </a>
+        
+        <a  class="Java EffectiveJava "
+           href="/EffectiveJava/EffectiveJavaLearnDay01/"
+           data-tag="Java学习,代码优化,Java进阶"
+           data-author="" >
+            <span class="post-title" title="EffectiveJava--第一条：用静态工厂方法代替构造器">EffectiveJava--第一条：用静态工厂方法代替构造器</span>
+            <span class="post-date" title="2019-11-22 20:47:02">2019/11/22</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/Java/JDK/Thread/JavaLearnDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="JDK学习--ThreadLocal">JDK学习--ThreadLocal</span>
+            <span class="post-date" title="2019-11-14 22:40:24">2019/11/14</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay03/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--ReentrantLock">Java--ReentrantLock</span>
+            <span class="post-date" title="2019-11-08 21:07:14">2019/11/08</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay02/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--synchronize关键字">Java--synchronize关键字</span>
+            <span class="post-date" title="2019-11-05 20:49:00">2019/11/05</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java常见的锁问题汇总(持续更新中)">Java常见的锁问题汇总(持续更新中)</span>
+            <span class="post-date" title="2019-11-05 18:01:36">2019/11/05</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay08/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiIgnore注解">Swagger文档API学习--ApiIgnore注解</span>
+            <span class="post-date" title="2019-11-03 17:45:05">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay07/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiParam注解">Swagger文档API学习--ApiParam注解</span>
+            <span class="post-date" title="2019-11-03 17:30:23">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay06/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiImplicitParams注解">Swagger文档API学习--ApiImplicitParams注解</span>
+            <span class="post-date" title="2019-11-03 15:03:38">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay05/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModelProperty注解">Swagger文档API学习--ApiModelProperty注解</span>
+            <span class="post-date" title="2019-11-02 23:09:28">2019/11/02</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay04/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModel注解">Swagger文档API学习--ApiModel注解</span>
+            <span class="post-date" title="2019-11-01 15:25:31">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay03/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiResponses注解">Swagger文档API学习--ApiResponses注解</span>
+            <span class="post-date" title="2019-11-01 14:06:19">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay02/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiOperation注解">Swagger文档API学习--ApiOperation注解</span>
+            <span class="post-date" title="2019-11-01 11:50:08">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay01/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--API注解">Swagger文档API学习--API注解</span>
+            <span class="post-date" title="2019-10-31 21:18:25">2019/10/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ResponsibilityChainPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–责任链模式">设计模式–责任链模式</span>
+            <span class="post-date" title="2019-10-27 18:06:22">2019/10/27</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ObserverPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式--观察者模式">设计模式--观察者模式</span>
+            <span class="post-date" title="2019-09-28 12:23:42">2019/09/28</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Other/MarkDownInsertVideo/"
+           data-tag="视频,Markdown用法,其他"
+           data-author="" >
+            <span class="post-title" title="Markdown插入视频">Markdown插入视频</span>
+            <span class="post-date" title="2019-09-23 15:26:17">2019/09/23</span>
+        </a>
+        
+        <a  class="Linux "
+           href="/Linux/Linux-order-day-01/"
+           data-tag="每天一个Linux命令,命令,Linux"
+           data-author="" >
+            <span class="post-title" title="每天一个Linux命令--ls">每天一个Linux命令--ls</span>
+            <span class="post-date" title="2019-09-23 13:31:03">2019/09/23</span>
+        </a>
+        
+        <a  class="MySql 命令语句 "
+           href="/mysql/MYSQL-LEARN-DAY-01/"
+           data-tag="mysql学习,mysql"
+           data-author="" >
+            <span class="post-title" title="MySql学习--基本命令学习">MySql学习--基本命令学习</span>
+            <span class="post-date" title="2019-09-21 14:24:12">2019/09/21</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Git/gitOneMoreAccount/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="同一电脑配置多个Git账号">同一电脑配置多个Git账号</span>
+            <span class="post-date" title="2019-09-16 21:58:58">2019/09/16</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-02/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML类图学习--类图">UML类图学习--类图</span>
+            <span class="post-date" title="2019-09-12 23:07:55">2019/09/12</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-01/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML学习概述">UML学习概述</span>
+            <span class="post-date" title="2019-09-12 22:51:28">2019/09/12</span>
+        </a>
+        
+        <a  class="Java Java8学习 "
+           href="/Java8Action/IntroduceLamdba/"
+           data-tag="Lamdba,Java8"
+           data-author="" >
+            <span class="post-title" title="对于Lamdba的引入">对于Lamdba的引入</span>
+            <span class="post-date" title="2019-09-08 04:53:15">2019/09/08</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-Swagger/SwaggerDocumentLearnDay06" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Swagger文档API学习--ApiImplicitParams注解</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a href="javascript:" data-rel="Swagger">Swagger</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color3">Swagger</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2024-01-16 03:51:15'>2019-11-03 15:03</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:1.8k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Swagger%E6%96%87%E6%A1%A3API%E5%AD%A6%E4%B9%A0%E2%80%93ApiImplicitParams%E6%B3%A8%E8%A7%A3"><span class="toc-text">Swagger文档API学习–ApiImplicitParams注解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-%E2%80%93-ApiImplicitParams"><span class="toc-text">源码 – ApiImplicitParams</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-%E2%80%93-ApiImplicitParam"><span class="toc-text">源码 – ApiImplicitParam</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#name%E5%B1%9E%E6%80%A7"><span class="toc-text">name属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#value%E5%B1%9E%E6%80%A7"><span class="toc-text">value属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#defaultValue%E5%B1%9E%E6%80%A7"><span class="toc-text">defaultValue属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#allowableValues%E5%B1%9E%E6%80%A7"><span class="toc-text">allowableValues属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#required%E5%B1%9E%E6%80%A7"><span class="toc-text">required属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#access%E5%B1%9E%E6%80%A7"><span class="toc-text">access属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#allowMultiple%E5%B1%9E%E6%80%A7"><span class="toc-text">allowMultiple属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dataType%E5%B1%9E%E6%80%A7"><span class="toc-text">dataType属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dataTypeClass%E5%B1%9E%E6%80%A7"><span class="toc-text">dataTypeClass属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#paramType%E5%B1%9E%E6%80%A7"><span class="toc-text">paramType属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#example%E5%B1%9E%E6%80%A7"><span class="toc-text">example属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#examples%E5%B1%9E%E6%80%A7"><span class="toc-text">examples属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type%E5%B1%9E%E6%80%A7"><span class="toc-text">type属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#format%E5%B1%9E%E6%80%A7"><span class="toc-text">format属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#allowEmptyValue%E5%B1%9E%E6%80%A7"><span class="toc-text">allowEmptyValue属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#readOnly%E5%B1%9E%E6%80%A7"><span class="toc-text">readOnly属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#collectionFormat%E5%B1%9E%E6%80%A7"><span class="toc-text">collectionFormat属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-6 i,
+    .toc-level-6 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Swagger文档API学习–ApiImplicitParams注解"><a href="#Swagger文档API学习–ApiImplicitParams注解" class="headerlink" title="Swagger文档API学习–ApiImplicitParams注解"></a>Swagger文档API学习–ApiImplicitParams注解</h1><p>这个注解主要是用来描述方法的请求参数的。例如我们在做<code>MVC</code>的开发过程中，当我们需要别人给我们传递参数的时候，我们就可以使用这样的注解，而在我们的代码当中，我们可以使用<code>Request request</code>进行接收。例如下面的代码：</p>
+<pre><code class="java"> @ApiImplicitParams(&#123;
+    @ApiImplicitParam(name = &quot;name&quot;, value = &quot;User&#39;s name&quot;, required = true, dataType = &quot;string&quot;, paramType = &quot;query&quot;),
+    @ApiImplicitParam(name = &quot;email&quot;, value = &quot;User&#39;s email&quot;, required = false, dataType = &quot;string&quot;, paramType = &quot;query&quot;),
+    @ApiImplicitParam(name = &quot;id&quot;, value = &quot;User ID&quot;, required = true, dataType = &quot;long&quot;, paramType = &quot;query&quot;)
+  &#125;)
+ public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException &#123;...&#125;</code></pre>
+<h2 id="源码-–-ApiImplicitParams"><a href="#源码-–-ApiImplicitParams" class="headerlink" title="源码 – ApiImplicitParams"></a>源码 – ApiImplicitParams</h2><pre><code class="java">package io.swagger.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * A wrapper to allow a list of multiple &#123;@link ApiImplicitParam&#125; objects.
+ *
+ * @see ApiImplicitParam
+ */
+@Target(&#123;ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.TYPE&#125;)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ApiImplicitParams &#123;
+    /**
+     * A list of &#123;@link ApiImplicitParam&#125;s available to the API operation.
+     */
+    ApiImplicitParam[] value();
+&#125;</code></pre>
+<p>通过源码我们知道,<code>@ApiImplicitParams</code>注解仅仅只是接收一个<code>@ApiImplicitParam</code>注解的数组而已，因此，真正的重点在于<code>@ApiImplicitParam</code>注解。</p>
+<h2 id="源码-–-ApiImplicitParam"><a href="#源码-–-ApiImplicitParam" class="headerlink" title="源码 – ApiImplicitParam"></a>源码 – ApiImplicitParam</h2><pre><code class="java">package io.swagger.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Represents a single parameter in an API Operation.
+ * &lt;p&gt;
+ * While &#123;@link ApiParam&#125; is bound to a JAX-RS parameter,
+ * method or field, this allows you to manually define a parameter in a fine-tuned manner.
+ * This is the only way to define parameters when using Servlets or other non-JAX-RS
+ * environments.
+ * &lt;p&gt;
+ * This annotation must be used as a value of &#123;@link ApiImplicitParams&#125;
+ * in order to be parsed.
+ *
+ * @see ApiImplicitParams
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ApiImplicitParam &#123;
+    /**
+     * Name of the parameter.
+     * &lt;p&gt;
+     * For proper Swagger functionality, follow these rules when naming your parameters based on &#123;@link #paramType()&#125;:
+     * &lt;ol&gt;
+     * &lt;li&gt;If &#123;@code paramType&#125; is &quot;path&quot;, the name should be the associated section in the path.&lt;/li&gt;
+     * &lt;li&gt;For all other cases, the name should be the parameter name as your application expects to accept.&lt;/li&gt;
+     * &lt;/ol&gt;
+     *
+     * @see #paramType()
+     */
+    String name() default &quot;&quot;;
+
+    /**
+     * A brief description of the parameter.
+     */
+    String value() default &quot;&quot;;
+
+    /**
+     * Describes the default value for the parameter.
+     */
+    String defaultValue() default &quot;&quot;;
+
+    /**
+     * Limits the acceptable values for this parameter.
+     * &lt;p&gt;
+     * There are three ways to describe the allowable values:
+     * &lt;ol&gt;
+     * &lt;li&gt;To set a list of values, provide a comma-separated list.
+     * For example: &#123;@code first, second, third&#125;.&lt;/li&gt;
+     * &lt;li&gt;To set a range of values, start the value with &quot;range&quot;, and surrounding by square
+     * brackets include the minimum and maximum values, or round brackets for exclusive minimum and maximum values.
+     * For example: &#123;@code range[1, 5]&#125;, &#123;@code range(1, 5)&#125;, &#123;@code range[1, 5)&#125;.&lt;/li&gt;
+     * &lt;li&gt;To set a minimum/maximum value, use the same format for range but use &quot;infinity&quot;
+     * or &quot;-infinity&quot; as the second value. For example, &#123;@code range[1, infinity]&#125; means the
+     * minimum allowable value of this parameter is 1.&lt;/li&gt;
+     * &lt;/ol&gt;
+     */
+    String allowableValues() default &quot;&quot;;
+
+    /**
+     * Specifies if the parameter is required or not.
+     * &lt;p&gt;
+     * Path parameters should always be set as required.
+     */
+    boolean required() default false;
+
+    /**
+     * Allows for filtering a parameter from the API documentation.
+     * &lt;p&gt;
+     * See io.swagger.core.filter.SwaggerSpecFilter for further details.
+     */
+    String access() default &quot;&quot;;
+
+    /**
+     * Specifies whether the parameter can accept multiple values by having multiple occurrences.
+     */
+    boolean allowMultiple() default false;
+
+    /**
+     * The data type of the parameter.
+     * &lt;p&gt;
+     * This can be the class name or a primitive.
+     */
+    String dataType() default &quot;&quot;;
+
+    /**
+     * The class of the parameter.
+     * &lt;p&gt;
+     * Overrides &#123;@code dataType&#125; if provided.
+     */
+    Class&lt;?&gt; dataTypeClass() default Void.class;
+
+    /**
+     * The parameter type of the parameter.
+     * &lt;p&gt;
+     * Valid values are &#123;@code path&#125;, &#123;@code query&#125;, &#123;@code body&#125;,
+     * &#123;@code header&#125; or &#123;@code form&#125;.
+     */
+    String paramType() default &quot;&quot;;
+
+    /**
+     * a single example for non-body type parameters
+     *
+     * @since 1.5.4
+     *
+     * @return
+     */
+    String example() default &quot;&quot;;
+
+    /**
+     * Examples for the parameter.  Applies only to BodyParameters
+     *
+     * @since 1.5.4
+     *
+     * @return
+     */
+    Example examples() default @Example(value = @ExampleProperty(mediaType = &quot;&quot;, value = &quot;&quot;));
+
+    /**
+     * Adds the ability to override the detected type
+     *
+     * @since 1.5.11
+     *
+     * @return
+     */
+    String type() default &quot;&quot;;
+
+    /**
+     * Adds the ability to provide a custom format
+     *
+     * @since 1.5.11
+     *
+     * @return
+     */
+    String format() default &quot;&quot;;
+
+    /**
+     * Adds the ability to set a format as empty
+     *
+     * @since 1.5.11
+     *
+     * @return
+     */
+    boolean allowEmptyValue() default false;
+
+    /**
+     * adds ability to be designated as read only.
+     *
+     * @since 1.5.11
+     *
+     */
+    boolean readOnly() default false;
+
+    /**
+     * adds ability to override collectionFormat with `array` types
+     *
+     * @since 1.5.11
+     *
+     */
+    String collectionFormat() default &quot;&quot;;
+&#125;</code></pre>
+<h3 id="name属性"><a href="#name属性" class="headerlink" title="name属性"></a>name属性</h3><p>请求参数的名字，如果在你的代码中，设置了<code>paramType</code>,则该属性代表的是请求路径中的某个关联值，如果没有设置<code>paramType</code>属性，则name代表的就是普通的参数的名字。</p>
+<h3 id="value属性"><a href="#value属性" class="headerlink" title="value属性"></a>value属性</h3><p>参数的简明描述。</p>
+<h3 id="defaultValue属性"><a href="#defaultValue属性" class="headerlink" title="defaultValue属性"></a>defaultValue属性</h3><p>参数默认值</p>
+<h3 id="allowableValues属性"><a href="#allowableValues属性" class="headerlink" title="allowableValues属性"></a>allowableValues属性</h3><p>标明字段的取值范围，设置的方式有三种<br>1.第一种是采用枚举的形式。<br>例如：<code>allowableValue=&quot;&#123;first, second, third&#125;&quot;</code><br>2.第二种是采用一个有限的范围，例如<code>&quot;range[1, 5]&quot;</code>、<code>&quot;range(1, 5)&quot;</code>、<code>&quot;range[1, 5)&quot;</code>。其中，<br>2.1 <code>[</code>表示是大于等于<br>2.2 <code>(</code>表示是大于<br>2.3 <code>]</code>表示是小于等于<br>2.4 <code>)</code>表示是小于<br>3.标识的是一个无限的范围。其中，我们使用<code>infinity</code>表示无限大，使用<code>-infinity</code>表示负无限大。<br>例如:<code>&quot;range[1, infinity]&quot;</code>。</p>
+<h3 id="required属性"><a href="#required属性" class="headerlink" title="required属性"></a>required属性</h3><p>确定是否是必传字段，默认<code>是false</code>。</p>
+<h3 id="access属性"><a href="#access属性" class="headerlink" title="access属性"></a>access属性</h3><p>这个属性的意思是允许从API文档中过滤属性，详情，我们可以参见<code>io.swagger.core.filter.SwaggerSpecFilter</code>。在接下来的代码中我们会讲到。</p>
+<h3 id="allowMultiple属性"><a href="#allowMultiple属性" class="headerlink" title="allowMultiple属性"></a>allowMultiple属性</h3><p>表示的是允许多个，一般用在<code>Array</code>、<code>List</code>上面。</p>
+<h3 id="dataType属性"><a href="#dataType属性" class="headerlink" title="dataType属性"></a>dataType属性</h3><p>参数的数据类型，如果我们设置了这个属性，将被覆盖掉通过内省获得的参数的数据类型。并且这个数据类型可以是基本数据类型，也可以是类的名字。如果是基本数据类型，为了防止抛出<code>XXX</code>的错误<br>1.我们可以采用配置<code>example</code>属性一起使用<br>2.我们可以通过升级<code>swagger-annotations</code>和<code>swagger-models</code>的版本来避免，升级到<code>XXX</code>版本即可。</p>
+<h3 id="dataTypeClass属性"><a href="#dataTypeClass属性" class="headerlink" title="dataTypeClass属性"></a>dataTypeClass属性</h3><p>指定参数的class文件。如果我们在设置中提供了该参数，将自动的覆盖掉<code>dataType</code>参数。</p>
+<h3 id="paramType属性"><a href="#paramType属性" class="headerlink" title="paramType属性"></a>paramType属性</h3><p>参数的参数类型，一般有：</p>
+<ol>
+<li>path</li>
+<li>query</li>
+<li>body</li>
+<li>header</li>
+<li>form</li>
+</ol>
+<h3 id="example属性"><a href="#example属性" class="headerlink" title="example属性"></a>example属性</h3><p>对于非<code>body</code>类型的参数的一个举例说明。</p>
+<h3 id="examples属性"><a href="#examples属性" class="headerlink" title="examples属性"></a>examples属性</h3><p>参数的举例说明，仅适用于<code>body</code>类型。</p>
+<h3 id="type属性"><a href="#type属性" class="headerlink" title="type属性"></a>type属性</h3><p>参数的类型。这字段适用于<code>paramType</code>为非<code>body</code>的情况，可选的参数类型为：</p>
+<ol>
+<li>string</li>
+<li>number</li>
+<li>integer</li>
+<li>boolean</li>
+<li>array</li>
+<li>file –如果是file的话，那么<code>consumes</code>字段必须是<code>multipart/form-data</code>, <code>application/x-www-form-urlencoded</code>中的一种或几种。</li>
+</ol>
+<h3 id="format属性"><a href="#format属性" class="headerlink" title="format属性"></a>format属性</h3><p>自定义参数的格式。</p>
+<table>
+<thead>
+<tr>
+<th align="center">实际参数名(Common Name)</th>
+<th align="center">类型(type)</th>
+<th align="center">参数格式(format)</th>
+<th align="center">备注(Comments)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">integer</td>
+<td align="center">integer</td>
+<td align="center">int32</td>
+<td align="center">32位整数</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">integer</td>
+<td align="center">int64</td>
+<td align="center">64位整数</td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">number</td>
+<td align="center">float</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">number</td>
+<td align="center">double</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">string</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">byte</td>
+<td align="center">string</td>
+<td align="center">byte</td>
+<td align="center">一个byte数组</td>
+</tr>
+<tr>
+<td align="center">binary</td>
+<td align="center">string</td>
+<td align="center">binary</td>
+<td align="center">二进制序列</td>
+</tr>
+<tr>
+<td align="center">boolean</td>
+<td align="center">boolean</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">date</td>
+<td align="center">string</td>
+<td align="center">date</td>
+<td align="center">根据<code>RFC3339</code>定义的日期格式</td>
+</tr>
+<tr>
+<td align="center">dateTime</td>
+<td align="center">string</td>
+<td align="center">date-time</td>
+<td align="center">根据<code>RFC3339</code>定义的时间格式</td>
+</tr>
+<tr>
+<td align="center">password</td>
+<td align="center">string</td>
+<td align="center">password</td>
+<td align="center">用于提示是否需要掩码输入</td>
+</tr>
+</tbody></table>
+<h3 id="allowEmptyValue属性"><a href="#allowEmptyValue属性" class="headerlink" title="allowEmptyValue属性"></a>allowEmptyValue属性</h3><p>允许参数为空，模式是<code>false</code>。</p>
+<h3 id="readOnly属性"><a href="#readOnly属性" class="headerlink" title="readOnly属性"></a>readOnly属性</h3><p>设置参数是只读模式，不允许修改。</p>
+<h3 id="collectionFormat属性"><a href="#collectionFormat属性" class="headerlink" title="collectionFormat属性"></a>collectionFormat属性</h3><p>在这里，如果我们的参数类型是一个数组的话，在这里，我们可以设定数组的格式，通常有：</p>
+<ol>
+<li>csv—利用逗号<code>,</code>分割值</li>
+<li>ssv—利用空格分割值</li>
+<li>tsv—利用制表符<code>\t</code>分割值</li>
+<li>pipes—利用管道<code>|</code>分割值</li>
+<li>multi—多元素分割值。<br>默认情况下，是<code>csv</code>格式的。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>@ApiImplicitParams</code>和<code>@ApiImplicitParam</code>注解主要是用来描述请求参数的一些基本信息的，在实际的工作中经常会用的到。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎指出任何有错误或不够清晰的表达。可以邮件至 gouqiangshen@126.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a href="javascript:void(0)" class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>Swagger文档API学习--ApiImplicitParams注解</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.8k</span></p>
+    <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="BiggerShen">BiggerShen</a></p>
+    <p><span class="copy-title">发布时间:</span>2019-11-03, 15:03:38</p>
+    <p><span class="copy-title">最后更新:</span>2024-01-16, 03:51:15</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/Swagger/SwaggerDocumentLearnDay06/" title="Swagger文档API学习--ApiImplicitParams注解">https://shengouqiang.cn/Swagger/SwaggerDocumentLearnDay06/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><a href ='http://beian.miit.gov.cn' target="_blank">京ICP备19032600号    京ICP备19032600号-1</a></p>
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" href="javascript:void(0)"></a>
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="https://shengouqiang.cn/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="https://shengouqiang.cn/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.2" ></script>
+
+<script src="/js/script.js?v=1.0.2" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#算法','#算法学习','#面试算法总结','#黑苹果','#蓝牙修复','#免驱','#NTP','#时间同步','#NVIDIA','#驱动','#设计模式','#Java学习','#代码优化','#Java进阶','#Git','#Lamdba','#Java8','#锁问题','#每天一个Linux命令','#命令','#Linux','#MySql学习','#隔离级别','#mysql学习','#mysql','#计算机网络','#https','#视频','#Markdown用法','#其他','#Frps','#Nginx','#BBR','#Jrebel','#MySql','#Aria','#Redis','#数据结构','#字典','#持久化','#RDB','#AOF','#脚本','#Swagger','#UML','#工具学习','#Java','#集合','#Map','#JDK学习',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("/js/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 582px;
+    }
+    .nav.fullscreen {
+        margin-left: -582px;
+    }
+    .nav-left {
+        width: 160px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 552px;
+        }
+        .nav.fullscreen {
+            margin-left: -552px;
+        }
+        .nav-left {
+            width: 160px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 552px;
+            margin-left: -552px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 552px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://shengouqiang.cn/img/5d3521411f3f169375.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

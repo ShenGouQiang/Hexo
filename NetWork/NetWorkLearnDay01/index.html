@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TCP之三次握手、四次挥手 | 妃子笑</title>
+  <meta name="keywords" content=" 计算机网络 , https ">
+  <meta name="description" content="TCP之三次握手、四次挥手 | 妃子笑">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:type" content="website">
+<meta property="og:title" content="关于&amp;留言板">
+<meta property="og:url" content="https://shengouqiang.cn/about/index.html">
+<meta property="og:site_name" content="妃子笑">
+<meta property="og:description" content="个人简介BiggerShen， 毕业于江苏科技大学，目前从事 Java 及相关工作。 喜欢研究新兴技术和未来发展方向。 联系方式1. QQ：745060797 2. 邮箱：gouqiangshen@126.com">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-08T00:06:42.000Z">
+<meta property="article:modified_time" content="2024-01-16T03:51:15.920Z">
+<meta property="article:author" content="BiggerShen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="https://shengouqiang.cn/img/favicon.jpg">
+
+<link href="/css/style.css?v=1.0.2" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.0.2" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.2" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.2" ></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="true">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="https://shengouqiang.cn/img/favicon.jpg" />
+</a>
+<div class="author">
+    <span>BiggerShen</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="github" href="https://github.com/ShenGouQiang" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:gouqiangshen@126.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=745060797&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="neteasemusic" href="https://music.163.com/#/user/home?id=113720929" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-neteasemusic"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(39)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法学习"><i class="fold iconfont icon-right"></i>算法学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="常用算法证明">常用算法证明<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="黑苹果">黑苹果<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="设计模式">设计模式<small>(4)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(9)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="EffectiveJava">EffectiveJava<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="集合">集合<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Java8学习">Java8学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="JDK">JDK<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="锁问题">锁问题<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其他">其他<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Linux"><i class="fold iconfont icon-right"></i>Linux<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Shell脚本">Shell脚本<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySql"><i class="fold iconfont icon-right"></i>MySql<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="理论学习">理论学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="命令语句">命令语句<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="计算机网络">计算机网络<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="中间件"><i class="fold iconfont icon-right"></i>中间件<small>(2)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Swagger">Swagger<small>(8)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="UML学习">UML学习<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="39">
+<input type="hidden" id="yelog_site_word_count" value="65.8k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://shengouqiang.cn">妃子笑</a></li>
+            
+            <li><a target="_blank" href="https://yelog.org">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://www.xiaominfo.com">八一菜刀</a></li>
+            
+            <li><a target="_blank" href="https://www.processon.com/view/link/5d9d5dcbe4b0aca79abdf1db">学习计划</a></li>
+            
+            <li><a target="_blank" href="http://ruanyifeng.com/blog/">阮一峰网站</a></li>
+            
+            <li><a target="_blank" href="https://www.52doc.com/">我爱电子书</a></li>
+            
+            <li><a target="_blank" href="https://cloud.tencent.com/developer/column/80381">BAT的乌托邦</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="以 in: 开头进行全文搜索" autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">算法学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">面试算法总结</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">黑苹果</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">蓝牙修复</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">免驱</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">NTP</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">时间同步</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">NVIDIA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">驱动</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">设计模式</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">代码优化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Java进阶</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Lamdba</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Java8</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">锁问题</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">每天一个Linux命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">命令</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">MySql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">隔离级别</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">mysql学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">mysql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">计算机网络</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">https</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">视频</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Markdown用法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">其他</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Frps</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Nginx</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">BBR</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Jrebel</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">MySql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Aria</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">数据结构</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">字典</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">持久化</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">RDB</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">AOF</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">脚本</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">Swagger</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">UML</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">工具学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">集合</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">Map</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">JDK学习</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        <a  class="其他 "
+           href="/Other/VpsAndNasAboutConfig/"
+           data-tag="其他,Frps,Nginx,BBR,Jrebel,MySql,Aria"
+           data-author="" >
+            <span class="post-title" title="一次Frp引发的VPS的相关配置">一次Frp引发的VPS的相关配置</span>
+            <span class="post-date" title="2021-05-30 19:58:11">2021/05/30</span>
+        </a>
+        
+        <a  class="计算机网络 "
+           href="/NetWork/NetWorkLearnDay01/"
+           data-tag="计算机网络,https"
+           data-author="" >
+            <span class="post-title" title="TCP之三次握手、四次挥手">TCP之三次握手、四次挥手</span>
+            <span class="post-date" title="2020-08-24 21:57:41">2020/08/24</span>
+        </a>
+        
+        <a  class="Linux Shell脚本 "
+           href="/Shell/BatchDeleteUnusedMavenFile/"
+           data-tag="Linux,脚本"
+           data-author="" >
+            <span class="post-title" title="自编写Shell脚本-删除Maven无效的文件">自编写Shell脚本-删除Maven无效的文件</span>
+            <span class="post-date" title="2020-08-13 00:09:56">2020/08/13</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisDictht/"
+           data-tag="Redis,数据结构,字典"
+           data-author="" >
+            <span class="post-title" title="Redis数据结构--字典">Redis数据结构--字典</span>
+            <span class="post-date" title="2020-06-09 11:50:34">2020/06/09</span>
+        </a>
+        
+        <a  class="中间件 Redis "
+           href="/Redis/RedisPersistence/"
+           data-tag="Redis,持久化,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis的RDB与AOF">Redis的RDB与AOF</span>
+            <span class="post-date" title="2020-06-08 16:47:08">2020/06/08</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/NVIDIA_380_10_10_10_40_137_DRIVER/"
+           data-tag="黑苹果,NVIDIA,驱动"
+           data-author="" >
+            <span class="post-title" title="MacOS-NVIDIA显卡驱动380.10.10.10.40.137">MacOS-NVIDIA显卡驱动380.10.10.10.40.137</span>
+            <span class="post-date" title="2020-06-07 16:39:06">2020/06/07</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/MacFixTimeNTP/"
+           data-tag="黑苹果,NTP,时间同步"
+           data-author="" >
+            <span class="post-title" title="MacOS--修改NTP">MacOS--修改NTP</span>
+            <span class="post-date" title="2020-06-06 15:34:34">2020/06/06</span>
+        </a>
+        
+        <a  class="黑苹果 "
+           href="/BlackMac/BCM20702A0BuleToothfix/"
+           data-tag="黑苹果,蓝牙修复,免驱"
+           data-author="" >
+            <span class="post-title" title="黑苹果--BCM20702A0型号蓝牙修复">黑苹果--BCM20702A0型号蓝牙修复</span>
+            <span class="post-date" title="2020-06-03 22:27:43">2020/06/03</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay03/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用双向链表+HashMap实现LRU算法">利用双向链表+HashMap实现LRU算法</span>
+            <span class="post-date" title="2020-03-31 21:35:19">2020/03/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/StrategyPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式-策略模式">设计模式-策略模式</span>
+            <span class="post-date" title="2020-03-27 21:06:47">2020/03/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay02/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="利用单链表实现LRU算法">利用单链表实现LRU算法</span>
+            <span class="post-date" title="2020-03-25 21:53:13">2020/03/25</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/SingletonPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–单例模式">设计模式–单例模式</span>
+            <span class="post-date" title="2020-03-20 23:03:45">2020/03/20</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay02/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(put操作)">Java学习--HashMap详解(put操作)</span>
+            <span class="post-date" title="2020-03-18 11:48:18">2020/03/18</span>
+        </a>
+        
+        <a  class="Java 集合 "
+           href="/Java/JDK/HashMap/JDKHashMapLearnDay01/"
+           data-tag="Java,集合,Map"
+           data-author="" >
+            <span class="post-title" title="Java学习--HashMap详解(构造函数)">Java学习--HashMap详解(构造函数)</span>
+            <span class="post-date" title="2020-02-18 15:52:55">2020/02/18</span>
+        </a>
+        
+        <a  class="MySql 理论学习 "
+           href="/mysql/MySqlLearnDay01/"
+           data-tag="MySql学习,隔离级别"
+           data-author="" >
+            <span class="post-title" title="MySql--隔离级别">MySql--隔离级别</span>
+            <span class="post-date" title="2019-12-12 20:32:31">2019/12/12</span>
+        </a>
+        
+        <a  class="Java JDK "
+           href="/Java/JDK/String/JavaLearnDay02/"
+           data-tag="Java学习,JDK学习"
+           data-author="" >
+            <span class="post-title" title="JDK学习--String">JDK学习--String</span>
+            <span class="post-date" title="2019-11-27 19:04:22">2019/11/27</span>
+        </a>
+        
+        <a  class="算法学习 常用算法证明 "
+           href="/Algorithm/AlgorithmLearnDay01/"
+           data-tag="算法,算法学习,面试算法总结"
+           data-author="" >
+            <span class="post-title" title="算法：从1+1000000的O(1)的时间复杂度">算法：从1+1000000的O(1)的时间复杂度</span>
+            <span class="post-date" title="2019-11-27 13:49:50">2019/11/27</span>
+        </a>
+        
+        <a  class="Java EffectiveJava "
+           href="/EffectiveJava/EffectiveJavaLearnDay01/"
+           data-tag="Java学习,代码优化,Java进阶"
+           data-author="" >
+            <span class="post-title" title="EffectiveJava--第一条：用静态工厂方法代替构造器">EffectiveJava--第一条：用静态工厂方法代替构造器</span>
+            <span class="post-date" title="2019-11-22 20:47:02">2019/11/22</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/Java/JDK/Thread/JavaLearnDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="JDK学习--ThreadLocal">JDK学习--ThreadLocal</span>
+            <span class="post-date" title="2019-11-14 22:40:24">2019/11/14</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay03/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--ReentrantLock">Java--ReentrantLock</span>
+            <span class="post-date" title="2019-11-08 21:07:14">2019/11/08</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay02/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java--synchronize关键字">Java--synchronize关键字</span>
+            <span class="post-date" title="2019-11-05 20:49:00">2019/11/05</span>
+        </a>
+        
+        <a  class="Java 锁问题 "
+           href="/JavaLock/JavaLockDay01/"
+           data-tag="Java学习,锁问题"
+           data-author="" >
+            <span class="post-title" title="Java常见的锁问题汇总(持续更新中)">Java常见的锁问题汇总(持续更新中)</span>
+            <span class="post-date" title="2019-11-05 18:01:36">2019/11/05</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay08/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiIgnore注解">Swagger文档API学习--ApiIgnore注解</span>
+            <span class="post-date" title="2019-11-03 17:45:05">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay07/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiParam注解">Swagger文档API学习--ApiParam注解</span>
+            <span class="post-date" title="2019-11-03 17:30:23">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay06/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiImplicitParams注解">Swagger文档API学习--ApiImplicitParams注解</span>
+            <span class="post-date" title="2019-11-03 15:03:38">2019/11/03</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay05/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModelProperty注解">Swagger文档API学习--ApiModelProperty注解</span>
+            <span class="post-date" title="2019-11-02 23:09:28">2019/11/02</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay04/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiModel注解">Swagger文档API学习--ApiModel注解</span>
+            <span class="post-date" title="2019-11-01 15:25:31">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay03/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiResponses注解">Swagger文档API学习--ApiResponses注解</span>
+            <span class="post-date" title="2019-11-01 14:06:19">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay02/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--ApiOperation注解">Swagger文档API学习--ApiOperation注解</span>
+            <span class="post-date" title="2019-11-01 11:50:08">2019/11/01</span>
+        </a>
+        
+        <a  class="Swagger "
+           href="/Swagger/SwaggerDocumentLearnDay01/"
+           data-tag="Swagger"
+           data-author="" >
+            <span class="post-title" title="Swagger文档API学习--API注解">Swagger文档API学习--API注解</span>
+            <span class="post-date" title="2019-10-31 21:18:25">2019/10/31</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ResponsibilityChainPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式–责任链模式">设计模式–责任链模式</span>
+            <span class="post-date" title="2019-10-27 18:06:22">2019/10/27</span>
+        </a>
+        
+        <a  class="设计模式 "
+           href="/DesignPattern/ObserverPattern01/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式--观察者模式">设计模式--观察者模式</span>
+            <span class="post-date" title="2019-09-28 12:23:42">2019/09/28</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Other/MarkDownInsertVideo/"
+           data-tag="视频,Markdown用法,其他"
+           data-author="" >
+            <span class="post-title" title="Markdown插入视频">Markdown插入视频</span>
+            <span class="post-date" title="2019-09-23 15:26:17">2019/09/23</span>
+        </a>
+        
+        <a  class="Linux "
+           href="/Linux/Linux-order-day-01/"
+           data-tag="每天一个Linux命令,命令,Linux"
+           data-author="" >
+            <span class="post-title" title="每天一个Linux命令--ls">每天一个Linux命令--ls</span>
+            <span class="post-date" title="2019-09-23 13:31:03">2019/09/23</span>
+        </a>
+        
+        <a  class="MySql 命令语句 "
+           href="/mysql/MYSQL-LEARN-DAY-01/"
+           data-tag="mysql学习,mysql"
+           data-author="" >
+            <span class="post-title" title="MySql学习--基本命令学习">MySql学习--基本命令学习</span>
+            <span class="post-date" title="2019-09-21 14:24:12">2019/09/21</span>
+        </a>
+        
+        <a  class="其他 "
+           href="/Git/gitOneMoreAccount/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="同一电脑配置多个Git账号">同一电脑配置多个Git账号</span>
+            <span class="post-date" title="2019-09-16 21:58:58">2019/09/16</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-02/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML类图学习--类图">UML类图学习--类图</span>
+            <span class="post-date" title="2019-09-12 23:07:55">2019/09/12</span>
+        </a>
+        
+        <a  class="UML学习 "
+           href="/UML/UML-01/"
+           data-tag="UML,工具学习"
+           data-author="" >
+            <span class="post-title" title="UML学习概述">UML学习概述</span>
+            <span class="post-date" title="2019-09-12 22:51:28">2019/09/12</span>
+        </a>
+        
+        <a  class="Java Java8学习 "
+           href="/Java8Action/IntroduceLamdba/"
+           data-tag="Lamdba,Java8"
+           data-author="" >
+            <span class="post-title" title="对于Lamdba的引入">对于Lamdba的引入</span>
+            <span class="post-date" title="2019-09-08 04:53:15">2019/09/08</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-NetWork/NetWorkLearnDay01" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">TCP之三次握手、四次挥手</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a href="javascript:" data-rel="计算机网络">计算机网络</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color1">计算机网络</a>
+            
+            <a href="javascript:" class="color1">https</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2024-01-16 03:51:15'>2020-08-24 21:57</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:1.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP%E4%B9%8B%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E3%80%81%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="toc-text">TCP之三次握手、四次挥手</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="toc-text">大体过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D"><span class="toc-text">详细介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E6%B5%81%E7%A8%8B"><span class="toc-text">三次握手流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%EF%BC%9F"><span class="toc-text">为什么要三次握手？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%98%AF%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B%EF%BC%9F"><span class="toc-text">为什么不是四次握手？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E6%B5%81%E7%A8%8B"><span class="toc-text">四次挥手流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84TIME-WAIT%E9%9C%80%E8%A6%812MSL%EF%BC%9F"><span class="toc-text">为什么客户端的TIME_WAIT需要2MSL？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SYN%E6%94%BB%E5%87%BB"><span class="toc-text">SYN攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%AD%98%E5%9C%A8%E5%A4%A7%E9%87%8F%E7%9A%84TIME-WAIT"><span class="toc-text">系统存在大量的TIME_WAIT:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B1%E5%AE%B3"><span class="toc-text">危害</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-6 i,
+    .toc-level-6 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="TCP之三次握手、四次挥手"><a href="#TCP之三次握手、四次挥手" class="headerlink" title="TCP之三次握手、四次挥手"></a>TCP之三次握手、四次挥手</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为对于<code>TCP</code>而言，是默认的全双工协议，因此可以是客户端向服务器端发起连接，也可以是服务端向客户端发起连接。在这里，我们以客户端向服务端发起连接请求。</p>
+<h2 id="大体过程"><a href="#大体过程" class="headerlink" title="大体过程"></a>大体过程</h2><p><img src="https://shengouqiang.cn/img/NetWork/Day01/TCP_01.png" alt="TCP协议流程图"></p>
+<h2 id="详细介绍"><a href="#详细介绍" class="headerlink" title="详细介绍"></a>详细介绍</h2><p>下面，我们分别介绍下一些专有名词：</p>
+<ol>
+<li><code>SYN</code>：发起一个新的连接</li>
+<li><code>ACK</code>：代表确认序列号生效</li>
+<li><code>SEQ</code>：序列号：代表的是从源端到目标端的序列号</li>
+<li><code>ACK</code>：确认序列号，一般为接收到的<code>SEQ +1</code>，并且只有在<code>ACK</code>的<code>Flag</code>位为<code>1</code>的时候生效</li>
+<li><code>FIN</code>：释放一个连接</li>
+<li><code>MSL</code>： 最大报文生成时间</li>
+</ol>
+<h3 id="三次握手流程"><a href="#三次握手流程" class="headerlink" title="三次握手流程"></a>三次握手流程</h3><ol>
+<li>当<code>server</code>端 开放了某个端口后，此时 会从<code>CLOSED</code> 阶段 进入到<code>LISTEN</code> 接口</li>
+<li>当<code>client</code>想要连接<code>server</code>的时候，此时会从 发送一个 <code>SYN</code> 报文，同时从<code>CLOSED</code> 阶段进入到<code>SYN-SENT</code>阶段。</li>
+<li>当<code>server</code>收到了来自<code>client</code>的<code>SYN</code>后，此时会从 <code>LISTEN</code> 阶段 转到 <code>SYN-RCVD</code> 接口，同时通知<code>client</code>的<code>ACK</code>和<code>SYN</code></li>
+<li>当<code>client</code>接收到<code>server</code>的确认和请求连接后，发送<code>ACK</code>告知<code>server</code>端，同时 <code>client</code> 端从<code>SYN-SENT</code> 阶段 进入到<code>ESTABLISHED</code> 阶段</li>
+<li>当<code>server</code>收到了<code>client</code>的确认后，也从 <code>SYN-RCVD</code> 阶段 进入到 <code>ESTABLISHED</code> 阶段</li>
+</ol>
+<h4 id="为什么要三次握手？"><a href="#为什么要三次握手？" class="headerlink" title="为什么要三次握手？"></a>为什么要三次握手？</h4><ol>
+<li>保证服务器资源的防止浪费的情况，如果是两次握手，就会出现当网络阻塞，客户端没有在一定的时间内收到服务端的请求，此时客户端会重新启动一个新的连接，此时客户端又会启动一个新的端口连接对应。此时就会出现服务器端资源浪费的情况</li>
+<li>因为有<code>SEQ</code>的版本控制问题，当有一个请求包在网络阻塞很久之后，到达<code>server</code>端，<code>server</code>端可以根据<code>SEQ</code>判断当前的包是否是有效的数据包</li>
+</ol>
+<h4 id="为什么不是四次握手？"><a href="#为什么不是四次握手？" class="headerlink" title="为什么不是四次握手？"></a>为什么不是四次握手？</h4><p>没有必要，因为三次已经能够保证全双工了</p>
+<h3 id="四次挥手流程"><a href="#四次挥手流程" class="headerlink" title="四次挥手流程"></a>四次挥手流程</h3><ol>
+<li>当<code>client</code>准备关闭与<code>server</code>的连接时，此时会发送一个报文通知<code>server</code>端，同时客户端会从 <code>ESTABLISHED</code> 状态进入到 <code>FIN-WAIT-1</code> 状态，此时客户端处于半关闭状态，已经无法通过<code>client</code>向<code>server</code>发送数据包，但是允许接收<code>server</code>到<code>client</code>的数据包。这里要注意一点，这里<code>client</code>不能向<code>server</code>发送的仅仅是数据包，不代表不能发送确认包。</li>
+<li>当<code>server</code>端收到了<code>client</code>端想要断开连接的请求后，此时<code>server</code>会从 <code>ESTABLISHED</code> 状态进入到<code>CLOSE-WAIT</code>状态。此时客户端也进入了一个半关闭的状态。</li>
+<li>当执行完第2步骤后，此时<code>client</code>端接收到了<code>server</code>的确认，则可以正式的关闭了从<code>client</code>端到<code>server</code>端的连接。并且进入到 <code>FIN-WAIT-2</code> 阶段。</li>
+<li>当<code>server</code>端经历过 <code>CLOSE_WAIT</code> 阶段后，并且做好了与客户端断开连接的准备后，此时<code>server</code>端会向<code>client</code>发送关闭从<code>server</code>端到<code>client</code>端的连接的请求，并且自动进入到 <code>LAST-ACK</code> 阶段。在这个阶段，<code>server</code>端不在向<code>client</code>端发送任何数据，但是允许接收从<code>client</code>发送过来的确认包。</li>
+<li>当<code>client</code>端收到了<code>server</code>端的主动关闭请求后，此时会从<code>FIN-WAIT-2</code>阶段到 <code>TIME-WAITED</code> 阶段。并且告知<code>server</code>端已收到关闭请求通知。</li>
+<li>当<code>server</code>端接收到回应后，此时会停止 <code>CLOSE-WAIT</code> 阶段，进入 <code>CLOSED</code> 阶段。在这个时候，已经正式的确认了从 <code>server</code> 到 <code>client</code>端的连接的关闭。</li>
+<li>当客户端发送了<code>server</code>端关闭请求的回应后，等到<code>2MSL</code>，自动进入<code>CLOSED</code> 阶段，在这个时候，已经正式的确认了从<code>client</code>到 <code>server</code>端的连接的关闭。</li>
+</ol>
+<h4 id="为什么客户端的TIME-WAIT需要2MSL？"><a href="#为什么客户端的TIME-WAIT需要2MSL？" class="headerlink" title="为什么客户端的TIME_WAIT需要2MSL？"></a>为什么客户端的<code>TIME_WAIT</code>需要<code>2MSL</code>？</h4><p>为了保证<code>server</code>端能够最大安全的关闭：</p>
+<ol>
+<li>如果<code>client</code>在<code>2MSL</code>时间内，再次收到了来自<code>server</code>的<code>FIN</code>报文，说明<code>server</code>由于各种原因没有接收到<code>client</code>发出的<code>ACK</code>确认报文。<code>client</code>再次向<code>server</code>发出<code>ACK</code>确认报文，计时器重置，重新开始<code>2MSL</code>的计时</li>
+<li><code>client</code>在<code>2MSL</code>内没有再次收到来自<code>server</code>的<code>FIN</code>报文，说明<code>server</code>正常接收了<code>ACK</code>确认报文，<code>client</code>可以进入<code>CLOSED</code>阶段</li>
+</ol>
+<h2 id="SYN攻击"><a href="#SYN攻击" class="headerlink" title="SYN攻击"></a>SYN攻击</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ol>
+<li><code>client</code>伪造大量的<code>虚拟IP</code>，并向<code>server</code>端发送<code>SYN</code>包</li>
+<li><code>server</code>端收到后，发送 <code>ACK +SYN</code>包给<code>虚拟IP</code></li>
+<li>因为<code>虚拟IP</code>不存在，所以不会回应<code>server</code>端的 <code>ACK+SYN</code></li>
+<li>当<code>server</code>端收不到确认后，此时会认为是确认包丢失，此时会不断重发，直到超时</li>
+</ol>
+<p>因为这些虚拟的<code>SYN</code>包会长期占用未连接队列，就会导致真实的<code>client</code>端请求无法加入到队列中，从而被丢弃，最终造成网络拥堵和瘫痪。</p>
+<p>在<code>Linux</code>系统中，我们可以采用<code>netstat -nap | grep SYN_RECV</code>命令进行查看</p>
+<h2 id="系统存在大量的TIME-WAIT"><a href="#系统存在大量的TIME-WAIT" class="headerlink" title="系统存在大量的TIME_WAIT:"></a>系统存在大量的<code>TIME_WAIT</code>:</h2><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>系统中存在非常频繁的 <code>TCP</code>连接打开-关闭的进程</li>
+<li>网络状态不太好，<code>server</code>端总是在<code>2MSL</code>的时间内，重新发送 <code>FIN</code> 关闭请求，导致 <code>client</code>端总是在重置<code>2MSL</code></li>
+</ol>
+<h3 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h3><ol>
+<li>消耗系统的连接数</li>
+<li>过多的消耗内存，平均一个 <code>TIME-WAIT</code>要占用<code>4K</code>大小的内存</li>
+</ol>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><pre><code class="shell">1.vi /etc/sysctl.conf
+
+#表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；
+net.ipv4.tcp_syncookies = 1    
+#表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；
+net.ipv4.tcp_tw_reuse = 1       
+#表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭；
+net.ipv4.tcp_tw_recycle = 1    
+#修改系統默认的 TIMEOUT 时间。
+net.ipv4.tcp_fin_timeout        
+
+#表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。
+net.ipv4.tcp_keepalive_time = 1200   
+#表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为10000到65000。（注意：这里不要将最低值设的太低，否则可能会占用掉正常的端口！）
+net.ipv4.ip_local_port_range = 10000 65000   
+#表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。
+net.ipv4.tcp_max_syn_backlog = 8192
+#表示系统同时保持TIME_WAIT的最大数量，如果超过这个数字，TIME_WAIT将立刻被清除并打印警告信息。默 认为180000，改为5000。对于Apache、Nginx等服务器，上几行的参数可以很好地减少TIME_WAIT套接字数量，但是对于 Squid，效果却不大。此项参数可以控制TIME_WAIT的最大数量，避免Squid服务器被大量的TIME_WAIT拖死
+net.ipv4.tcp_max_tw_buckets = 5000
+
+2./sbin/sysctl -p</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎指出任何有错误或不够清晰的表达。可以邮件至 gouqiangshen@126.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a href="javascript:void(0)" class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>TCP之三次握手、四次挥手</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.7k</span></p>
+    <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="BiggerShen">BiggerShen</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-08-24, 21:57:41</p>
+    <p><span class="copy-title">最后更新:</span>2024-01-16, 03:51:15</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/NetWork/NetWorkLearnDay01/" title="TCP之三次握手、四次挥手">https://shengouqiang.cn/NetWork/NetWorkLearnDay01/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><a href ='http://beian.miit.gov.cn' target="_blank">京ICP备19032600号    京ICP备19032600号-1</a></p>
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" href="javascript:void(0)"></a>
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="https://shengouqiang.cn/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="https://shengouqiang.cn/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.2" ></script>
+
+<script src="/js/script.js?v=1.0.2" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#算法','#算法学习','#面试算法总结','#黑苹果','#蓝牙修复','#免驱','#NTP','#时间同步','#NVIDIA','#驱动','#设计模式','#Java学习','#代码优化','#Java进阶','#Git','#Lamdba','#Java8','#锁问题','#每天一个Linux命令','#命令','#Linux','#MySql学习','#隔离级别','#mysql学习','#mysql','#计算机网络','#https','#视频','#Markdown用法','#其他','#Frps','#Nginx','#BBR','#Jrebel','#MySql','#Aria','#Redis','#数据结构','#字典','#持久化','#RDB','#AOF','#脚本','#Swagger','#UML','#工具学习','#Java','#集合','#Map','#JDK学习',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("/js/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 582px;
+    }
+    .nav.fullscreen {
+        margin-left: -582px;
+    }
+    .nav-left {
+        width: 160px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 552px;
+        }
+        .nav.fullscreen {
+            margin-left: -552px;
+        }
+        .nav-left {
+            width: 160px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 552px;
+            margin-left: -552px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 552px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://shengouqiang.cn/img/5d3521411f3f169375.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
